@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Naveenkumar I T — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--accent:#0073e6;--maxw:1100px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:'Poppins',sans-serif;background:#fafafa;color:#222;-webkit-font-smoothing:antialiased;}
+
+    /* NAV */
+    .topnav{position:sticky;top:0;background:rgba(250,250,250,0.94);backdrop-filter:blur(6px);border-bottom:1px solid rgba(0,0,0,0.04);z-index:1200}
+    .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:flex-end;padding:12px 28px;gap:18px} /* right-aligned links */
+    .nav-links{display:flex;gap:18px}
+    .nav-links a{color:var(--accent);text-decoration:none;font-weight:600}
+    .nav-toggle{display:none;border:0;background:transparent;font-size:1.1rem;cursor:pointer}
+
+    /* HERO */
+    header{height:100vh;background:linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)),url('https://picsum.photos/1600/900?blur=3') center/cover no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:28px}
+    header h1{font-size:3.5rem;margin:0}
+    header p{font-size:1.05rem;max-width:700px;margin:18px auto 0;color:rgba(255,255,255,0.92)}
+    .hero-actions{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);font-weight:700;text-decoration:none;color:white}
+    .btn.primary{background:var(--accent);color:#fff}
+
+    /* LAYOUT */
+    .container{max-width:var(--maxw);margin:0 auto;padding:40px 28px}
+    section{padding:18px 0} /* reduced vertical spacing as requested */
+    h2{font-size:1.25rem;margin:0 0 18px;color:#333}
+
+    /* SKILLS */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;margin-top:18px}
+    @media(min-width:1200px){.skills-grid{grid-template-columns:repeat(6,1fr);}}
+    .skill-card{background:#fff;padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.04);text-align:center;font-weight:600;font-size:0.86rem}
+
+    /* PROJECTS */
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px;margin-top:18px}
+    .project-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.06);display:flex;flex-direction:column;transition:transform .22s ease}
+    .project-card:hover{transform:translateY(-8px)}
+    .project-card img{width:100%;height:180px;object-fit:cover}
+    .project-card .content{padding:16px;flex:1}
+    .project-card h3{margin:0 0 8px;display:flex;align-items:center;gap:8px}
+    .project-meta{font-size:0.86rem;color:#666;margin-bottom:8px}
+
+    /* remove blue marker line globally (user requested) */
+    .marker{display:none}
+
+    /* CLIENTS STRIP (scrolling) */
+    .clients-strip{overflow:hidden;white-space:nowrap;margin-top:28px;border-top:1px solid #eee;padding-top:16px;color:#444;font-weight:600}
+    .clients-strip-inner{display:inline-block;padding-left:100%;animation:scroll 60s linear infinite} /* 60s slow scroll */
+    .clients-item{display:inline-block;padding-right:40px}
+    @keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
+
+    /* TIMELINE */
+    .timeline{display:flex;flex-direction:column;gap:16px;margin-top:14px}
+    .job{background:#fff;padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
+    .job h3{margin:0;font-size:1rem;display:flex;align-items:center;gap:8px}
+    .job .meta{color:#666;font-size:0.9rem;margin:6px 0}
+
+    /* CONTACT */
+    .contact-grid{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .contact-card{padding:12px 14px;border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.04);font-weight:600}
+
+    footer{padding:36px 20px;text-align:center;color:#666}
+    .to-top{position:fixed;right:20px;bottom:20px;padding:10px 12px;border-radius:10px;background:var(--accent);color:#fff;border:0;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,0.12);display:none}
+
+    @media(max-width:900px){header h1{font-size:2.4rem}.nav-links{display:none}.nav-toggle{display:block}.container{padding:28px 18px}}
+    @media(max-width:640px){header{padding-top:72px;height:auto;padding-bottom:56px}}
+    body.nav-open .nav-links{display:flex;position:absolute;top:60px;right:18px;background:#fff;padding:12px;border-radius:10px;flex-direction:column;box-shadow:0 10px 30px rgba(0,0,0,0.08)}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav" role="navigation" aria-label="Primary Navigation">
+  <div class="nav-inner">
+    <div class="nav-links" role="menubar">
+      <a class="nav-link" href="#skills" role="menuitem">Skills</a>
+      <a class="nav-link" href="#projects" role="menuitem">Projects</a>
+      <a class="nav-link" href="#about" role="menuitem">About</a>
+      <a class="nav-link" href="#awards" role="menuitem">Awards</a>
+      <a class="nav-link" href="#contact" role="menuitem">Contact</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+  </div>
+</nav>
+
+  <!-- HERO -->
+  <header id="top">
+    <div class="hero-inner">
+      <h1>Naveenkumar I T</h1>
+      <p>Data Science & AI Specialist — 15+ years IT experience, delivering Generative AI, MLOps, NLP, Deep Learning, Cloud & Agentic AI solutions.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#projects">View Projects</a>
+        <a class="btn" href="#about">About</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- SKILLS -->
+    <section id="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title">Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-card">Python · Pandas · NumPy</div>
+        <div class="skill-card">PyTorch · TensorFlow · scikit-learn</div>
+        <div class="skill-card">Transformers · NLP · LangChain</div>
+        <div class="skill-card">RAG · Vector DBs (FAISS, Pinecone)</div>
+        <div class="skill-card">MLOps · Docker · Kubernetes · CI/CD</div>
+        <div class="skill-card">AWS · Azure · GCP · Snowflake · Databricks</div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+
+      <div id="projectsGrid" class="projects-grid">
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?1" alt="Lloyds Banking">
+          <div class="content">
+            <div class="project-meta">Client: Lloyds Banking Group</div>
+            <h3>🏦 Lloyds Banking — Fraud & Anomaly Detection</h3>
+            <p>Developed ML pipelines for anomaly detection in financial transactions. Reduced false positives 30% and improved detection rates by 25% through ensemble models and feature engineering.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?2" alt="Novartis">
+          <div class="content">
+            <div class="project-meta">Client: Novartis Pharma & Healthcare</div>
+            <h3>🧪 Novartis — Generative AI Chatbot</h3>
+            <p>Built RAG-enabled conversational assistant for medical info and internal Q&A. Fine-tuned LLMs, implemented vector search (FAISS), and automated responses to reduce manual triage.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?3" alt="Travelodge">
+          <div class="content">
+            <div class="project-meta">Client: Travelodge Hotels (UK)</div>
+            <h3>🏨 Travelodge — Demand Forecasting & Dynamic Pricing</h3>
+            <p>Designed time-series forecasting models and dynamic pricing engine; increased ADR and occupancy while reducing manual overrides using probabilistic forecasts.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?4" alt="Fresenius Healthcare">
+          <div class="content">
+            <div class="project-meta">Client: Fresenius Medical Care</div>
+            <h3>🏥 Fresenius — Patient Risk Prediction</h3>
+            <p>Developed clinical predictive models for intradialytic hypotension and adverse events using RNNs and explainability (SHAP), deployed as decision-support tools in production.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?5" alt="Deloitte">
+          <div class="content">
+            <div class="project-meta">Client: Deloitte</div>
+            <h3>🏢 Deloitte — RPA + AI Automation</h3>
+            <p>Delivered RPA solutions integrated with NLP for KYC and document processing; combined rule-based automations and ML to reduce turnaround times significantly.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?6" alt="Qatar National Bank">
+          <div class="content">
+            <div class="project-meta">Client: Qatar National Bank</div>
+            <h3>🏦 Qatar National Bank — Data Modernization</h3>
+            <p>Led cloud migration and data platform modernization to centralize analytics, enable streaming ingestion and low-latency risk monitoring pipelines.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?7" alt="Merck Group">
+          <div class="content">
+            <div class="project-meta">Client: Merck Group</div>
+            <h3>🧪 Merck Group — Predictive Maintenance</h3>
+            <p>Built models to predict equipment failure using sensor telemetry and anomaly detection; reduced downtime and optimized maintenance schedules.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?8" alt="Baxter">
+          <div class="content">
+            <div class="project-meta">Client: Baxter</div>
+            <h3>🏥 Baxter — AI for Personalized Care & Remote Monitoring</h3>
+            <p>Designed clinical decision support features, personalization models and remote monitoring dashboards integrated into healthcare workflows.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?9" alt="Target & Amazon">
+          <div class="content">
+            <div class="project-meta">Client: Target / Amazon (joint)</div>
+            <h3>🏢 Target & Amazon — Personalized Recommendation Systems</h3>
+            <p>Implemented hybrid recommendation engines using collaborative filtering and transformer-based contextual re-ranking to increase conversions and AOV.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?10" alt="Johnson & Johnson">
+          <div class="content">
+            <div class="project-meta">Client: Johnson & Johnson</div>
+            <h3>🧪 Johnson & Johnson — Drug Supply Chain Optimization</h3>
+            <p>Implemented demand forecasting and anomaly detection for supply chain; reduced stockouts and optimized inventory costs across regions.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?11" alt="US Bank">
+          <div class="content">
+            <div class="project-meta">Client: US Bank</div>
+            <h3>🏦 US Bank — Credit Risk Scoring</h3>
+            <p>Delivered explainable credit risk models with SHAP/LIME, integrated into lending pipelines to improve approval rates and reduce defaults.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- pagination controls -->
+      <div id="pagination" class="pagination" aria-label="Project pages"></div>
+
+    </section>
+
+    <!-- ABOUT / EXPERIENCE -->
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About & Experience</h2>
+      <div class="timeline">
+        <div class="job">
+          <h3>🏢 Senior Tech Lead, Data Science — HCLTech (Apr 2022 – Present)</h3>
+          <div class="meta">Clients: Lloyds Banking, Novartis, Travelodge, Fresenius</div>
+          <p>Leading delivery of Generative AI, anomaly detection, forecasting and MLOps solutions. Built RAG chatbots, streaming anomaly pipelines, dynamic pricing engines and production-grade MLOps platforms. Responsible for solution architecture, stakeholder alignment, and delivering business KPIs.</p>
+          <p><strong>Tech & tooling:</strong> Python, PyTorch, Hugging Face Transformers, LangChain, FAISS, AWS (SageMaker, Lambda), Snowflake, Databricks, Kubernetes, MLflow.</p>
+        </div>
+
+        <div class="job">
+          <h3>🏢 Sr Software Engineer, Data Science — Cignex Datamatix (May 2020 – Jan 2022)</h3>
+          <div class="meta">Clients: Fresenius, HSBC, Deloitte</div>
+          <p>Delivered clinical predictive models, real-time scoring, and RPA+AI automation projects. Implemented model monitoring, retraining pipelines and secure deployment patterns for healthcare and financial clients.</p>
+          <p><strong>Tech & tooling:</strong> Kubeflow, MLflow, Docker, AWS, Python, scikit-learn, TensorFlow.</p>
+        </div>
+
+        <div class="job">
+          <h3>🏢 MLOps Engineer — Yash Technologies (Feb 2019 – Nov 2019)</h3>
+          <div class="meta">Clients: Qatar National Bank, Merck</div>
+          <p>Led data platform modernizations and cloud migrations. Built streaming ingestion and low-latency monitoring for risk and maintenance use-cases.</p>
+          <p><strong>Tech & tooling:</strong> Kafka, Spark, AWS, Terraform, CI/CD.</p>
+        </div>
+
+        <div class="job">
+          <h3>🏥 Sr Soft Engineer, ML — Baxter (Jul 2014 – Oct 2018)</h3>
+          <div class="meta">Projects: Personalized patient care, clinical decision support, remote monitoring</div>
+          <p>Designed and delivered AI-driven clinical features integrated with medical devices and cloud dashboards. Focused on safety, explainability and regulatory compliance in production systems.</p>
+          <p><strong>Tech & tooling:</strong> Python, RNNs, PyTorch, embedded integration, cloud deployments.</p>
+        </div>
+
+        <div class="job">
+          <h3>🏢 Machine Learning Developer — TCS (Nov 2010 – Mar 2014)</h3>
+          <div class="meta">Clients: Target / Amazon, Johnson & Johnson, US Bank</div>
+          <p>Worked on recommendation systems, demand forecasting, credit risk scoring and large-scale ETL/analytics platforms across retail, pharma and banking domains.</p>
+          <p><strong>Tech & tooling:</strong> Hadoop, Spark, Python, scikit-learn.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AWARDS -->
+    <section id="awards" aria-labelledby="awards-title">
+      <h2 id="awards-title">Awards & Recognition</h2>
+      <ul style="color:#666;line-height:1.6;margin-top:12px">
+        <li>Client appreciation awards (2010)</li>
+        <li>Star team & Service & Commitment awards (2013)</li>
+        <li>“Relentlessly driving results” — Baxter (2015)</li>
+        <li>Baxter IDC recognition (2016, 2017, 2018)</li>
+        <li>Extra-miles awards — Yash (2019)</li>
+        <li>Star performer — Cignex Datamatix (2020)</li>
+        <li>Promising New Talent — HCLTech (2024)</li>
+      </ul>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <div class="contact-grid">
+        <div class="contact-card">📧 <a href="mailto:naveenkumaritaimlds@gmail.com">naveenkumaritaimlds@gmail.com</a></div>
+        <div class="contact-card">📞 +91 96864 49386</div>
+      </div>
+      <div style="background:#f5f5f5;border-left:4px solid #0073e6;padding:12px 16px;margin-top:20px;border-radius:6px;font-size:0.9rem;color:#555;line-height:1.5">
+        ⚠️ <strong>Note:</strong> The projects listed are based on client engagements delivered in secure environments where source code remains internal.  
+        To represent my work, I have shared case studies and solution outlines here, while a public GitHub portfolio is being prepared.
+      </div>
+    </section>
+
+    <!-- CLIENTS STRIP moved to bottom -->
+    <section id="clients" aria-labelledby="clients-title">
+      <h2 id="clients-title">🌍 My Journey with Global Clients</h2>
+      <div class="clients-strip" aria-hidden="true">
+        <div class="clients-strip-inner">
+          <div class="clients-item">🏦 Lloyds Banking</div>
+          <div class="clients-item">🧪 Novartis</div>
+          <div class="clients-item">🏨 Travelodge</div>
+          <div class="clients-item">🏥 Fresenius</div>
+          <div class="clients-item">🏢 Deloitte</div>
+          <div class="clients-item">🏦 Qatar National Bank</div>
+          <div class="clients-item">🧪 Merck</div>
+          <div class="clients-item">🏥 Baxter</div>
+          <div class="clients-item">🏢 Target</div>
+          <div class="clients-item">🏢 Amazon</div>
+          <div class="clients-item">🧪 Johnson & Johnson</div>
+          <div class="clients-item">🏦 US Bank</div>
+          <div class="clients-item">🏢 TCS</div>
+          <div class="clients-item">🏢 Cignex</div>
+          <div class="clients-item">🏢 Yash</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>❤️ Built with passion & love by Naveenkumar I T </footer>
+  <button class="to-top" aria-label="Back to top">↑</button>
+
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    if(navToggle){navToggle.addEventListener('click', ()=> document.body.classList.toggle('nav-open'))}
+
+    // Projects pagination
+    (function(){
+      const grid = document.getElementById('projectsGrid');
+      if(!grid) return;
+      const items = Array.from(grid.children);
+      const perPage = 6;
+      const total = items.length;
+      const totalPages = Math.max(1, Math.ceil(total / perPage));
+      const pager = document.getElementById('pagination');
+
+      function renderPage(page){
+        const start = (page-1)*perPage;
+        const end = start + perPage;
+        items.forEach((it, idx)=>{ it.style.display = (idx>=start && idx<end) ? '' : 'none'; });
+        pager.innerHTML = '';
+        const prev = document.createElement('button'); prev.className='page-btn'; prev.textContent='← Prev'; prev.disabled = page===1;
+        prev.addEventListener('click', ()=> { renderPage(page-1); document.getElementById('projects').scrollIntoView({behavior:'smooth'}); });
+        pager.appendChild(prev);
+        for(let p=1;p<=totalPages;p++){
+          const b = document.createElement('button'); b.className='page-btn'; b.textContent = p; if(p===page) b.classList.add('active');
+          b.addEventListener('click', ()=> { renderPage(p); document.getElementById('projects').scrollIntoView({behavior:'smooth'}); });
+          pager.appendChild(b);
+        }
+        const next = document.createElement('button'); next.className='page-btn'; next.textContent='Next →'; next.disabled = page===totalPages;
+        next.addEventListener('click', ()=> { renderPage(page+1); document.getElementById('projects').scrollIntoView({behavior:'smooth'}); });
+        pager.appendChild(next);
+        // removed location.hash = '#projects' to prevent auto scroll on load
+      }
+      renderPage(1);
+    })();
+
+    // Highlight active nav link
+    (function(){
+      const navLinks = document.querySelectorAll('.nav-links a');
+      const sections = document.querySelectorAll('main section, header');
+      const opts = { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 };
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            const id = e.target.id;
+            navLinks.forEach(a=> a.classList.toggle('active', a.getAttribute('href') === '#'+id));
+          }
+        });
+      }, opts);
+      sections.forEach(s=> obs.observe(s));
+    })();
+
+    // Back to top button
+    (function(){
+      const btn = document.querySelector('.to-top');
+      window.addEventListener('scroll', ()=>{ btn.style.display = window.scrollY > 360 ? 'block' : 'none'; });
+      btn.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+    })();
+
+    // close mobile nav on link click
+    document.querySelectorAll('.nav-links a').forEach(a=> a.addEventListener('click', ()=>{ document.body.classList.remove('nav-open'); }));
+  </script>
+
+</body>
+</html>
