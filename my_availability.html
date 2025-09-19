@@ -2,88 +2,140 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My Availability</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Upcoming Interviews</title>
   <style>
     body {
-      font-family: "Inter", system-ui, sans-serif;
-      background: #f6f8fb;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      color: #1f2d3d;
+      background: #f8faff;
+      color: #333;
     }
-
-    .container {
-      max-width: 600px;
-      margin: 60px auto;
-      background: #fff;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 8px 30px rgba(16, 36, 64, 0.08);
+    header {
+      background: linear-gradient(135deg, #4f46e5, #3b82f6);
+      color: white;
       text-align: center;
+      padding: 1rem;
     }
-
-    h1 {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    p.lead {
-      font-size: 14px;
-      color: #6b7b91;
-      margin-bottom: 20px;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
+    header h1 {
       margin: 0;
+      font-size: 1.6rem;
     }
-
+    header p {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+    main {
+      max-width: 800px;
+      margin: 1rem auto;
+      padding: 0 1rem;
+    }
+    section { margin-bottom: 1.2rem; }
+    h2 {
+      font-size: 1.2rem;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+      border-left: 4px solid #3b82f6;
+      padding-left: 0.6rem;
+    }
+    ul { list-style: none; padding: 0; margin: 0; }
     li {
-      background: #f3f7fb;
-      margin: 8px 0;
-      padding: 12px;
+      background: white;
+      margin: 0.4rem 0;
+      padding: 0.6rem;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+    }
+    li::before { content: "📅"; margin-right: 0.6rem; }
+    .capabilities {
+      background: #eef2ff;
+      padding: 1rem;
       border-radius: 8px;
-      font-size: 15px;
-      font-weight: 500;
-      color: #2c3e50;
+      line-height: 1.4;
+      font-size: 0.9rem;
+      box-shadow: inset 0 0 6px rgba(59,130,246,0.15);
     }
-
-    .muted {
-      margin-top: 15px;
-      font-size: 12px;
-      color: #999;
+    .portfolio-link {
+      display: inline-block;
+      margin-top: 0.6rem;
+      background: #3b82f6;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
     }
+    .portfolio-link:hover { background: #2563eb; }
+    footer {
+      background: #1f2937;
+      color: #d1d5db;
+      text-align: center;
+      padding: 0.6rem;
+      font-size: 0.8rem;
+    }
+    footer span { color: #93c5fd; font-weight: 500; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>My Availability</h1>
-    <p class="lead">Below are the upcoming interview slots I have booked.</p>
-    <ul id="slotsList">
-      <li>Loading slots...</li>
-    </ul>
-    <p class="muted">(If slots don’t appear, please refresh this page)</p>
-  </div>
+  <header>
+    <h1>📌 My Upcoming Interviews</h1>
+    <p>
+      Dear Recruiter, these interview slots are <strong>already scheduled</strong>.  
+      I share this page to save your time and avoid confusion — so we can focus on finding a mutually suitable new slot.
+    </p>
+  </header>
 
-  <script defer>
+  <main>
+    <!-- Scheduled Slots -->
+    <section>
+      <h2>Scheduled Interview Slots</h2>
+      <ul id="slots-list">
+        <li>Loading slots...</li>
+      </ul>
+    </section>
+
+    <!-- Capability Pitch -->
+    <section>
+      <h2>My Expertise</h2>
+      <div class="capabilities">
+        I specialize in <strong>Data Science</strong>, <strong>Python</strong>, <strong>Machine Learning</strong>, 
+        <strong>Large Language Models (LLMs)</strong>, <strong>Vector Databases</strong>, 
+        <strong>MLOps</strong>, <strong>Cloud Deployments (AWS/GCP/Azure)</strong>, 
+        and <strong>AI-driven automation</strong>.  
+        My focus is on delivering end-to-end intelligent systems that scale efficiently and create measurable business impact.  
+        <br>
+        <a class="portfolio-link" href="https://naveenkumaritaimlds.github.io/" target="_blank">
+          🌐 View My Full Portfolio
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    ⚡ This page is auto-maintained using <span>Python, Data Science pipelines, LLMs, VectorDB integrations, and modern MLOps tooling</span> — ensuring recruiters always see my <strong>latest and accurate interview schedule</strong>.
+  </footer>
+
+  <script>
     async function loadSlots() {
       try {
-        const res = await fetch("slots.json", { cache: "no-store" });
-        const text = await res.text();
-        const data = JSON.parse(text);
-        const list = document.getElementById("slotsList");
+        const response = await fetch("slots.json?cache=" + new Date().getTime());
+        const slots = await response.json();
+        const list = document.getElementById("slots-list");
         list.innerHTML = "";
-
-        if (!data.length) {
-          list.innerHTML = "<li>No upcoming slots.</li>";
+        if (slots.length === 0) {
+          list.innerHTML = "<li>No interviews scheduled yet.</li>";
           return;
         }
-
-        data.forEach(slot => {
-          const d = new Date(slot.datetime);
-          const options = {
+        slots.forEach(slot => {
+          const li = document.createElement("li");
+          const date = new Date(slot.datetime);
+          li.textContent = date.toLocaleString("en-US", {
             weekday: "short",
             year: "numeric",
             month: "short",
@@ -91,20 +143,15 @@
             hour: "numeric",
             minute: "2-digit",
             hour12: true
-          };
-          const formatted = d.toLocaleString("en-US", options);
-
-          const li = document.createElement("li");
-          li.textContent = formatted;
+          });
           list.appendChild(li);
         });
-      } catch (e) {
-        console.error(e);
-        document.getElementById("slotsList").innerHTML =
-          "<li>Failed to load slots.</li>";
+      } catch (error) {
+        console.error("Error loading slots:", error);
+        document.getElementById("slots-list").innerHTML =
+          "<li>Could not load interview slots.</li>";
       }
     }
-
     loadSlots();
   </script>
 </body>
