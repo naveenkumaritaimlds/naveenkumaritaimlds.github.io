@@ -2,117 +2,109 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Upcoming Interviews</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Upcoming Interviews</title>
   <style>
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #f9fbfd;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fafc;
       margin: 0;
-      padding: 20px;
-      color: #2c3e50;
+      padding: 0;
+      color: #333;
       line-height: 1.6;
     }
     .container {
-      max-width: 700px;
-      margin: auto;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
       background: #fff;
-      padding: 20px 25px;
-      border-radius: 10px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
     }
     h1 {
+      color: #0056b3;
       text-align: center;
-      color: #34495e;
+      margin-bottom: 10px;
     }
     p.intro {
       text-align: center;
-      font-size: 15px;
+      font-size: 1.05rem;
       color: #555;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
     ul {
       list-style: none;
       padding: 0;
     }
     li {
-      padding: 10px 12px;
-      margin-bottom: 10px;
-      background: #f0f4ff;
-      border-left: 5px solid #4a90e2;
+      background: #f1f5ff;
+      margin: 8px 0;
+      padding: 12px;
+      border-left: 5px solid #0056b3;
       border-radius: 6px;
+      font-weight: 500;
     }
     footer {
-      margin-top: 20px;
-      font-size: 13px;
-      color: #666;
+      margin-top: 28px;
+      padding-top: 12px;
+      border-top: 1px solid #eee;
+      font-size: 0.9rem;
       text-align: center;
+      color: #666;
     }
     a {
-      color: #4a90e2;
+      color: #0056b3;
       text-decoration: none;
-      font-weight: bold;
-    }
-    a:hover {
-      text-decoration: underline;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Upcoming Interviews (Already Scheduled)</h1>
+    <h1>My Upcoming Interviews</h1>
+
     <p class="intro">
-      Dear Recruiter,<br>
-      To save your valuable time and avoid scheduling conflicts, I created this dedicated page.  
-      It keeps you updated with my confirmed interview slots so you always have the latest picture of my availability.
+      Below are my confirmed interview slots.  
+      I’ve made this page so recruiters can quickly see my availability without scheduling conflicts — saving time and making coordination smoother for both sides.
     </p>
 
     <ul id="slots">
       <li>Loading slots...</li>
     </ul>
 
+    <p class="intro">
+      ⚡ This page is auto-maintained using my data science and AI workflow: Python, Pandas, NumPy, PyTorch, TensorFlow, Hugging Face Transformers, LangChain, RAG, VectorDBs (FAISS, Pinecone), MLOps pipelines, Docker, Kubernetes, MLflow, and cloud platforms (AWS, Azure, GCP, Snowflake, Databricks).  
+      Recruiters always see my latest schedule — no manual updates needed.
+    </p>
+
+    <p class="intro">
+      🔗 You can also view my full professional portfolio here:  
+      <a href="https://naveenkumaritaimlds.github.io/" target="_blank">Visit My Portfolio</a>
+    </p>
+
     <footer>
-      ⚡ This page is auto-maintained using my AI/ML engineering toolkit — combining <b>Python</b>, <b>Data Science</b>, <b>Deep Learning</b>, <b>Generative AI</b>, <b>LLMs</b>, <b>Vector Databases</b> (FAISS, Pinecone, ChromaDB, Weaviate), <b>LangChain</b>, <b>Agentic AI</b>, <b>Cloud</b> (AWS, Azure, GCP), <b>Docker</b>, <b>Kubernetes</b>, and <b>MLOps pipelines</b>.  
-      The same approach I use to deliver scalable, production-ready AI solutions now powers this simple but reliable scheduling page.  
-      <br><br>
-      👉 Curious to know more? Visit my full portfolio here:  
-      <a href="https://naveenkumaritaimlds.github.io/" target="_blank">My Portfolio</a>
+      © 2025 Naveenkumar I T — Crafted with AI, Data Science & Cloud Engineering
     </footer>
   </div>
 
   <script>
-    async function loadSlots() {
-      try {
-        const res = await fetch("slots.json");
-        const slots = await res.json();
-
-        const ul = document.getElementById("slots");
-        ul.innerHTML = "";
-
-        if (slots.length === 0) {
-          ul.innerHTML = "<li>No interviews scheduled at the moment.</li>";
-          return;
-        }
-
-        slots.forEach(slot => {
-          const li = document.createElement("li");
-          const date = new Date(slot.datetime);
-          li.textContent = date.toLocaleString("en-US", {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            hour: "numeric",
-            minute: "2-digit"
-          });
-          ul.appendChild(li);
-        });
-      } catch (e) {
-        console.error("Error loading slots:", e);
-        document.getElementById("slots").innerHTML = "<li>Unable to load slots.</li>";
-      }
+    const slots = [
+      "Sat, Sep 27, 2025, 3:00 AM",
+      "Sun, Sep 21, 2025, 6:00 AM"
+    ];
+    const list = document.getElementById("slots");
+    list.innerHTML = "";
+    if (slots.length > 0) {
+      slots.forEach(s => {
+        const li = document.createElement("li");
+        li.textContent = s;
+        list.appendChild(li);
+      });
+    } else {
+      const li = document.createElement("li");
+      li.textContent = "No upcoming interviews scheduled.";
+      list.appendChild(li);
     }
-    loadSlots();
   </script>
 </body>
 </html>
