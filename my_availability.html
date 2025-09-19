@@ -1,174 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Interview Scheduler</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Upcoming Interviews</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      background: #f8faff;
+      color: #333;
     }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 20px;
-      max-width: 700px;
-      margin: 20px auto;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin: 8px 0 4px;
-    }
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      background: #3498db;
+    header {
+      background: linear-gradient(135deg, #4f46e5, #3b82f6);
       color: white;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-right: 6px;
+      text-align: center;
+      padding: 2rem 1rem;
     }
-    button:hover { background: #2980b9; }
-    .slot {
-      background: #ecf0f1;
-      padding: 12px;
-      border-radius: 8px;
-      margin: 10px 0;
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+      font-style: italic;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    section {
+      margin-bottom: 2rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+      color: #1f2937;
+      margin-bottom: 1rem;
+      border-left: 5px solid #3b82f6;
+      padding-left: 0.5rem;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: white;
+      margin: 0.5rem 0;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      font-weight: 500;
       display: flex;
-      justify-content: space-between;
       align-items: center;
     }
-    .slot span {
-      font-size: 16px;
-      color: #2c3e50;
+    li::before {
+      content: "📅";
+      margin-right: 0.75rem;
     }
-    .delete-btn {
-      background: #e74c3c;
-      font-size: 12px;
-      padding: 4px 8px;
+    .capabilities {
+      background: #eef2ff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      line-height: 1.6;
+      font-size: 1.05rem;
+      box-shadow: inset 0 0 8px rgba(59,130,246,0.15);
     }
-    .public-title {
-      font-size: 18px;
-      font-weight: bold;
-      color: #34495e;
-      margin-bottom: 12px;
+    .portfolio-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      background: #3b82f6;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .portfolio-link:hover {
+      background: #2563eb;
+    }
+    footer {
+      background: #1f2937;
+      color: #d1d5db;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+    footer span {
+      color: #93c5fd;
     }
   </style>
 </head>
 <body>
-  <h1>Interview Scheduler</h1>
+  <header>
+    <h1>📌 My Upcoming Interviews</h1>
+    <p>Dear Recruiter, the slots below are already scheduled. Please consider other timings for discussion.</p>
+  </header>
 
-  <!-- Private mode form -->
-  <div id="privateSection" class="card" style="display:none;">
-    <label>Company Name:</label>
-    <input type="text" id="companyInput" placeholder="Enter company name">
-    <label>Consultant / Recruiter:</label>
-    <input type="text" id="consultantInput" placeholder="Enter consultant name">
-    <label>Interview Date & Time:</label>
-    <input type="datetime-local" id="datetimeInput">
-    <button onclick="addInterview()">Add Interview</button>
-    <h2 style="margin-top:20px;">Your Interviews</h2>
-    <div id="interviewList"></div>
-  </div>
+  <main>
+    <!-- Scheduled Slots -->
+    <section>
+      <h2>Scheduled Interview Slots</h2>
+      <ul id="slots-list">
+        <li>Loading slots...</li>
+      </ul>
+    </section>
 
-  <!-- Public mode view -->
-  <div id="publicSection" class="card" style="display:none;">
-    <div class="public-title">📅 Booked Slots</div>
-    <div id="publicList"></div>
-  </div>
+    <!-- Capability Pitch -->
+    <section>
+      <h2>My Expertise</h2>
+      <div class="capabilities">
+        I specialize in <strong>Data Science</strong> and <strong>Python</strong> development, with practical expertise in
+        <strong>Large Language Models (LLMs)</strong>, <strong>Vector Databases</strong>, and <strong>AI-driven systems</strong>.
+        My experience spans building intelligent solutions that integrate machine learning, natural language processing,
+        and scalable MLOps workflows.  
+        <br><br>
+        <a class="portfolio-link" href="https://naveenkumaritaimlds.github.io/" target="_blank">
+          🌐 View My Full Portfolio
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    ⚡ This page is auto-maintained using <span>modern AI & ML tooling</span> — ensuring you always see my latest interview schedule.
+  </footer>
 
   <script>
-    // Auto mode detection
-    let MODE = "private";
-    if (location.hostname.includes("github.io")) {
-      MODE = "public";
-    }
-
-    let interviews = JSON.parse(localStorage.getItem("interviews") || "[]");
-
-    function saveData() {
-      localStorage.setItem("interviews", JSON.stringify(interviews));
-    }
-
-    function formatDateTime(dtString) {
-      const options = { 
-        day: '2-digit', month: 'short', year: 'numeric', 
-        hour: '2-digit', minute: '2-digit', hour12: true 
-      };
-      return new Date(dtString).toLocaleString('en-GB', options);
-    }
-
-    function render() {
-      const list = document.getElementById("interviewList");
-      const publicList = document.getElementById("publicList");
-      list.innerHTML = "";
-      publicList.innerHTML = "";
-
-      interviews.forEach((item, index) => {
-        // Private mode: show full details + delete
-        const div = document.createElement("div");
-        div.className = "slot";
-        div.innerHTML = `<span><b>${item.company}</b> | ${item.consultant} | ${formatDateTime(item.datetime)}</span>
-                         <button class="delete-btn" onclick="deleteInterview(${index})">Delete</button>`;
-        list.appendChild(div);
-
-        // Public mode: only booked slot
-        const pDiv = document.createElement("div");
-        pDiv.className = "slot";
-        pDiv.innerHTML = `<span>${formatDateTime(item.datetime)}</span>`;
-        publicList.appendChild(pDiv);
-      });
-    }
-
-    function addInterview() {
-      const company = document.getElementById("companyInput").value.trim();
-      const consultant = document.getElementById("consultantInput").value.trim();
-      const datetime = document.getElementById("datetimeInput").value;
-
-      if (!company || !consultant || !datetime) {
-        alert("Please fill all fields");
-        return;
+    async function loadSlots() {
+      try {
+        const response = await fetch("slots.json?cache=" + new Date().getTime());
+        const slots = await response.json();
+        const list = document.getElementById("slots-list");
+        list.innerHTML = "";
+        if (slots.length === 0) {
+          list.innerHTML = "<li>No interviews scheduled yet.</li>";
+          return;
+        }
+        slots.forEach(slot => {
+          const li = document.createElement("li");
+          const date = new Date(slot.datetime);
+          li.textContent = date.toLocaleString("en-US", {
+            weekday: "short",
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+          });
+          list.appendChild(li);
+        });
+      } catch (error) {
+        console.error("Error loading slots:", error);
+        document.getElementById("slots-list").innerHTML =
+          "<li>Could not load interview slots. Please refresh later.</li>";
       }
-
-      interviews.push({ company, consultant, datetime });
-      saveData();
-      render();
-
-      document.getElementById("companyInput").value = "";
-      document.getElementById("consultantInput").value = "";
-      document.getElementById("datetimeInput").value = "";
     }
-
-    function deleteInterview(index) {
-      interviews.splice(index, 1);
-      saveData();
-      render();
-    }
-
-    // Show proper section
-    if (MODE === "private") {
-      document.getElementById("privateSection").style.display = "block";
-    } else {
-      document.getElementById("publicSection").style.display = "block";
-    }
-
-    render();
+    loadSlots();
   </script>
 </body>
 </html>
