@@ -1,41 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <title>My Interview Availability</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8">
+  <title>My Availability</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      margin:0;
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background:#f6f8fb;
-      color:#1f2d3d;
-      padding:18px;
-      -webkit-font-smoothing:antialiased;
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: #f6f8fb;
+      color: #1f2d3d;
+      padding: 20px;
     }
     .container {
-      max-width:700px;
-      margin:30px auto;
-      background:#fff;
-      border-radius:10px;
-      padding:20px;
-      box-shadow:0 8px 30px rgba(16,36,64,0.06);
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     }
     h1 {
-      margin:0 0 8px 0;
-      font-size:20px;
-      text-align:center;
+      margin: 0 0 10px;
+      font-size: 22px;
+      text-align: center;
     }
-    p.lead {
-      margin:0 0 18px 0;
-      color:#7b8a99;
-      text-align:center;
-      font-size:14px;
+    p {
+      text-align: center;
+      color: #7b8a99;
+      margin-bottom: 20px;
+      font-size: 14px;
     }
     ul {
-      list-style:none;
-      padding:0;
-      margin:0;
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
     li {
-      backg
+      background: #f3f7fb;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #2b3b4a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+    li.empty {
+      text-align: center;
+      color: #999;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>My Availability</h1>
+    <p>Below are the upcoming interview slots I have booked.</p>
+    <ul id="slotList">
+      <li class="empty">Loading slots...</li>
+    </ul>
+  </div>
+
+  <script>
+    function formatDateTime(datetimeStr) {
+      if (!datetimeStr) return '';
+      const d = new Date(datetimeStr);
+      if (isNaN(d)) return datetimeStr;
+      const options = {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      };
+      return d.toLocaleString('en-US', options);
+    }
+
+    fetch('slots.json')
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById('slotList');
+        list.innerHTML = '';
+        if (!data || data.length === 0) {
+          list.innerHTML = '<li class="empty">No slots booked yet.</li>';
+          return;
+        }
+        data.forEach(slot => {
+          const li = document.createElement('li');
+          li.textContent = formatDateTime(slot.datetime);
+          list.appendChild(li);
+        });
