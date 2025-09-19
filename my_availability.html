@@ -1,68 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="UTF-8" />
   <title>My Availability</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root {
-      --card-bg:#ffffff;
-      --page-bg:#f6f8fb;
-      --accent:#4a90e2;
-      --muted:#7b8a99;
-      --radius:10px;
-    }
-    *{box-sizing:border-box;}
     body {
-      margin:0;
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background:var(--page-bg);
-      color:#1f2d3d;
-      padding:18px;
-      -webkit-font-smoothing:antialiased;
+      font-family: "Inter", system-ui, sans-serif;
+      background: #f6f8fb;
+      margin: 0;
+      padding: 0;
+      color: #1f2d3d;
     }
+
     .container {
-      max-width:700px;
-      margin:40px auto;
-      background:var(--card-bg);
-      border-radius:var(--radius);
-      padding:24px;
-      box-shadow:0 8px 30px rgba(16,36,64,0.08);
+      max-width: 600px;
+      margin: 60px auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(16, 36, 64, 0.08);
+      text-align: center;
     }
+
     h1 {
-      margin:0 0 8px 0;
-      font-size:22px;
-      text-align:center;
-      color:#223344;
+      font-size: 22px;
+      margin-bottom: 8px;
     }
+
     p.lead {
-      margin:0 0 20px 0;
-      color:var(--muted);
-      text-align:center;
-      font-size:14px;
+      font-size: 14px;
+      color: #6b7b91;
+      margin-bottom: 20px;
     }
+
     ul {
-      list-style:none;
-      padding:0;
-      margin:0;
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
+
     li {
-      padding:12px 14px;
-      background:#f0f6ff;
-      margin-bottom:10px;
-      border-radius:8px;
-      font-size:15px;
-      color:#223344;
-      font-weight:500;
+      background: #f3f7fb;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #2c3e50;
     }
-    li.error {
-      background:#ffecec;
-      color:#d93025;
-      font-weight:600;
-    }
-    li.empty {
-      background:#fafafa;
-      color:var(--muted);
+
+    .muted {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #999;
     }
   </style>
 </head>
@@ -70,45 +61,47 @@
   <div class="container">
     <h1>My Availability</h1>
     <p class="lead">Below are the upcoming interview slots I have booked.</p>
-    <ul id="slotList">
-      <li class="empty">Loading slots...</li>
+    <ul id="slotsList">
+      <li>Loading slots...</li>
     </ul>
+    <p class="muted">(If slots don’t appear, please refresh this page)</p>
   </div>
 
-  <script>
+  <script defer>
     async function loadSlots() {
-      const list = document.getElementById("slotList");
       try {
-        const response = await fetch("slots.json");
-        if (!response.ok) {
-          list.innerHTML = `<li class="error">Failed to load slots.json (status: ${response.status})</li>`;
-          return;
-        }
-        const data = await response.json();
-        if (!Array.isArray(data) || data.length === 0) {
-          list.innerHTML = `<li class="empty">No slots available</li>`;
+        const res = await fetch("slots.json", { cache: "no-store" });
+        const text = await res.text();
+        const data = JSON.parse(text);
+        const list = document.getElementById("slotsList");
+        list.innerHTML = "";
+
+        if (!data.length) {
+          list.innerHTML = "<li>No upcoming slots.</li>";
           return;
         }
 
-        list.innerHTML = "";
         data.forEach(slot => {
-          if (!slot.datetime) return;
+          const d = new Date(slot.datetime);
+          const options = {
+            weekday: "short",
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+          };
+          const formatted = d.toLocaleString("en-US", options);
+
           const li = document.createElement("li");
-          const date = new Date(slot.datetime);
-          if (isNaN(date)) {
-            li.textContent = `Invalid date: ${slot.datetime}`;
-            li.className = "error";
-          } else {
-            const options = { 
-              weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', 
-              hour: 'numeric', minute: 'numeric', hour12: true 
-            };
-            li.textContent = date.toLocaleString('en-US', options);
-          }
+          li.textContent = formatted;
           list.appendChild(li);
         });
       } catch (e) {
-        list.innerHTML = `<li class="error">Error: ${e.message}</li>`;
+        console.error(e);
+        document.getElementById("slotsList").innerHTML =
+          "<li>Failed to load slots.</li>";
       }
     }
 
