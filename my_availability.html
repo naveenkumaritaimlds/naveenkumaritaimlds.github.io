@@ -11,36 +11,37 @@
       padding: 0;
       background: #f8faff;
       color: #333;
+      line-height: 1.6;
     }
     header {
       background: linear-gradient(135deg, #4f46e5, #3b82f6);
       color: white;
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 3rem 1rem;
     }
     header h1 {
       margin: 0;
-      font-size: 2rem;
+      font-size: 2.5rem;
     }
     header p {
-      margin-top: 0.5rem;
-      font-size: 1.1rem;
+      margin-top: 1rem;
+      font-size: 1.2rem;
       font-style: italic;
     }
     main {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 2rem;
     }
     section {
-      margin-bottom: 2rem;
+      margin-bottom: 3rem;
     }
     h2 {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       color: #1f2937;
-      margin-bottom: 1rem;
-      border-left: 5px solid #3b82f6;
-      padding-left: 0.5rem;
+      margin-bottom: 1.2rem;
+      border-left: 6px solid #3b82f6;
+      padding-left: 0.75rem;
     }
     ul {
       list-style: none;
@@ -48,11 +49,88 @@
     }
     li {
       background: white;
-      margin: 0.5rem 0;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      margin: 0.75rem 0;
+      padding: 1.2rem;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+      font-size: 1.1rem;
       font-weight: 500;
       display: flex;
       align-items: center;
     }
+    li::before {
+      content: "📅";
+      margin-right: 0.85rem;
+      font-size: 1.2rem;
+    }
+    .capabilities {
+      background: #eef2ff;
+      padding: 2rem;
+      border-radius: 14px;
+      font-size: 1.15rem;
+      box-shadow: inset 0 0 10px rgba(59,130,246,0.15);
+    }
+    .portfolio-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      background: #3b82f6;
+      color: white;
+      padding: 0.9rem 1.8rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: background 0.3s;
+    }
+    .portfolio-link:hover {
+      background: #2563eb;
+    }
+    footer {
+      background: #1f2937;
+      color: #d1d5db;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 1rem;
+      margin-top: 2rem;
+    }
+    footer span {
+      color: #93c5fd;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📌 My Upcoming Interviews</h1>
+    <p><strong>Dear Recruiter,</strong> the slots below are already scheduled.  
+       This page helps save time by avoiding overlaps and repeated calls.</p>
+  </header>
+
+  <main>
+    <!-- Scheduled Slots -->
+    <section>
+      <h2>Scheduled Interview Slots</h2>
+      <ul id="slots-list">
+        <li>Loading slots...</li>
+      </ul>
+    </section>
+
+    <!-- Capability Pitch -->
+    <section>
+      <h2>My Expertise</h2>
+      <div class="capabilities">
+        I specialize in <strong>Data Science</strong> and <strong>Python</strong> development, with hands-on expertise in
+        <strong>Large Language Models (LLMs)</strong>, <strong>Vector Databases</strong>, <strong>MLOps</strong>, and
+        <strong>AI-driven systems</strong>.  
+        I build intelligent solutions combining <strong>machine learning</strong>, <strong>natural language processing</strong>,
+        <strong>cloud deployment</strong>, and <strong>scalable data pipelines</strong>.  
+        <br><br>
+        <a class="portfolio-link" href="https://naveenkumaritaimlds.github.io/" target="_blank">
+          🌐 View My Full Portfolio
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    ⚡ This page is auto-maintained using <span>Python, LLMs, VectorDBs, MLOps, and modern AI/ML tooling</span> —
