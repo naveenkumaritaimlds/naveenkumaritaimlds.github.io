@@ -1,37 +1,118 @@
-<script>
-async function loadSlots() {
-  const list = document.getElementById("slotList");
-  try {
-    const response = await fetch("slots.json");
-    if (!response.ok) {
-      list.innerHTML = `<li style="color:red;">Failed to load slots.json (status: ${response.status})</li>`;
-      return;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>My Availability</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    :root {
+      --card-bg:#ffffff;
+      --page-bg:#f6f8fb;
+      --accent:#4a90e2;
+      --muted:#7b8a99;
+      --radius:10px;
     }
-    const data = await response.json();
-    if (data.length === 0) {
-      list.innerHTML = `<li>No slots available</li>`;
-      return;
+    *{box-sizing:border-box;}
+    body {
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--page-bg);
+      color:#1f2d3d;
+      padding:18px;
+      -webkit-font-smoothing:antialiased;
+    }
+    .container {
+      max-width:700px;
+      margin:40px auto;
+      background:var(--card-bg);
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:0 8px 30px rgba(16,36,64,0.08);
+    }
+    h1 {
+      margin:0 0 8px 0;
+      font-size:22px;
+      text-align:center;
+      color:#223344;
+    }
+    p.lead {
+      margin:0 0 20px 0;
+      color:var(--muted);
+      text-align:center;
+      font-size:14px;
+    }
+    ul {
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    li {
+      padding:12px 14px;
+      background:#f0f6ff;
+      margin-bottom:10px;
+      border-radius:8px;
+      font-size:15px;
+      color:#223344;
+      font-weight:500;
+    }
+    li.error {
+      background:#ffecec;
+      color:#d93025;
+      font-weight:600;
+    }
+    li.empty {
+      background:#fafafa;
+      color:var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>My Availability</h1>
+    <p class="lead">Below are the upcoming interview slots I have booked.</p>
+    <ul id="slotList">
+      <li class="empty">Loading slots...</li>
+    </ul>
+  </div>
+
+  <script>
+    async function loadSlots() {
+      const list = document.getElementById("slotList");
+      try {
+        const response = await fetch("slots.json");
+        if (!response.ok) {
+          list.innerHTML = `<li class="error">Failed to load slots.json (status: ${response.status})</li>`;
+          return;
+        }
+        const data = await response.json();
+        if (!Array.isArray(data) || data.length === 0) {
+          list.innerHTML = `<li class="empty">No slots available</li>`;
+          return;
+        }
+
+        list.innerHTML = "";
+        data.forEach(slot => {
+          if (!slot.datetime) return;
+          const li = document.createElement("li");
+          const date = new Date(slot.datetime);
+          if (isNaN(date)) {
+            li.textContent = `Invalid date: ${slot.datetime}`;
+            li.className = "error";
+          } else {
+            const options = { 
+              weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', 
+              hour: 'numeric', minute: 'numeric', hour12: true 
+            };
+            li.textContent = date.toLocaleString('en-US', options);
+          }
+          list.appendChild(li);
+        });
+      } catch (e) {
+        list.innerHTML = `<li class="error">Error: ${e.message}</li>`;
+      }
     }
 
-    list.innerHTML = "";
-    data.forEach(slot => {
-      const li = document.createElement("li");
-      const date = new Date(slot.datetime);
-      const options = { 
-        weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', 
-        hour: 'numeric', minute: 'numeric', hour12: true 
-      };
-      li.textContent = date.toLocaleString('en-US', options);
-      li.style.padding = "8px";
-      li.style.background = "#f0f6ff";
-      li.style.marginBottom = "6px";
-      li.style.borderRadius = "6px";
-      list.appendChild(li);
-    });
-  } catch (e) {
-    list.innerHTML = `<li style="color:red;">Error: ${e.message}</li>`;
-  }
-}
-
-loadSlots();
-</script>
+    loadSlots();
+  </script>
+</body>
+</html>
