@@ -1,150 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Upcoming Interviews</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f8faff;
-      color: #333;
-      font-size: 17px; /* Base text size */
-      line-height: 1.6;
-    }
-    header {
-      background: linear-gradient(135deg, #4f46e5, #3b82f6);
-      color: white;
-      text-align: center;
-      padding: 2.5rem 1rem;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 32px; /* Main title */
-      font-weight: 700;
-    }
-    header p {
-      margin-top: 0.75rem;
-      font-size: 18px; /* Subheader */
-      font-style: italic;
-    }
-    main {
-      max-width: 900px;
-      margin: 2.5rem auto;
-      padding: 0 1.5rem;
-    }
-    section {
-      margin-bottom: 2.5rem;
-    }
-    h2 {
-      font-size: 24px;
-      color: #1f2937;
-      margin-bottom: 1rem;
-      border-left: 5px solid #3b82f6;
-      padding-left: 0.75rem;
-      font-weight: 600;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    li {
-      background: white;
-      margin: 0.75rem 0;
-      padding: 1rem 1.25rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      font-size: 18px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-    }
-    li::before {
-      content: "📅";
-      margin-right: 0.75rem;
-      font-size: 20px;
-    }
-    .capabilities {
-      background: #eef2ff;
-      padding: 1.5rem;
-      border-radius: 12px;
-      font-size: 18px;
-      box-shadow: inset 0 0 8px rgba(59,130,246,0.15);
-    }
-    .portfolio-link {
-      display: inline-block;
-      margin-top: 1.5rem;
-      background: #3b82f6;
-      color: white;
-      padding: 0.9rem 1.7rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 17px;
-      transition: background 0.3s;
-    }
-    .portfolio-link:hover {
-      background: #2563eb;
-    }
-    footer {
-      background: #1f2937;
-      color: #d1d5db;
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 16px;
-    }
-    footer span {
-      color: #93c5fd;
-      font-weight: 600;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>📌 My Upcoming Interviews</h1>
-    <p>Dear Recruiter, the slots below are already scheduled. Please consider other timings for discussion.</p>
-  </header>
-
-  <main>
-    <!-- Scheduled Slots -->
-    <section>
-      <h2>Scheduled Interview Slots</h2>
-      <ul id="slots-list">
-        <li>Loading slots...</li>
-      </ul>
-    </section>
-
-    <!-- Capability Pitch -->
-    <section>
-      <h2>My Expertise</h2>
-      <div class="capabilities">
-        I specialize in <strong>Data Science</strong>, <strong>Python</strong>, and building intelligent solutions with 
-        <strong>Large Language Models (LLMs)</strong>, <strong>Vector Databases</strong>, and scalable 
-        <strong>MLOps pipelines</strong>. My focus is on designing modern AI-driven systems that combine 
-        <em>machine learning</em>, <em>natural language processing</em>, and <em>cloud-scale engineering</em>.  
-        <br><br>
-        <a class="portfolio-link" href="https://naveenkumaritaimlds.github.io/" target="_blank">
-          🌐 View My Full Portfolio
-        </a>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    ⚡ This page is auto-maintained using <span>modern AI/ML, LLMs, VectorDBs, and MLOps tooling</span> — 
-    ensuring you always see my latest interview schedule.
-  </footer>
-
-  <script>
-    async function loadSlots() {
-      try {
-        const response = await fetch("slots.json?cache=" + new Date().getTime());
-        const slots = await response.json();
-        const list = document.getElementById("slots-list");
-        list.innerHTML = "";
-        if (slots.length === 0) {
-          list.innerHTML = "<li>No interviews scheduled yet.</li>";
-          return;
+<style>
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f8faff;
+    color: #333;
+    font-size: 16px; /* Standard base size */
+    line-height: 1.5;
+  }
+  header {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 28px; /* Main title */
+    font-weight: 700;
+  }
+  header p {
+    margin-top: 0.5rem;
+    font-size: 17px; /* Subheader */
+    font-style: italic;
+  }
+  main {
+    max-width: 850px;
+    margin: 2rem auto;
+    padding: 0 1.25rem;
+  }
+  h2 {
+    font-size: 20px;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    border-left: 5px solid #3b82f6;
+    padding-left: 0.6rem;
+    font-weight: 600;
+  }
+  li {
+    background: white;
+    margin: 0.6rem 0;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+  }
+  li::before {
+    content: "📅";
+    margin-right: 0.6rem;
+    font-size: 18px;
+  }
+  .capabilities {
+    background: #eef2ff;
+    padding: 1.25rem;
+    border-radius: 12px;
+    font-size: 16px;
+    box-shadow: inset 0 0 8px rgba(59,130,246,0.15);
+  }
+  .portfolio-link {
+    display: inline-block;
+    margin-top: 1.25rem;
+    background: #3b82f6;
+    color: white;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background 0.3s;
+  }
+  .portfolio-link:hover {
+    background: #2563eb;
+  }
+  footer {
+    background: #1f2937;
+    color: #d1d5db;
+    text-align: center;
+    padding: 1rem;
+    font-size: 15px;
+  }
+  footer span {
+    color: #93c5fd;
+    font-weight: 600;
+  }
+</style>
