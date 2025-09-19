@@ -1,126 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Upcoming Interviews (Already Scheduled Slots)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>My Upcoming Interviews (Already Scheduled)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
-      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: #f6f8fb;
       margin: 0;
-      background: #f7f9fb;
-      color: #2d3748;
+      padding: 20px;
+      color: #1f2d3d;
     }
     .container {
-      max-width: 700px;
-      margin: 60px auto;
+      max-width: 760px;
+      margin: auto;
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-      padding: 30px;
-      text-align: center;
+      padding: 28px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.07);
     }
     h1 {
       font-size: 22px;
-      margin-bottom: 6px;
-      color: #2c5282;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .intro {
+      margin-bottom: 22px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #334;
+    }
+    .intro strong {
+      color: #4a90e2;
     }
     p.lead {
-      font-size: 15px;
-      color: #4a5568;
+      text-align: center;
+      font-size: 14px;
+      color: #6c7a89;
       margin-bottom: 20px;
     }
     ul {
       list-style: none;
       padding: 0;
-      margin: 0;
     }
     li {
-      background: #edf2f7;
-      margin: 8px 0;
+      background: #f9fbfe;
+      margin: 10px 0;
       padding: 12px 16px;
+      border-left: 5px solid #4a90e2;
       border-radius: 8px;
       font-size: 15px;
       font-weight: 500;
-      color: #1a202c;
-    }
-    li:hover {
-      background: #e2e8f0;
-    }
-    .loading {
-      color: #718096;
-      font-style: italic;
     }
     footer {
-      margin-top: 40px;
+      margin-top: 22px;
       font-size: 13px;
-      color: #718096;
       text-align: center;
-    }
-    footer span {
-      color: #2c5282;
-      font-weight: 600;
+      color: #7b8a99;
+      font-style: italic;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Upcoming Interviews (Already Scheduled Slots)</h1>
-    <p class="lead">
-      Below are the interview times that I have already booked.  
-      If you are a recruiter, please consider scheduling outside these slots.  
-      <br><br>
-      <strong>Tip:</strong> This page is auto-updated to save time for both of us.
-    </p>
+    <h1>My Upcoming Interviews (Already Scheduled)</h1>
 
+    <!-- Intro section -->
+    <div class="intro">
+      Hello 👋, I’m <strong>Naveenkumar I T</strong>, a Senior Tech Lead in <strong>AI/ML, Data Science, and Generative AI</strong> based in Bangalore.<br><br>
+      I design and deploy <strong>scalable AI systems</strong> across cloud and edge, with hands-on expertise in:
+      <ul>
+        <li>⚡ <strong>Generative AI & Agentic AI</strong> (LLMs, RAG, LangChain, VectorDBs)</li>
+        <li>☁️ <strong>Cloud & MLOps</strong> (AWS, Azure, GCP, Kubeflow, Vertex AI, MLflow, CI/CD)</li>
+        <li>📊 <strong>Data Science & Deep Learning</strong> (TensorFlow, PyTorch, NLP, CV, Transformers)</li>
+        <li>🔗 <strong>End-to-End AI Solutions</strong> — from real-time anomaly detection in banking to GenAI chatbots in healthcare and demand forecasting in hospitality</li>
+      </ul>
+      Recruiters can use this page to avoid conflicts with my <strong>already-scheduled interviews</strong>.
+    </div>
+
+    <!-- Lead-in to booked slots -->
+    <p class="lead">Below are interviews that are already scheduled for me. Please avoid these times when proposing new interview slots.</p>
+
+    <!-- Slot list -->
     <ul id="slotList">
-      <li class="loading">Loading slots...</li>
+      <li>Loading slots...</li>
     </ul>
 
-    <footer>
-      ⚡ This live schedule is auto-generated using <span>Python</span> and <span>Data Science tools</span>.  
-      <br>
-      Designed to minimize coordination calls and showcase technical efficiency.
-    </footer>
+    <!-- Footer -->
+    <footer id="footerMessage"></footer>
   </div>
 
   <script>
-    // Utility: format datetime in 12-hour with AM/PM
-    function formatDateTime(datetimeStr) {
-      const d = new Date(datetimeStr);
-      if (isNaN(d)) return datetimeStr;
-      const options = { 
-        weekday: 'short', month: 'short', day: 'numeric',
-        year: 'numeric', hour: 'numeric', minute: '2-digit',
-        hour12: true 
-      };
-      return d.toLocaleString('en-US', options);
-    }
+    // Rotating footer messages
+    const footerMessages = [
+      "This page is maintained automatically using Python, ensuring you always see my latest interview schedule.",
+      "This page is auto-updated through lightweight LLM-powered scripts, keeping my schedule current for you.",
+      "This schedule is backed by a VectorDB-style data store, making updates reliable and efficient.",
+      "This schedule is maintained with a simple ML Ops workflow, so recruiters always have an up-to-date view.",
+      "Powered by Python, VectorDB, and LLM workflows — this page ensures you’re always viewing my most recent interview availability."
+    ];
+    document.getElementById("footerMessage").textContent =
+      footerMessages[Math.floor(Math.random() * footerMessages.length)];
 
-    async function loadSlots() {
-      const listEl = document.getElementById("slotList");
-      try {
-        const res = await fetch("slots.json");
-        const slots = await res.json();
-
-        if (!slots || slots.length === 0) {
-          listEl.innerHTML = "<li class='loading'>No slots are currently booked.</li>";
+    // Fetch slots.json
+    fetch("slots.json")
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById("slotList");
+        list.innerHTML = "";
+        if (data.length === 0) {
+          list.innerHTML = "<li style='color:#7b8a99'>No upcoming interviews found.</li>";
           return;
         }
-
-        listEl.innerHTML = "";
-        slots.forEach(slot => {
+        data.forEach(item => {
+          const date = new Date(item.datetime);
+          const options = { 
+            weekday: 'short', year: 'numeric', month: 'short', 
+            day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true 
+          };
           const li = document.createElement("li");
-          li.textContent = formatDateTime(slot.datetime);
-          listEl.appendChild(li);
+          li.textContent = date.toLocaleString('en-US', options);
+          list.appendChild(li);
         });
-      } catch (e) {
-        listEl.innerHTML = "<li class='loading'>Could not load slots. Please try later.</li>";
-        console.error("Error loading slots:", e);
-      }
-    }
-
-    loadSlots();
+      })
+      .catch(err => {
+        console.error("Error loading slots:", err);
+        document.getElementById("slotList").innerHTML = "<li style='color:red'>Failed to load interview slots.</li>";
+      });
   </script>
 </body>
 </html>
