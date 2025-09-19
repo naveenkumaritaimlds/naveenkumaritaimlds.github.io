@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upcoming Interviews (Already Scheduled Slots)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      margin: 0;
+      background: #f7f9fb;
+      color: #2d3748;
+    }
+    .container {
+      max-width: 700px;
+      margin: 60px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      padding: 30px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 6px;
+      color: #2c5282;
+    }
+    p.lead {
+      font-size: 15px;
+      color: #4a5568;
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      background: #edf2f7;
+      margin: 8px 0;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #1a202c;
+    }
+    li:hover {
+      background: #e2e8f0;
+    }
+    .loading {
+      color: #718096;
+      font-style: italic;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 13px;
+      color: #718096;
+      text-align: center;
+    }
+    footer span {
+      color: #2c5282;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Upcoming Interviews (Already Scheduled Slots)</h1>
+    <p class="lead">
+      Below are the interview times that I have already booked.  
+      If you are a recruiter, please consider scheduling outside these slots.  
+      <br><br>
+      <strong>Tip:</strong> This page is auto-updated to save time for both of us.
+    </p>
+
+    <ul id="slotList">
+      <li class="loading">Loading slots...</li>
+    </ul>
+
+    <footer>
+      ⚡ This live schedule is auto-generated using <span>Python</span> and <span>Data Science tools</span>.  
+      <br>
+      Designed to minimize coordination calls and showcase technical efficiency.
+    </footer>
+  </div>
+
+  <script>
+    // Utility: format datetime in 12-hour with AM/PM
+    function formatDateTime(datetimeStr) {
+      const d = new Date(datetimeStr);
+      if (isNaN(d)) return datetimeStr;
+      const options = { 
+        weekday: 'short', month: 'short', day: 'numeric',
+        year: 'numeric', hour: 'numeric', minute: '2-digit',
+        hour12: true 
+      };
+      return d.toLocaleString('en-US', options);
+    }
+
+    async function loadSlots() {
+      const listEl = document.getElementById("slotList");
+      try {
+        const res = await fetch("slots.json");
+        const slots = await res.json();
+
+        if (!slots || slots.length === 0) {
+          listEl.innerHTML = "<li class='loading'>No slots are currently booked.</li>";
+          return;
+        }
+
+        listEl.innerHTML = "";
+        slots.forEach(slot => {
+          const li = document.createElement("li");
+          li.textContent = formatDateTime(slot.datetime);
+          listEl.appendChild(li);
+        });
+      } catch (e) {
+        listEl.innerHTML = "<li class='loading'>Could not load slots. Please try later.</li>";
+        console.error("Error loading slots:", e);
+      }
+    }
+
+    loadSlots();
+  </script>
+</body>
+</html>
