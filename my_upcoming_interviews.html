@@ -10,131 +10,159 @@
       margin: 0;
       padding: 0;
       background: #f8faff;
-      color: #333;
-      overflow: hidden; /* no scrollbars */
-    }
-    .page-wrapper {
-      transform-origin: top center;
-      width: 100%;
+      color: #111;
+      line-height: 1.8;
     }
     header {
-      background: linear-gradient(135deg, #4f46e5, #3b82f6);
+      background: linear-gradient(135deg, #4338ca, #2563eb);
       color: white;
       text-align: center;
-      padding: 0.6rem;
+      padding: 5rem 2rem;
     }
     header h1 {
       margin: 0;
-      font-size: 1.3rem;
+      font-size: 6rem;
+      font-weight: 800;
     }
     header p {
-      margin-top: 0.2rem;
-      font-size: 0.8rem;
+      margin-top: 2rem;
+      font-size: 2.2rem;
       font-style: italic;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
     }
     main {
-      max-width: 800px;
-      margin: 0.5rem auto;
-      padding: 0 0.5rem;
+      max-width: 1200px;
+      margin: 5rem auto;
+      padding: 0 3rem;
+      font-size: 2rem;
     }
-    section { margin-bottom: 0.5rem; }
+    section {
+      margin-bottom: 5rem;
+    }
     h2 {
-      font-size: 1rem;
+      font-size: 3.5rem;
       color: #1f2937;
-      margin-bottom: 0.3rem;
-      border-left: 3px solid #3b82f6;
-      padding-left: 0.4rem;
+      margin-bottom: 2rem;
+      border-left: 12px solid #2563eb;
+      padding-left: 1.5rem;
     }
-    ul { list-style: none; padding: 0; margin: 0; }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
     li {
       background: white;
-      margin: 0.2rem 0;
-      padding: 0.5rem;
-      border-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-      font-size: 0.85rem;
+      margin: 1.5rem 0;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      font-size: 2.2rem;
+      font-weight: 600;
       display: flex;
       align-items: center;
     }
-    li::before { content: "📅"; margin-right: 0.4rem; }
+    li::before {
+      content: "📅";
+      margin-right: 1.5rem;
+      font-size: 3rem;
+    }
     .capabilities {
       background: #eef2ff;
-      padding: 0.8rem;
-      border-radius: 8px;
-      line-height: 1.3;
-      font-size: 0.85rem;
-      box-shadow: inset 0 0 6px rgba(59,130,246,0.15);
+      padding: 3rem;
+      border-radius: 20px;
+      font-size: 2.2rem;
+      font-weight: 500;
+      box-shadow: inset 0 0 16px rgba(59,130,246,0.25);
+      line-height: 2;
     }
     .portfolio-link {
       display: inline-block;
-      margin-top: 0.5rem;
-      background: #3b82f6;
+      margin-top: 2.5rem;
+      background: #2563eb;
       color: white;
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
+      padding: 1.5rem 3rem;
+      border-radius: 14px;
       text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 2rem;
+      transition: background 0.3s;
     }
-    .portfolio-link:hover { background: #2563eb; }
+    .portfolio-link:hover {
+      background: #1d4ed8;
+    }
     footer {
-      background: #1f2937;
-      color: #d1d5db;
+      background: #111827;
+      color: #e5e7eb;
       text-align: center;
-      padding: 0.4rem;
-      font-size: 0.75rem;
+      padding: 3rem;
+      font-size: 2rem;
+      margin-top: 4rem;
+      line-height: 2.2;
     }
-    footer span { color: #93c5fd; }
+    footer span {
+      color: #60a5fa;
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
-  <div class="page-wrapper" id="page-wrapper">
-    <header>
-      <h1>📌 My Upcoming Interviews</h1>
-      <p>Dear Recruiter, the slots below are already scheduled. Please consider other timings for discussion.</p>
-    </header>
+  <header>
+    <h1>📌 My Upcoming Interviews</h1>
+    <p>
+      Dear Recruiter, thank you for visiting this page.  
+      The interview slots listed below are <strong>already booked and confirmed</strong>.  
+      By publishing this schedule openly, I want to save your valuable time, avoid scheduling conflicts,  
+      and ensure our discussions always happen at the right time.  
+    </p>
+  </header>
 
-    <main>
-      <!-- Scheduled Slots -->
-      <section>
-        <h2>Scheduled Interview Slots</h2>
-        <ul id="slots-list">
-          <li>Loading slots...</li>
-        </ul>
-      </section>
+  <main>
+    <!-- Scheduled Slots -->
+    <section>
+      <h2>⏰ Scheduled Interview Slots</h2>
+      <p>
+        Here is a transparent view of my calendar.  
+        Each entry shows the exact date and time of my upcoming interviews.  
+        This way, you can instantly see my availability without the usual back-and-forth emails.  
+      </p>
+      <ul id="slots-list">
+        <li>Loading slots...</li>
+      </ul>
+    </section>
 
-      <!-- Capability Pitch -->
-      <section>
-        <h2>My Expertise</h2>
-        <div class="capabilities">
-          I specialize in <strong>Data Science</strong>, <strong>LLMs</strong>, <strong>Vector Databases</strong>, and <strong>AI-driven systems</strong>.
-          I build intelligent solutions that integrate ML, NLP, and scalable MLOps workflows.  
-          <br>
-          <a class="portfolio-link" href="https://naveenkumaritaimlds.github.io/" target="_blank">
-            🌐 View My Full Portfolio
-          </a>
-        </div>
-      </section>
-    </main>
+    <!-- Capability Pitch -->
+    <section>
+      <h2>💡 My Technical Expertise & Strengths</h2>
+      <div class="capabilities">
+        I am a highly motivated AI/ML professional with hands-on experience in  
+        <strong>Data Science, Generative AI, LLMs (Large Language Models), Vector Databases, MLOps, NLP, and Cloud platforms</strong>.  
+        My core skills include building intelligent systems that combine <strong>data engineering, predictive modeling, and scalable AI pipelines</strong>.  
+        <br><br>
+        I have worked with tools and frameworks such as <strong>PyTorch, TensorFlow, Hugging Face Transformers, LangChain, LangGraph, FAISS, Pinecone, ChromaDB</strong>,  
+        as well as <strong>AWS, Azure, GCP, Docker, and Kubernetes</strong> for production deployment.  
+        <br><br>
+        My focus is always on delivering <strong>real business impact</strong>:  
+        from anomaly detection in financial transactions, to generative AI assistants in pharma and healthcare,  
+        to large-scale demand forecasting for global enterprises.  
+        <br><br>
+        <a class="portfolio-link" href="https://naveenkumaritaimlds.github.io/" target="_blank">
+          🌐 Explore My Full Professional Portfolio
+        </a>
+      </div>
+    </section>
+  </main>
 
-    <footer>
-      ⚡ Maintained automatically using <span>modern AI/ML tooling</span> — always showing my latest interview schedule.
-    </footer>
-  </div>
+  <footer>
+    ⚡ This page is <span>auto-maintained</span> using a wide range of modern technologies —  
+    including <span>Python, Machine Learning, Deep Learning, Large Language Models, Hugging Face, LangChain, Vector Databases (FAISS, Pinecone, Weaviate, ChromaDB), MLOps frameworks (MLflow, Kubeflow, Vertex AI, DVC), Cloud Platforms (AWS, Azure, GCP)</span>,  
+    and automated CI/CD pipelines.  
+    <br><br>
+    This ensures you always see my <strong>latest and most accurate interview schedule</strong>, powered end-to-end by intelligent AI systems.
+  </footer>
 
   <script>
-    // Scale page so everything fits in viewport
-    function fitPage() {
-      const wrapper = document.getElementById("page-wrapper");
-      const pageHeight = wrapper.scrollHeight;
-      const windowHeight = window.innerHeight;
-      const scale = Math.min(1, windowHeight / pageHeight);
-      wrapper.style.transform = `scale(${scale})`;
-    }
-    window.addEventListener("load", fitPage);
-    window.addEventListener("resize", fitPage);
-
-    // Load slots dynamically
     async function loadSlots() {
       try {
         const response = await fetch("slots.json?cache=" + new Date().getTime());
@@ -149,9 +177,9 @@
           const li = document.createElement("li");
           const date = new Date(slot.datetime);
           li.textContent = date.toLocaleString("en-US", {
-            weekday: "short",
+            weekday: "long",
             year: "numeric",
-            month: "short",
+            month: "long",
             day: "numeric",
             hour: "numeric",
             minute: "2-digit",
@@ -162,7 +190,7 @@
       } catch (error) {
         console.error("Error loading slots:", error);
         document.getElementById("slots-list").innerHTML =
-          "<li>Could not load interview slots. Please refresh later.</li>";
+          "<li>Could not load interview slots. Please try again later.</li>";
       }
     }
     loadSlots();
