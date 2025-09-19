@@ -11,15 +11,11 @@
       padding: 0;
       background: #f8faff;
       color: #333;
-      overflow: hidden; /* prevent scroll */
+      overflow: hidden; /* no scrollbars */
     }
     .page-wrapper {
-      transform: scale(0.85); /* shrink content */
       transform-origin: top center;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      width: 100%;
     }
     header {
       background: linear-gradient(135deg, #4f46e5, #3b82f6);
@@ -40,11 +36,8 @@
       max-width: 800px;
       margin: 0.5rem auto;
       padding: 0 0.5rem;
-      flex: 1;
     }
-    section {
-      margin-bottom: 0.5rem;
-    }
+    section { margin-bottom: 0.5rem; }
     h2 {
       font-size: 1rem;
       color: #1f2937;
@@ -52,11 +45,7 @@
       border-left: 3px solid #3b82f6;
       padding-left: 0.4rem;
     }
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+    ul { list-style: none; padding: 0; margin: 0; }
     li {
       background: white;
       margin: 0.2rem 0;
@@ -67,10 +56,7 @@
       display: flex;
       align-items: center;
     }
-    li::before {
-      content: "📅";
-      margin-right: 0.4rem;
-    }
+    li::before { content: "📅"; margin-right: 0.4rem; }
     .capabilities {
       background: #eef2ff;
       padding: 0.8rem;
@@ -90,9 +76,7 @@
       font-size: 0.8rem;
       font-weight: 600;
     }
-    .portfolio-link:hover {
-      background: #2563eb;
-    }
+    .portfolio-link:hover { background: #2563eb; }
     footer {
       background: #1f2937;
       color: #d1d5db;
@@ -100,13 +84,11 @@
       padding: 0.4rem;
       font-size: 0.75rem;
     }
-    footer span {
-      color: #93c5fd;
-    }
+    footer span { color: #93c5fd; }
   </style>
 </head>
 <body>
-  <div class="page-wrapper">
+  <div class="page-wrapper" id="page-wrapper">
     <header>
       <h1>📌 My Upcoming Interviews</h1>
       <p>Dear Recruiter, the slots below are already scheduled. Please consider other timings for discussion.</p>
@@ -141,6 +123,18 @@
   </div>
 
   <script>
+    // Scale page so everything fits in viewport
+    function fitPage() {
+      const wrapper = document.getElementById("page-wrapper");
+      const pageHeight = wrapper.scrollHeight;
+      const windowHeight = window.innerHeight;
+      const scale = Math.min(1, windowHeight / pageHeight);
+      wrapper.style.transform = `scale(${scale})`;
+    }
+    window.addEventListener("load", fitPage);
+    window.addEventListener("resize", fitPage);
+
+    // Load slots dynamically
     async function loadSlots() {
       try {
         const response = await fetch("slots.json?cache=" + new Date().getTime());
