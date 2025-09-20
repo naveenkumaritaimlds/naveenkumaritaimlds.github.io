@@ -13,135 +13,55 @@
       --muted: #596675;
       --maxw: 1100px;
     }
-
-    /* Base sizing (larger) */
-    html { font-size: 18px; } /* base -> 18px */
+    html { font-size: 18px; }
     body {
       margin:0;
       background:var(--bg);
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       color:#142028;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
       line-height:1.45;
     }
-
-    /* Container */
-    .wrap {
-      max-width: var(--maxw);
-      margin: 36px auto;
-      padding: 28px;
-    }
-
-    /* Header (big and bold) */
+    .wrap { max-width: var(--maxw); margin: 36px auto; padding: 28px; }
     header {
       background: linear-gradient(135deg,#3740b7,var(--accent));
-      color: #ffffff;
-      text-align: center;
+      color: #fff; text-align: center;
       padding: clamp(28px,6vw,64px) 20px;
       border-radius: 12px;
       box-shadow: 0 10px 40px rgba(15,23,42,0.12);
     }
-    header h1 {
-      margin: 0;
-      font-weight: 800;
-      font-size: clamp(2.0rem, 4.4vw, 3.2rem); /* large */
-      letter-spacing: -0.02em;
-    }
-    header p.lead {
-      margin: 14px auto 0;
-      max-width: 1000px;
-      font-size: clamp(1.05rem, 2.2vw, 1.5rem);
-      opacity: 0.98;
-      font-style: normal;
-    }
-
-    /* Main content */
-    main {
-      margin-top: 22px;
-    }
-
-    section {
-      margin-bottom: 28px;
-    }
-
-    /* Section title */
+    header h1 { margin:0; font-weight:800; font-size:clamp(2rem,4.4vw,3.2rem); }
+    header p.lead { margin:14px auto 0; max-width:1000px; font-size:clamp(1.05rem,2.2vw,1.5rem); }
+    main { margin-top:22px; }
     h2 {
-      font-size: clamp(1.3rem, 2.4vw, 2.0rem);
-      margin: 0 0 14px 0;
-      color: #0f1720;
-      padding-left: 12px;
-      border-left: 8px solid var(--accent);
-      line-height:1.05;
+      font-size: clamp(1.3rem,2.4vw,2rem);
+      margin: 0 0 14px 0; color:#0f1720;
+      padding-left:12px; border-left:8px solid var(--accent);
     }
-
-    /* Slots list */
-    #slots-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      gap: 14px;
-    }
+    #slots-list { list-style:none; margin:0; padding:0; display:grid; gap:14px; }
     .slot {
-      background: var(--card);
-      padding: 18px 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(16,30,50,0.06);
-      display:flex;
-      align-items:center;
-      gap:14px;
-      font-size: clamp(1.05rem, 2vw, 1.35rem);
-      font-weight:600;
-      color:#0d2030;
+      background: var(--card); padding:18px 20px;
+      border-radius:12px; box-shadow:0 6px 18px rgba(16,30,50,0.06);
+      display:flex; align-items:center; gap:14px;
+      font-size:clamp(1.05rem,2vw,1.35rem); font-weight:600; color:#0d2030;
     }
-    .slot .emoji { font-size: 1.5em; margin-right:6px; }
-
-    /* Capability block */
+    .slot .emoji { font-size:1.5em; margin-right:6px; }
     .capabilities {
-      background:#eef6ff;
-      padding: clamp(18px, 3vw, 34px);
-      border-radius:14px;
-      box-shadow: inset 0 0 20px rgba(59,130,246,0.06);
-      font-size: clamp(1.02rem, 2vw, 1.25rem);
-      color:#0e2430;
+      background:#eef6ff; padding:clamp(18px,3vw,34px);
+      border-radius:14px; box-shadow:inset 0 0 20px rgba(59,130,246,0.06);
+      font-size:clamp(1.02rem,2vw,1.25rem); color:#0e2430;
     }
     .capabilities strong { color:#07263a; }
-
-    /* Portfolio CTA */
     .cta {
-      display:inline-block;
-      margin-top:16px;
-      background: var(--accent);
-      color:#fff;
-      padding: 12px 20px;
-      border-radius:10px;
-      text-decoration:none;
-      font-weight:700;
-      font-size: clamp(1rem, 1.8vw, 1.1rem);
-      box-shadow: 0 8px 28px rgba(59,130,246,0.18);
+      display:inline-block; margin-top:16px; background:var(--accent); color:#fff;
+      padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:700;
+      font-size:clamp(1rem,1.8vw,1.1rem); box-shadow:0 8px 28px rgba(59,130,246,0.18);
     }
-    .cta:hover { transform: translateY(-2px); }
-
-    /* Footer with expanded tooling text */
+    .cta:hover { transform:translateY(-2px); }
     footer {
-      margin-top: 26px;
-      background: #071428;
-      color: #dbeafe;
-      padding: 20px;
-      border-radius: 10px;
-      font-size: clamp(0.95rem, 1.6vw, 1.05rem);
-      line-height: 1.45;
-      text-align: center;
+      margin-top:26px; background:#071428; color:#dbeafe; padding:20px;
+      border-radius:10px; font-size:clamp(0.95rem,1.6vw,1.05rem); text-align:center;
     }
-    footer .tools { color: #bfdbfe; font-weight:700; }
-
-    /* Responsive tweaks */
-    @media (max-width:780px){
-      .wrap { padding:18px; margin:18px; }
-      header { padding: 22px 12px; border-radius:8px; }
-      h2 { padding-left:10px; border-left-width:6px; }
-    }
+    footer .tools { color:#bfdbfe; font-weight:700; }
   </style>
 </head>
 <body>
@@ -155,7 +75,6 @@
     </header>
 
     <main>
-      <!-- Slots -->
       <section aria-labelledby="slots-title">
         <h2 id="slots-title">Scheduled Interview Slots</h2>
         <ul id="slots-list">
@@ -163,30 +82,23 @@
         </ul>
       </section>
 
-      <!-- Capability pitch -->
       <section aria-labelledby="expertise-title">
         <h2 id="expertise-title">My Expertise</h2>
-        <div class="capabilities" role="region" aria-label="Capabilities summary">
+        <div class="capabilities">
           I specialize in <strong>Data Science</strong>, <strong>Generative AI</strong>, and <strong>Production MLOps</strong>.
           My work spans building and deploying Large Language Models, Retrieval-Augmented Generation (RAG) systems, agentic AI,
-          and scalable data engineering pipelines. I combine strong engineering and ML best practices to deliver reliable, compliant solutions
-          that produce measurable business outcomes.
-          <br><br>
-          Practical tools & frameworks I use: <strong>Python, Pandas, NumPy, SciPy, scikit-learn, PyTorch, TensorFlow, Keras, Hugging Face Transformers, spaCy, NLTK</strong>;
-          RAG + orchestration: <strong>LangChain, LangGraph, AutoGen</strong>; Vector search: <strong>FAISS, Pinecone, ChromaDB, Weaviate</strong>;
-          Cloud & infra: <strong>AWS (SageMaker, Lambda, Bedrock), GCP (Vertex AI), Azure</strong>; MLOps & CI/CD: <strong>MLflow, Kubeflow, DVC, GitHub Actions, Azure DevOps</strong>;
-          Containerization & orchestration: <strong>Docker, Kubernetes, EKS, AKS</strong>; Observability: <strong>Prometheus, Grafana, Datadog</strong>.
-          <br><br>
-          I focus on production readiness, data privacy (PII, GDPR, HIPAA-aware flows), and delivering robust monitoring and retraining pipelines.
-          <br>
-          <a class="cta" href="https://naveenkumaritaimlds.github.io/" target="_blank" rel="noopener">🌐 View My Full Portfolio</a>
+          and scalable data engineering pipelines. <br><br>
+          Practical tools & frameworks: <strong>Python, Pandas, NumPy, SciPy, scikit-learn, PyTorch, TensorFlow, Keras, Hugging Face, spaCy</strong>;
+          RAG: <strong>LangChain, LangGraph, AutoGen</strong>; Vector DB: <strong>FAISS, Pinecone, ChromaDB, Weaviate</strong>;
+          Cloud: <strong>AWS, GCP, Azure</strong>; MLOps: <strong>MLflow, Kubeflow, DVC, GitHub Actions, Azure DevOps</strong>;
+          Containers: <strong>Docker, Kubernetes</strong>. <br><br>
+          <a class="cta" href="https://naveenkumaritaimlds.github.io/" target="_blank">🌐 View My Full Portfolio</a>
         </div>
       </section>
     </main>
 
     <footer>
-      ⚡ This page is auto-maintained by the same engineering approach I use on projects: automated data pipelines and MLOps that combine
-      <span class="tools">Python, TensorFlow, PyTorch, Hugging Face, LangChain, Vector DBs (FAISS, Pinecone, ChromaDB, Weaviate), Snowflake, Databricks, MLflow, Kubeflow, DVC, Docker, Kubernetes, AWS/Azure/GCP, CI/CD (GitHub Actions, Azure DevOps)</span>.
+      ⚡ Auto-maintained using <span class="tools">Python, TensorFlow, PyTorch, Hugging Face, LangChain, Vector DBs, Snowflake, Databricks, MLflow, Kubeflow, DVC, Docker, Kubernetes, AWS/Azure/GCP</span>.
       <div style="margin-top:10px; font-weight:600; color:#dbeafe;">
         This ensures recruiters always see my latest and accurate interview schedule.
       </div>
@@ -194,24 +106,31 @@
   </div>
 
   <script>
-    // Load slots, sort ascending, present in 12-hour format
     async function loadSlots() {
       const listEl = document.getElementById('slots-list');
       listEl.innerHTML = '<li class="slot">Loading slots...</li>';
       try {
-        const resp = await fetch('slots.json?cache=' + Date.now(), { cache: 'no-store' });
+        const resp = await fetch('./slots.json?cache=' + Date.now(), { cache: 'no-store' });
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
+
         const data = await resp.json();
         if (!Array.isArray(data) || data.length === 0) {
           listEl.innerHTML = '<li class="slot">No interviews scheduled yet.</li>';
           return;
         }
-        // sort by datetime
+
         data.sort((a,b)=> new Date(a.datetime) - new Date(b.datetime));
         listEl.innerHTML = '';
+
         data.forEach(slot => {
           const dt = new Date(slot.datetime);
-          // format with 12-hour AM/PM
+          if (isNaN(dt)) {
+            const li = document.createElement('li');
+            li.className = 'slot';
+            li.innerHTML = '<span class="emoji">⚠️</span><span>Invalid datetime in slots.json</span>';
+            listEl.appendChild(li);
+            return;
+          }
           const text = dt.toLocaleString('en-US', {
             weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
             hour: 'numeric', minute: '2-digit', hour12: true
@@ -221,13 +140,12 @@
           li.innerHTML = '<span class="emoji">📅</span><span>' + text + '</span>';
           listEl.appendChild(li);
         });
+
       } catch (err) {
-        console.error(err);
-        listEl.innerHTML = '<li class="slot">Could not load interview slots. Please check later.</li>';
+        console.error("Error loading slots:", err);
+        listEl.innerHTML = '<li class="slot">❌ Could not load interview slots. ' + err.message + '</li>';
       }
     }
-
-    // run on load
     window.addEventListener('load', loadSlots);
   </script>
 </body>
