@@ -85,11 +85,7 @@
       debugEl('debug').textContent='';
       dbg('Diagnostic started at: '+new Date());
       const candidates=[
-        './slots.json',
-        'slots.json',
-        '/slots.json',
-        'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/main/slots.json',
-        'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/master/slots.json'
+        'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/main/slots.json'
       ].map(u=>u+'?cache='+Date.now());
 
       for(const url of candidates){
