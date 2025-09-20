@@ -3,155 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📅 My Confirmed Interview Slots</title>
+<title>📅 My Confirmed Interview Schedule</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #f0f4ff, #f9fafc);
-    margin: 0;
-    padding: 0;
-    color: #222;
-  }
-  .container {
-    max-width: 780px;
-    margin: 40px auto;
-    background: #fff;
-    padding: 35px;
-    border-radius: 18px;
-    box-shadow: 0 10px 35px rgba(0,0,0,0.08);
-  }
-  h1, h2 {
-    color: #1e3a8a;
-    font-size: 1.5rem; /* uniform font size */
-    margin: 15px 0;
-  }
-  p {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin: 10px 0;
-  }
-  .slot {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #f8fafc;
-    padding: 14px 18px;
-    margin: 10px 0;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #111827;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .slot:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-  }
-  .slot-icon {
-    font-size: 1.3rem;
-    color: #2563eb;
-  }
-  .info-box {
-    margin-top: 20px;
-    padding: 14px 18px;
-    background: #eef2ff;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    color: #1e3a8a;
-    font-weight: 500;
-  }
-  .portfolio-marquee {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 25px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #2563eb;
-    flex-wrap: wrap;
-  }
-  .marquee {
-    display: inline-block;
-    white-space: nowrap;
-    animation: marquee 50s linear infinite; /* slower */
-  }
-  @keyframes marquee {
-    0%   { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-  }
-  a {
-    color: #2563eb;
-    font-weight: 600;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #f0f4ff, #f9fafc);
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+.container {
+  max-width: 780px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 35px;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+}
+h1, h2 {
+  color: #1e3a8a;
+  font-weight: 600;
+  font-size: 1.6rem; /* uniform heading size */
+}
+h1 {
+  margin-bottom: 15px;
+}
+h2 {
+  margin-top: 35px;
+  margin-bottom: 15px;
+}
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+.slot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8fafc;
+  padding: 14px 18px;
+  margin: 10px 0;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #111827;
+}
+.slot-icon {
+  font-size: 1.3rem;
+  color: #2563eb;
+}
+.info-box {
+  margin-top: 20px;
+  padding: 14px 18px;
+  background: #eef2ff;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #1e3a8a;
+  font-weight: 500;
+}
+.skills-list {
+  list-style-type: disc;
+  padding-left: 18px;
+  margin: 10px 0;
+}
+footer {
+  margin-top: 35px;
+  text-align: left;
+}
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 40s linear infinite; /* slower speed */
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2563eb;
+  background: #eef2ff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin-top: 15px;
+  box-sizing: border-box;
+}
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
 </style>
 </head>
 <body>
 <div class="container">
 
-  <!-- Header -->
-  <h1>Upcoming Interview Slots</h1>
-  <p>
-    The following timeline displays my confirmed interview slots.  
-    This dynamic view helps recruiters and consultants quickly understand availability, reducing coordination time and streamlining scheduling.
-  </p>
+<h1>My Upcoming Interview Slots</h1>
+<p>
+The following timeline displays my confirmed interview slots. This dynamic view enables recruiters and hiring managers to quickly identify my availability without unnecessary back-and-forth communication, saving time and streamlining the scheduling process. By providing this clear and automated overview, I aim to make coordination seamless and support efficient decision-making.
+</p>
 
-  <!-- Slot container -->
-  <div id="slots"></div>
-  <div class="info-box" id="infoBox"></div>
+<div id="slots"></div>
+<div class="info-box" id="infoBox"></div>
 
-  <!-- Skills & Automation -->
-  <h2>⚡ Showcasing My Skills & Innovative Approach</h2>
-  <p>
-    This scheduling view is part of an automated system I’ve implemented to manage interview commitments efficiently.  
-    It reflects my focus on **workflow automation, data-driven decision making, and innovative solutions**.  
-    By presenting real-time slot availability, it saves time for all stakeholders without any manual follow-ups.
-  </p>
-  <ul>
-    <li>End-to-end automation of interview tracking and scheduling</li>
-    <li>Data-driven visualization and dynamic display of slots</li>
-    <li>Workflow orchestration using modern web and programming tools</li>
-    <li>Cloud-friendly approach for easy accessibility</li>
-    <li>Generative AI and analytics integration for enhanced insights</li>
-  </ul>
+<h2>Technical Profile & Capabilities</h2>
+<ul class="skills-list">
+<li>Data Science, Artificial Intelligence, Data Engineering</li>
+<li>Generative AI, NLP, Deep Learning, MLOps, Cloud, Agentic AI</li>
+<li>Platforms & Cloud: AWS, Azure, GCP, Databricks, Watson Studio & Services, Amazon Bedrock/Nova, Lambda, Docker, Kubernetes</li>
+<li>Languages & Frameworks: Python, Java, Spring Boot</li>
+<li>AI/ML Tools: TensorFlow, PyTorch, Keras, Scikit-learn, Hugging Face Transformers, spaCy, NLTK, CV & Object Detection</li>
+<li>Advanced AI: LLMs, LangChain, RAG Pipelines, Agentic AI, Prompt Engineering, MLOps, GenAI, Quantum Computing</li>
+<li>Big Data & Data Engineering: Hadoop, Spark, Kafka, ETL, Data Scraping, Mining, Cleansing, Analysis</li>
+<li>Deployment & Observability: MLflow, FastAPI, Flask, Docker, Kubernetes, Vertex AI, Prometheus, Grafana</li>
+<li>Experience with production-ready AI solutions, multimodal applications, autonomous agents, and enterprise AI automation</li>
+</ul>
 
-  <!-- Portfolio link + moving marquee -->
-  <div class="portfolio-marquee">
-    <a href="https://naveenkumaritaimlds.github.io/" target="_blank">🌐 Explore My Full Portfolio</a>
-    <div class="marquee">
-      Monitored · Dashboarded · MLOpsed · Automated · Generative AI powered · Cloud Deployed · Data Visualized · Pipeline Orchestrated
-    </div>
+<h2>🌐 Explore My Full Portfolio</h2>
+<p>
+For a complete overview of my projects, detailed CV, and professional portfolio, please visit:  
+<a href="https://naveenkumaritaimlds.github.io/" target="_blank">https://naveenkumaritaimlds.github.io/</a>
+</p>
+
+<footer>
+  <div class="marquee">
+    Monitored · Dashboarded · MLOpsed · Automated · Generative AI powered · Cloud Deployed · Data Visualized · Pipeline Orchestrated
   </div>
-
-</div>
+</footer>
 
 <script>
 (async function(){
   const url = "https://naveenkumaritaimlds.github.io/slots.json";
   const slotsDiv = document.getElementById("slots");
-  const infoBox = document.getElementById("infoBox");
+  let infoBox = document.getElementById("infoBox");
 
   try {
     const resp = await fetch(url);
     const slots = await resp.json();
 
-    // Parse and sort dates
     let dates = slots
       .map(s => new Date(s.datetime))
       .filter(d => !isNaN(d))
       .sort((a,b) => a - b);
 
-    if (!dates.length) {
+    if(dates.length === 0){
       slotsDiv.innerHTML = "<p>No booked slots found.</p>";
       infoBox.innerText = "📢 Currently available for new interview bookings.";
       return;
     }
 
-    // Display slots in 12-hour IST format with calendar icon
     dates.forEach(d => {
       const dayStr = d.toLocaleString("en-IN", {
         weekday: "short",
@@ -170,14 +174,13 @@
       slotsDiv.appendChild(div);
     });
 
-    // Message for recruiters
     const now = new Date();
     const upcoming = dates.find(d => d > now);
     infoBox.innerHTML = `
       🔍 Schedule is up-to-date.  
-      ${upcoming ? "Next slot is already committed. Please check availability around the listed times." : "📢 Currently available for new interview bookings."}
+      ${upcoming ? "Next slot is already committed. This live view ensures you can identify open windows efficiently, helping you plan interviews without delay." : "📢 Currently available for new interview bookings."}
     `;
-  } catch(err) {
+  } catch(err){
     slotsDiv.innerHTML = "<p style='color:red;'>❌ Error loading slots.json</p>";
     infoBox.innerText = "Error: " + err.message;
   }
