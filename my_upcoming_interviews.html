@@ -2,79 +2,105 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Upcoming Interviews — IST</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Upcoming Interviews — IST</title>
 <style>
   body{font-family:Segoe UI, sans-serif; margin:0; padding:20px; background:#f8faff; color:#142028;}
-  h1{color:#3b82f6; text-align:center;}
-  ul{list-style:none; padding:0; margin:0; max-width:800px; margin:auto;}
+  header{background:linear-gradient(135deg,#3740b7,#3b82f6); color:#fff; padding:24px; text-align:center; border-radius:10px;}
+  header h1{margin:0;font-weight:800;}
+  h2{margin:20px 0 10px 0; border-left:8px solid #3b82f6; padding-left:10px; font-size:1.2rem;}
+  ul{list-style:none; padding:0; margin:0;}
   li{background:#fff; margin:6px 0; padding:12px; border-radius:8px; display:flex; gap:12px; font-weight:600;}
-  .debug{font-family:monospace; white-space:pre-wrap; background:#fff; padding:12px; border-radius:8px; margin-top:20px;}
+  .debug{font-family:monospace; white-space:pre-wrap; background:#fff; padding:12px; border-radius:8px; margin-top:20px; max-height:300px; overflow:auto;}
+  .btn{padding:8px 12px; border-radius:8px; background:#3b82f6; color:#fff; border:none; cursor:pointer; font-weight:700; margin-right:8px;}
 </style>
 </head>
 <body>
-<h1>📌 Upcoming Interviews (IST)</h1>
-<ul id="slots-list"><li>Loading...</li></ul>
-<div class="debug" id="debug"></div>
+  <header>
+    <h1>📌 My Upcoming Interviews</h1>
+    <div class="small">Always shows IST (+05:30)</div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Scheduled Interview Slots</h2>
+      <ul id="slots-list"><li>Loading slots...</li></ul>
+    </section>
+
+    <section>
+      <h2>Fetch & JSON Diagnostic</h2>
+      <div id="debug" class="debug">Starting diagnostics…</div>
+      <div style="margin-top:12px;">
+        <button id="runAgain" class="btn">Run diagnostics again</button>
+      </div>
+    </section>
+  </main>
 
 <script>
-(async function(){
-  const debugEl = document.getElementById('debug');
+const debugEl = id => document.getElementById(id);
+const dbg = msg => { debugEl('debug').textContent += msg+'\n'; console.log(msg); };
+
+function formatIST(dtStr){
+  const d = new Date(dtStr);
+  if(isNaN(d)) return dtStr;
+  // Convert to IST
+  const utc = d.getTime() + d.getTimezoneOffset()*60000;
+  const ist = new Date(utc + 5.5*3600*1000);
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let h = ist.getHours(), m=ist.getMinutes().toString().padStart(2,'0');
+  const ampm = h>=12?'PM':'AM';
+  h = h%12||12;
+  return `${days[ist.getDay()]}, ${months[ist.getMonth()]} ${ist.getDate()}, ${ist.getFullYear()}, ${h}:${m} ${ampm} IST`;
+}
+
+function renderSlots(data){
   const listEl = document.getElementById('slots-list');
+  listEl.innerHTML = '';
+  if(!Array.isArray(data)||data.length===0){
+    listEl.innerHTML='<li>No interviews scheduled.</li>';
+    return;
+  }
+  // Sort by datetime
+  data.sort((a,b)=> new Date(a.datetime) - new Date(b.datetime));
+  const frag = document.createDocumentFragment();
+  data.forEach(slot=>{
+    const li=document.createElement('li');
+    li.textContent = '📅 '+formatIST(slot.datetime);
+    frag.appendChild(li);
+  });
+  listEl.appendChild(frag);
+}
 
-  const log = msg => { 
-    debugEl.textContent += msg + "\n"; 
-    console.log(msg);
-  };
-
-  const formatIST = dtStr => {
-    const d = new Date(dtStr);
-    if(isNaN(d)) return dtStr;
-    const utc = d.getTime() + d.getTimezoneOffset()*60000;
-    const ist = new Date(utc + 5.5*60*60*1000);
-    const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    let h=ist.getHours(), m=ist.getMinutes().toString().padStart(2,'0'), am=h>=12?'PM':'AM';
-    h=h%12||12;
-    return `${days[ist.getDay()]}, ${months[ist.getMonth()]} ${ist.getDate()}, ${ist.getFullYear()}, ${h}:${m} ${amp} IST`;
-  };
-
+async function runDiagnostics(){
+  debugEl('debug').textContent='';
+  dbg('Diagnostic started at: '+(new Date()).toString());
   const urls = [
     './slots.json',
     '/slots.json',
     'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/main/slots.json'
-  ];
+  ].map(u=>u+'?cache='+Date.now());
 
-  let data = null;
+  let data=null;
   for(const url of urls){
+    dbg('Trying: '+url);
     try{
-      log(`Trying: ${url}`);
-      const resp = await fetch(url, {cache:'no-store'});
-      if(!resp.ok) throw new Error(resp.status+' '+resp.statusText);
-      const json = await resp.json();
-      if(Array.isArray(json)) { data=json; log(`Loaded ${json.length} slots.`); break; }
-      log('Not an array.');
-    }catch(e){ log('Error: '+e.message); }
+      const resp=await fetch(url,{cache:'no-store'});
+      dbg(' -> HTTP status: '+resp.status+' '+resp.statusText);
+      const json=await resp.json();
+      if(Array.isArray(json)){ data=json; dbg(' -> Parsed JSON array, length: '+json.length); break; }
+      dbg(' -> Not an array.');
+    }catch(e){ dbg(' -> Fetch/parse error: '+e.message); }
   }
+  if(data) renderSlots(data);
+  else { listEl.innerHTML='<li>No interviews scheduled.</li>'; dbg(' -> All fetch attempts failed or invalid JSON.'); }
+}
 
-  listEl.innerHTML = '';
-  if(!data || !data.length){
-    listEl.innerHTML = '<li>No interviews scheduled.</li>';
-    return;
-  }
+// Button
+document.getElementById('runAgain').addEventListener('click', runDiagnostics);
 
-  // Sort by datetime
-  data.sort((a,b)=> new Date(a.datetime) - new Date(b.datetime));
-
-  // Efficiently append all items
-  const frag = document.createDocumentFragment();
-  data.forEach(s=>{
-    const li = document.createElement('li');
-    li.textContent = `📅 ${formatIST(s.datetime)}`;
-    frag.appendChild(li);
-  });
-  listEl.appendChild(frag);
-})();
+// Initial run
+runDiagnostics();
 </script>
 </body>
 </html>
