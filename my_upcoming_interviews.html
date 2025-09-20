@@ -3,47 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📅 My Confirmed Interview Schedule</title>
+<title>📅 My Confirmed Interview Schedule </title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f4ff, #f9fafc); margin:0; padding:0; color:#222; }
-  .container { max-width:780px; margin:40px auto; background:#fff; padding:35px; border-radius:18px; box-shadow:0 10px 35px rgba(0,0,0,0.08); }
-  h1,h2{ color:#1e3a8a; }
-  h1{ font-size:2rem; margin-bottom:15px; }
-  h2{ font-size:1.4rem; margin-top:35px; margin-bottom:15px; }
-  p{ font-size:1rem; line-height:1.6; margin:10px 0; }
-  .slot { display:flex; align-items:center; gap:12px; background:#f8fafc; padding:14px 18px; margin:10px 0; border-radius:10px; font-size:1rem; font-weight:500; color:#111827; transition: transform 0.2s, box-shadow 0.2s; }
-  .slot:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,0.08); }
-  .slot-icon { font-size:1.3rem; color:#2563eb; }
-  .info-box { margin-top:20px; padding:14px 18px; background:#eef2ff; border-radius:10px; font-size:0.95rem; color:#1e3a8a; font-weight:500; }
-  footer { margin-top:50px; text-align:center; overflow:hidden; }
-  .marquee { display:inline-block; white-space:nowrap; animation:marquee 20s linear infinite; font-size:0.9rem; font-weight:600; color:#2563eb; background:#eef2ff; padding:8px 12px; border-radius:10px; min-width:100%; box-sizing:border-box; }
-  @keyframes marquee { 0% { transform:translateX(100%); } 100% { transform:translateX(-100%); } }
-  a { color:#2563eb; font-weight:600; text-decoration:none; }
-  a:hover { text-decoration:underline; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f0f4ff, #f9fafc);
+    margin: 0;
+    padding: 0;
+    color: #222;
+  }
+  .container {
+    max-width: 780px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+  }
+  h1, h2 {
+    color: #1e3a8a;
+  }
+  h1 { font-size: 2rem; margin-bottom: 15px; }
+  h2 { font-size: 1.4rem; margin-top: 35px; margin-bottom: 15px; }
+  p { font-size: 1rem; line-height: 1.6; margin: 10px 0; }
+  .slot {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f8fafc;
+    padding: 14px 18px;
+    margin: 10px 0;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #111827;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .slot:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+  .slot-icon { font-size: 1.3rem; color: #2563eb; }
+  .info-box {
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: #eef2ff;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: #1e3a8a;
+    font-weight: 500;
+  }
+  footer { margin-top: 50px; text-align: center; overflow: hidden; }
+  .marquee {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2563eb;
+    background: #eef2ff;
+    padding: 8px 12px;
+    border-radius: 10px;
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+  @keyframes marquee {
+    0%   { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  a { color: #2563eb; font-weight: 600; text-decoration: none; }
+  a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
 <div class="container">
 
-<h1>I've been scheduled for the interviews as per the mentioned slots below for next few days 👋</h1>
-<p>This page provides a clear overview of my confirmed interview slots. By keeping schedules transparent, it reduces unnecessary coordination and enables faster decisions on availability.</p>
+  <h1>I've been scheduled for the interviews as per the mentioned slots below for next few days 👋</h1>
+  <p>This page provides a clear overview of my confirmed interview commitments. By keeping schedules transparent and accessible, it reduces unnecessary coordination and enables faster decisions on availability.</p>
 
-<p>Below is the timeline of already-booked slots:</p>
-<div id="slots"></div>
-<div class="info-box" id="infoBox"></div>
-
-<h2>🌐 Please Explore My Full Portfolio</h2>
-<p>A detailed professional profile, projects, and CV are available at:  
-  <a href="https://naveenkumaritaimlds.github.io/" target="_blank">https://naveenkumaritaimlds.github.io/</a>
-</p>
+  <p>Below is the timeline of already-booked interviews. Sharing this view helps streamline communication and demonstrates how routine workflows can be simplified through automation.</p>
+  <div id="slots"></div>
+  <div class="info-box" id="infoBox"></div>
 
 </div>
 
 <footer>
-<div class="marquee">
-  Monitored · Dashboarded · MLOpsed · Automated · Generative AI powered · Cloud Deployed · Data Visualized · Pipeline Orchestrated
-</div>
+  <div class="marquee">
+    Monitored · Dashboarded · MLOpsed · Automated · Generative AI powered · Cloud Deployed · Data Visualized · Pipeline Orchestrated
+  </div>
 </footer>
 
 <script>
@@ -56,22 +104,34 @@
     const resp = await fetch(url);
     const slots = await resp.json();
 
-    const sortedDates = slots
-      .map(s => new Date(s.datetime))
-      .filter(d => !isNaN(d))
+    // Convert UTC datetime to IST
+    const dates = slots
+      .map(s => {
+        const d = new Date(s.datetime);
+        if (isNaN(d)) return null;
+        // Convert UTC to IST manually
+        const istTime = new Date(d.getTime() + 5.5*60*60*1000);
+        return istTime;
+      })
+      .filter(d => d !== null)
       .sort((a,b) => a - b);
 
-    if(sortedDates.length === 0){
+    if (!dates.length) {
       slotsDiv.innerHTML = "<p>No booked slots found.</p>";
       infoBox.innerText = "📢 Currently available for new interview bookings.";
       return;
     }
 
-    sortedDates.forEach(d => {
-      const dayStr = d.toLocaleString("en-IN", {
-        weekday:"short", day:"2-digit", month:"short", year:"numeric",
-        hour:"2-digit", minute:"2-digit", hour12:false, timeZone:"Asia/Kolkata"
-      })+" IST";
+    dates.forEach(d => {
+      const dayStr = `${d.toLocaleString('en-IN', {
+        weekday: 'short',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      })} IST`;
 
       const div = document.createElement("div");
       div.className = "slot";
@@ -80,12 +140,14 @@
     });
 
     const now = new Date();
-    const upcoming = sortedDates.find(d => d > now);
-    infoBox.innerHTML = `🔍 Schedule is up-to-date. ${upcoming ? "Next slot is already committed." : "📢 Currently available for new interview bookings."}`;
-
-  } catch(err){
+    const upcoming = dates.find(d => d > now);
+    infoBox.innerHTML = `
+      🔍 Schedule is up-to-date.  
+      ${upcoming ? "Next slot is already committed, please review open times around the listed schedule." : "📢 Currently available for new interview bookings."}
+    `;
+  } catch(err) {
     slotsDiv.innerHTML = "<p style='color:red;'>❌ Error loading slots.json</p>";
-    infoBox.innerText = "Error: "+err.message;
+    infoBox.innerText = "Error: " + err.message;
   }
 })();
 </script>
