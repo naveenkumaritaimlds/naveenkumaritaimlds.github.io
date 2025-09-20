@@ -5,76 +5,46 @@
 <title>My Upcoming Interviews</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <style>
-:root {
-  --bg: #f6f8fb;
-  --card: #fff;
-  --accent: #4a90e2;
-  --muted: #6b7a90;
-  --radius: 12px;
-}
 body {
-  margin: 0;
   font-family: Inter, system-ui, sans-serif;
-  background: var(--bg);
+  background: #f6f8fb;
   color: #1f2d3d;
+  margin: 0;
   padding: 20px;
 }
-h1 {
-  font-size: 22px;
-  text-align: center;
-  margin-bottom: 16px;
-}
-ul#slotsList {
-  list-style: none;
-  padding: 0;
-  margin: 0 auto;
-  max-width: 600px;
-}
+h1 { text-align: center; font-size: 22px; margin-bottom: 16px; }
+ul#slotsList { list-style: none; padding: 0; max-width: 600px; margin: 0 auto; }
 ul#slotsList li {
-  background: var(--card);
+  background: #fff;
   margin: 10px 0;
   padding: 14px 18px;
-  border-radius: var(--radius);
+  border-radius: 10px;
   box-shadow: 0 4px 14px rgba(0,0,0,0.05);
   font-size: 15px;
 }
 #diagnostics {
   margin-top: 30px;
+  font-size: 13px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
   background: #fff8e1;
   border: 1px solid #ffecb3;
-  padding: 14px;
-  border-radius: var(--radius);
-  font-size: 13px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+  padding: 12px;
+  border-radius: 8px;
 }
-#editor {
-  margin-top: 20px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-#fallbackJson {
-  width: 100%;
-  height: 180px;
-  border-radius: var(--radius);
-  border: 1px solid #d0d7de;
-  padding: 10px;
-  font-family: monospace;
-  font-size: 13px;
-}
+#editor { display:none; max-width:700px; margin:20px auto; }
+#fallbackJson { width:100%; height:180px; font-family:monospace; font-size:13px; }
 button {
   margin-top: 8px;
-  background: var(--accent);
+  background: #4a90e2;
   color: #fff;
   border: 0;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
 }
-button:hover { filter: brightness(0.95); }
 </style>
 </head>
 <body>
@@ -82,99 +52,72 @@ button:hover { filter: brightness(0.95); }
 
 <ul id="slotsList"></ul>
 
-<section id="diagnostics"></section>
+<div id="diagnostics"></div>
 
-<section id="editor" style="display:none;">
+<div id="editor">
   <h2 style="font-size:16px;">Inline JSON fallback / editor</h2>
-  <textarea id="fallbackJson"></textarea>
-  <br>
+  <textarea id="fallbackJson"></textarea><br>
   <button id="reloadBtn">Reload from Editor</button>
-</section>
+</div>
 
 <script>
 const SLOTS_URL = "https://naveenkumaritaimlds.github.io/slots.json";
-const diagnostics = document.getElementById("diagnostics");
 const slotsList = document.getElementById("slotsList");
-const editorSection = document.getElementById("editor");
+const diagnostics = document.getElementById("diagnostics");
+const editor = document.getElementById("editor");
 const fallbackJson = document.getElementById("fallbackJson");
-const reloadBtn = document.getElementById("reloadBtn");
 
-function logDiag(msg) {
-  diagnostics.innerHTML += msg + "<br>";
-}
+function log(msg) { diagnostics.innerHTML += msg + "<br>"; }
 
 function formatIST(isoString) {
-  try {
-    // Always parse with offset (+05:30) from the ISO string
-    const d = new Date(isoString);
-    if (isNaN(d)) return isoString;
-    const weekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    const opts = { timeZone: "Asia/Kolkata" };
-    const ist = new Date(d.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
-    let wd = weekdays[ist.getDay()];
-    let mo = months[ist.getMonth()];
-    let day = ist.getDate();
-    let yr = ist.getFullYear();
-    let hr = ist.getHours();
-    let min = ist.getMinutes().toString().padStart(2,"0");
-    const ampm = hr >= 12 ? "PM" : "AM";
-    hr = hr % 12; if (hr === 0) hr = 12;
-    return `${wd}, ${mo} ${day}, ${yr}, ${hr}:${min} ${ampm} IST`;
-  } catch(e) {
-    return isoString;
-  }
+  const d = new Date(isoString);
+  if (isNaN(d)) return isoString;
+  const opts = { timeZone: "Asia/Kolkata", weekday:"short", year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"2-digit", hour12:true };
+  return d.toLocaleString("en-US", opts) + " IST";
 }
 
-function renderSlots(entries) {
+function render(list) {
   slotsList.innerHTML = "";
-  if (!entries.length) {
-    const li = document.createElement("li");
-    li.textContent = "No upcoming interviews.";
-    slotsList.appendChild(li);
+  if (!list.length) {
+    slotsList.innerHTML = "<li>No upcoming interviews.</li>";
     return;
   }
-  entries.forEach(e => {
+  list.forEach(e => {
     const li = document.createElement("li");
     li.textContent = formatIST(e.datetime);
     slotsList.appendChild(li);
   });
 }
 
-async function loadSlots() {
+async function load() {
   diagnostics.innerHTML = "";
   try {
-    const t0 = performance.now();
     const res = await fetch(SLOTS_URL, {cache:"no-store"});
     if (!res.ok) throw new Error("HTTP " + res.status);
-    const raw = await res.text();
-    logDiag("Fetched raw length: " + raw.length);
-    const json = JSON.parse(raw);
-    logDiag("Fetched raw entries: " + json.length);
-    const valid = json.filter(e => e.datetime);
-    logDiag("Parsed valid entries: " + valid.length);
+    const data = await res.json();
+    log("Fetched raw entries: " + data.length);
+    const valid = data.filter(e => e.datetime);
+    log("Parsed valid entries: " + valid.length);
     valid.sort((a,b)=> new Date(a.datetime)-new Date(b.datetime));
-    if (valid[0]) logDiag("Sample earliest valid: " + valid[0].datetime);
-    renderSlots(valid);
-    const t1 = performance.now();
-    logDiag("Fetch OK (" + Math.round(t1-t0) + "ms)");
-  } catch(err) {
-    logDiag("❌ Fetch failed: " + err.message);
-    editorSection.style.display = "block";
+    log("Displayed (after filter): " + valid.length);
+    if (valid[0]) log("Sample earliest valid: " + valid[0].datetime);
+    render(valid);
+    log("Fetch OK");
+  } catch (err) {
+    log("❌ Fetch failed: " + err.message);
+    editor.style.display = "block";
   }
 }
 
-reloadBtn.onclick = () => {
+document.getElementById("reloadBtn").onclick = () => {
   try {
     const json = JSON.parse(fallbackJson.value);
-    logDiag("Loaded " + json.length + " entries from inline editor.");
-    renderSlots(json);
-  } catch(err) {
-    alert("Invalid JSON: " + err.message);
-  }
+    render(json);
+    log("Loaded from inline editor: " + json.length + " entries");
+  } catch(e) { alert("Invalid JSON: " + e.message); }
 };
 
-loadSlots();
+load();
 </script>
 </body>
 </html>
