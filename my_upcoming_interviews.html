@@ -3,150 +3,180 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Upcoming Interviews</title>
-
+  <title>My Upcoming Interviews — Diagnostic</title>
   <style>
-    :root{
-      --accent: #3b82f6;
-      --bg: #f8faff;
-      --card: #ffffff;
-      --muted: #596675;
-      --maxw: 1100px;
-    }
-    html { font-size: 18px; }
-    body {
-      margin:0;
-      background:var(--bg);
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      color:#142028;
-      line-height:1.45;
-    }
-    .wrap { max-width: var(--maxw); margin: 36px auto; padding: 28px; }
-    header {
-      background: linear-gradient(135deg,#3740b7,var(--accent));
-      color: #fff; text-align: center;
-      padding: clamp(28px,6vw,64px) 20px;
-      border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(15,23,42,0.12);
-    }
-    header h1 { margin:0; font-weight:800; font-size:clamp(2rem,4.4vw,3.2rem); }
-    header p.lead { margin:14px auto 0; max-width:1000px; font-size:clamp(1.05rem,2.2vw,1.5rem); }
-    main { margin-top:22px; }
-    h2 {
-      font-size: clamp(1.3rem,2.4vw,2rem);
-      margin: 0 0 14px 0; color:#0f1720;
-      padding-left:12px; border-left:8px solid var(--accent);
-    }
-    #slots-list { list-style:none; margin:0; padding:0; display:grid; gap:14px; }
-    .slot {
-      background: var(--card); padding:18px 20px;
-      border-radius:12px; box-shadow:0 6px 18px rgba(16,30,50,0.06);
-      display:flex; align-items:center; gap:14px;
-      font-size:clamp(1.05rem,2vw,1.35rem); font-weight:600; color:#0d2030;
-    }
-    .slot .emoji { font-size:1.5em; margin-right:6px; }
-    .capabilities {
-      background:#eef6ff; padding:clamp(18px,3vw,34px);
-      border-radius:14px; box-shadow:inset 0 0 20px rgba(59,130,246,0.06);
-      font-size:clamp(1.02rem,2vw,1.25rem); color:#0e2430;
-    }
-    .capabilities strong { color:#07263a; }
-    .cta {
-      display:inline-block; margin-top:16px; background:var(--accent); color:#fff;
-      padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:700;
-      font-size:clamp(1rem,1.8vw,1.1rem); box-shadow:0 8px 28px rgba(59,130,246,0.18);
-    }
-    .cta:hover { transform:translateY(-2px); }
-    footer {
-      margin-top:26px; background:#071428; color:#dbeafe; padding:20px;
-      border-radius:10px; font-size:clamp(0.95rem,1.6vw,1.05rem); text-align:center;
-    }
-    footer .tools { color:#bfdbfe; font-weight:700; }
+    :root{ --accent:#3b82f6; --bg:#f8faff; --card:#fff; --maxw:1100px;}
+    html{font-size:18px}
+    body{margin:0;background:var(--bg);font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif;color:#142028;line-height:1.45}
+    .wrap{max-width:var(--maxw);margin:28px auto;padding:20px}
+    header{background:linear-gradient(135deg,#3740b7,var(--accent));color:#fff;padding:24px;border-radius:10px;text-align:center}
+    header h1{margin:0;font-weight:800}
+    main{margin-top:18px}
+    h2{margin:10px 0;color:#0f1720;padding-left:10px;border-left:8px solid var(--accent);font-size:1.2rem}
+    #slots-list{list-style:none;padding:0;display:grid;gap:12px}
+    .slot{background:var(--card);padding:12px;border-radius:10px;display:flex;align-items:center;gap:12px;font-weight:700}
+    .debug{background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 18px rgba(16,30,50,0.06);font-family:monospace;white-space:pre-wrap;max-height:360px;overflow:auto}
+    .small{font-size:0.95rem;color:#425061}
+    .hint{margin-top:8px;font-size:0.95rem;color:#6b7280}
+    .editor{width:100%;min-height:140px;font-family:monospace;padding:10px;border-radius:8px;border:1px solid #e6eefb}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;cursor:pointer;border:none}
+    .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <h1>📌 My Upcoming Interviews</h1>
-      <p class="lead">
-        Dear Recruiter — the slots below are already scheduled. I publish this page so you can instantly see my confirmed interview times,
-        avoid double-booking, and quickly decide whether to propose alternative slots — saving both our time.
-      </p>
+      <div class="small">Diagnostic mode — shows fetch + parse details to help debug why slots.json isn't loading.</div>
     </header>
 
     <main>
-      <section aria-labelledby="slots-title">
-        <h2 id="slots-title">Scheduled Interview Slots</h2>
+      <section>
+        <h2>Scheduled Interview Slots</h2>
         <ul id="slots-list">
           <li class="slot">Loading slots...</li>
         </ul>
+        <div class="hint">If nothing appears, see the diagnostic panel below for details.</div>
       </section>
 
-      <section aria-labelledby="expertise-title">
-        <h2 id="expertise-title">My Expertise</h2>
-        <div class="capabilities">
-          I specialize in <strong>Data Science</strong>, <strong>Generative AI</strong>, and <strong>Production MLOps</strong>.
-          My work spans building and deploying Large Language Models, Retrieval-Augmented Generation (RAG) systems, agentic AI,
-          and scalable data engineering pipelines. <br><br>
-          Practical tools & frameworks: <strong>Python, Pandas, NumPy, SciPy, scikit-learn, PyTorch, TensorFlow, Keras, Hugging Face, spaCy</strong>;
-          RAG: <strong>LangChain, LangGraph, AutoGen</strong>; Vector DB: <strong>FAISS, Pinecone, ChromaDB, Weaviate</strong>;
-          Cloud: <strong>AWS, GCP, Azure</strong>; MLOps: <strong>MLflow, Kubeflow, DVC, GitHub Actions, Azure DevOps</strong>;
-          Containers: <strong>Docker, Kubernetes</strong>. <br><br>
-          <a class="cta" href="https://naveenkumaritaimlds.github.io/" target="_blank">🌐 View My Full Portfolio</a>
+      <section>
+        <h2>Fetch & JSON Diagnostic</h2>
+        <div id="debug" class="debug">Starting diagnostics…</div>
+
+        <div class="row" style="margin-top:10px">
+          <button id="runAgain" class="btn">Run diagnostics again</button>
+          <button id="useInline" class="btn" style="background:#0b74b9">Use inline slots (temporary)</button>
+        </div>
+
+        <div style="margin-top:12px">
+          <div class="small">Inline slots editor (paste valid JSON array here if fetch fails):</div>
+          <textarea id="inlineEditor" class="editor">[
+  { "datetime": "2025-09-27T03:00:00+05:30" },
+  { "datetime": "2025-09-21T11:30:00+05:30" }
+]</textarea>
+          <div class="row">
+            <button id="loadInline" class="btn">Load inline JSON</button>
+            <button id="copySample" class="btn" style="background:#10b981">Copy sample to clipboard</button>
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top:18px">
+        <h2>Tips</h2>
+        <div class="small">
+          • Ensure <code>slots.json</code> is located next to this HTML in the published repo. <br>
+          • You can also open directly: <code>https://naveenkumaritaimlds.github.io/slots.json</code> to confirm it loads. <br>
+          • This page will try a few places automatically (relative, root, and GitHub raw URLs).
         </div>
       </section>
     </main>
-
-    <footer>
-      ⚡ Auto-maintained using <span class="tools">Python, TensorFlow, PyTorch, Hugging Face, LangChain, Vector DBs, Snowflake, Databricks, MLflow, Kubeflow, DVC, Docker, Kubernetes, AWS/Azure/GCP</span>.
-      <div style="margin-top:10px; font-weight:600; color:#dbeafe;">
-        This ensures recruiters always see my latest and accurate interview schedule.
-      </div>
-    </footer>
   </div>
 
   <script>
-    async function loadSlots() {
-      const listEl = document.getElementById('slots-list');
-      listEl.innerHTML = '<li class="slot">Loading slots...</li>';
-      try {
-        const resp = await fetch('./slots.json?cache=' + Date.now(), { cache: 'no-store' });
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const debugEl = id => document.getElementById(id);
+    const dbg = msg => {
+      const el = debugEl('debug');
+      el.textContent += msg + '\\n';
+      el.scrollTop = el.scrollHeight;
+      console.log(msg);
+    };
 
-        const data = await resp.json();
-        if (!Array.isArray(data) || data.length === 0) {
-          listEl.innerHTML = '<li class="slot">No interviews scheduled yet.</li>';
-          return;
-        }
-
-        data.sort((a,b)=> new Date(a.datetime) - new Date(b.datetime));
-        listEl.innerHTML = '';
-
-        data.forEach(slot => {
-          const dt = new Date(slot.datetime);
-          if (isNaN(dt)) {
-            const li = document.createElement('li');
-            li.className = 'slot';
-            li.innerHTML = '<span class="emoji">⚠️</span><span>Invalid datetime in slots.json</span>';
-            listEl.appendChild(li);
-            return;
-          }
+    function renderSlots(data) {
+      const listEl = debugEl('slots-list');
+      listEl.innerHTML = '';
+      if (!Array.isArray(data) || data.length === 0) {
+        listEl.innerHTML = '<li class="slot">No interviews scheduled yet.</li>';
+        return;
+      }
+      data.sort((a,b)=> new Date(a.datetime) - new Date(b.datetime));
+      data.forEach((slot, idx) => {
+        const dt = new Date(slot.datetime);
+        const li = document.createElement('li');
+        li.className = 'slot';
+        if (isNaN(dt)) {
+          li.innerHTML = '<span>⚠️ Invalid datetime: ' + (slot.datetime || JSON.stringify(slot)) + '</span>';
+        } else {
           const text = dt.toLocaleString('en-US', {
             weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
             hour: 'numeric', minute: '2-digit', hour12: true
           });
-          const li = document.createElement('li');
-          li.className = 'slot';
-          li.innerHTML = '<span class="emoji">📅</span><span>' + text + '</span>';
-          listEl.appendChild(li);
-        });
-
-      } catch (err) {
-        console.error("Error loading slots:", err);
-        listEl.innerHTML = '<li class="slot">❌ Could not load interview slots. ' + err.message + '</li>';
-      }
+          li.innerHTML = '<span>📅</span><span>' + text + '</span>';
+        }
+        listEl.appendChild(li);
+      });
     }
-    window.addEventListener('load', loadSlots);
+
+    async function runDiagnostics() {
+      debugEl('debug').textContent = '';
+      dbg('Diagnostic started at: ' + (new Date()).toString());
+      const basePath = window.location.pathname.replace(/[^\/]*$/, '');
+      const candidates = [
+        './slots.json',
+        'slots.json',
+        '/slots.json',
+        basePath + 'slots.json',
+        'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/main/slots.json',
+        'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/master/slots.json'
+      ].map(u => u + '?cache=' + Date.now());
+
+      for (const url of candidates) {
+        dbg('\\nTrying: ' + url);
+        try {
+          const resp = await fetch(url, { cache: 'no-store' });
+          dbg(' -> HTTP status: ' + resp.status + ' ' + resp.statusText);
+          const ct = resp.headers.get('content-type') || '';
+          dbg(' -> content-type: ' + ct);
+          const text = await resp.text();
+          const snippet = text.length > 1200 ? text.slice(0,1200) + '\\n...[truncated]' : text;
+          dbg(' -> body (snippet):\\n' + snippet);
+          try {
+            const parsed = JSON.parse(text);
+            if (!Array.isArray(parsed)) {
+              dbg(' -> parsed JSON, but it is not an array (type: ' + typeof parsed + ').');
+              continue;
+            }
+            dbg(' -> parsed JSON array, length: ' + parsed.length);
+            dbg(' -> Rendering slots from this source.');
+            renderSlots(parsed);
+            return;
+          } catch (pe) {
+            dbg(' -> JSON parse error: ' + pe.message);
+            continue;
+          }
+        } catch (fe) {
+          dbg(' -> fetch error: ' + fe.message);
+          continue;
+        }
+      }
+      // none worked
+      dbg('\\nAll candidate fetch attempts failed or returned invalid JSON.');
+      debugEl('debug').textContent += '\\nYou can paste JSON into the inline editor and click "Load inline JSON" to continue.';
+      renderSlots([]); // show "No interviews scheduled" so page isn't blank
+    }
+
+    // Inline editor helpers
+    document.getElementById('runAgain').addEventListener('click', runDiagnostics);
+    document.getElementById('useInline').addEventListener('click', () => {
+      const txt = document.getElementById('inlineEditor').value;
+      try {
+        const parsed = JSON.parse(txt);
+        renderSlots(parsed);
+        dbg('Loaded slots from inline editor (temporary).');
+      } catch (e) {
+        dbg('Inline JSON parse error: ' + e.message);
+        alert('Invalid JSON in editor: ' + e.message);
+      }
+    });
+    document.getElementById('loadInline').addEventListener('click', () => {
+      document.getElementById('useInline').click();
+    });
+    document.getElementById('copySample').addEventListener('click', async () => {
+      const sample = document.getElementById('inlineEditor').value;
+      try { await navigator.clipboard.writeText(sample); dbg('Sample copied to clipboard.'); } catch(e){ dbg('Copy failed: ' + e.message); }
+    });
+
+    // initial run
+    runDiagnostics();
   </script>
 </body>
 </html>
