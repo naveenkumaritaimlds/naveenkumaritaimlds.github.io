@@ -17,7 +17,6 @@
     .debug{background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 18px rgba(16,30,50,0.06);font-family:monospace;white-space:pre-wrap;max-height:360px;overflow:auto}
     .small{font-size:0.95rem;color:#425061}
     .hint{margin-top:8px;font-size:0.95rem;color:#6b7280}
-    .editor{width:100%;min-height:140px;font-family:monospace;padding:10px;border-radius:8px;border:1px solid #e6eefb}
     .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;cursor:pointer;border:none}
     .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
   </style>
@@ -41,7 +40,6 @@
       <section>
         <h2>Fetch & JSON Diagnostic</h2>
         <div id="debug" class="debug">Starting diagnostics…</div>
-
         <div class="row" style="margin-top:10px">
           <button id="runAgain" class="btn">Run diagnostics again</button>
         </div>
@@ -51,69 +49,62 @@
 
   <script>
     const debugEl = id => document.getElementById(id);
-    const dbg = msg => {
-      const el = debugEl('debug');
-      el.textContent += msg + '\n';
-      el.scrollTop = el.scrollHeight;
-      console.log(msg);
-    };
+    const dbg = msg => { const el = debugEl('debug'); el.textContent += msg+'\n'; el.scrollTop = el.scrollHeight; console.log(msg); }
+
+    function parseDateTime(str){
+      if(!str) return new Date('');
+      if(!str.includes('.')) str = str.replace(/([+-]\d{2}:\d{2})$/,".000$1");
+      return new Date(str);
+    }
 
     function renderSlots(data){
       const listEl = debugEl('slots-list');
       listEl.innerHTML = '';
-      if(!Array.isArray(data) || data.length === 0){
+      if(!Array.isArray(data) || data.length===0){
         listEl.innerHTML = '<li class="slot">No interviews scheduled yet.</li>';
         return;
       }
-      data.sort((a,b)=> new Date(a.datetime) - new Date(b.datetime));
+      data.sort((a,b)=> parseDateTime(a.datetime)-parseDateTime(b.datetime));
       data.forEach(slot=>{
-        const dt = new Date(slot.datetime);
+        const dt = parseDateTime(slot.datetime);
         const li = document.createElement('li');
         li.className = 'slot';
-        if(isNaN(dt)){
-          li.innerHTML = '⚠️ Invalid datetime: ' + (slot.datetime || JSON.stringify(slot));
-        }else{
-          const text = dt.toLocaleString('en-IN', { weekday:'short', month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', hour12:true, timeZone:'Asia/Kolkata' });
-          li.innerHTML = '📅 ' + text;
+        if(isNaN(dt)){ li.innerHTML='⚠️ Invalid datetime: '+(slot.datetime||JSON.stringify(slot)); }
+        else{
+          const text = dt.toLocaleString('en-IN',{
+            weekday:'short', month:'short', day:'numeric', year:'numeric',
+            hour:'numeric', minute:'2-digit', hour12:true, timeZone:'Asia/Kolkata'
+          });
+          li.innerHTML='📅 '+text;
         }
         listEl.appendChild(li);
       });
     }
 
     async function runDiagnostics(){
-      debugEl('debug').textContent = '';
-      dbg('Diagnostic started at: ' + new Date().toString());
-      const candidates = [
+      debugEl('debug').textContent='';
+      dbg('Diagnostic started at: '+new Date());
+      const candidates=[
         './slots.json',
         'slots.json',
         '/slots.json',
         'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/main/slots.json',
         'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/master/slots.json'
-      ].map(u=> u+'?cache='+Date.now());
+      ].map(u=>u+'?cache='+Date.now());
 
       for(const url of candidates){
         dbg('\nTrying: '+url);
         try{
           const resp = await fetch(url,{cache:'no-store'});
-          dbg(' -> HTTP status: ' + resp.status + ' ' + resp.statusText);
+          dbg(' -> HTTP status: '+resp.status+' '+resp.statusText);
           const text = await resp.text();
           try{
             const parsed = JSON.parse(text);
-            if(!Array.isArray(parsed)){
-              dbg(' -> parsed JSON, but not array.');
-              continue;
-            }
+            if(!Array.isArray(parsed)){ dbg(' -> parsed JSON, but not array.'); continue; }
             dbg(' -> parsed JSON array, length: '+parsed.length);
-            renderSlots(parsed);
-            return;
-          }catch(pe){
-            dbg(' -> JSON parse error: ' + pe.message);
-            continue;
-          }
-        }catch(fe){
-          dbg(' -> fetch error: '+fe.message);
-          continue;
-        }
+            renderSlots(parsed); return;
+          }catch(pe){ dbg(' -> JSON parse error: '+pe.message); continue; }
+        }catch(fe){ dbg(' -> fetch error: '+fe.message); continue; }
       }
       dbg('\nAll fetch attempts failed or returned invalid JSON.');
       renderSlots([]);
