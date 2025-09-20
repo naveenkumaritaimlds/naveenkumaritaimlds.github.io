@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👤 My Professional Details</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f0f4ff, #f9fafc);
+    margin: 0;
+    padding: 0;
+    color: #222;
+  }
+  .container {
+    max-width: 780px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+  }
+  h1, h2 {
+    color: #1e3a8a;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  h2 {
+    font-size: 1.4rem;
+    margin-top: 35px;
+    margin-bottom: 15px;
+  }
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f8fafc;
+    padding: 14px 18px;
+    margin: 10px 0;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #111827;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .field:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+  .field-icon {
+    font-size: 1.3rem;
+    color: #2563eb;
+  }
+  .field-label {
+    font-weight: 600;
+    color: #1e3a8a;
+    min-width: 200px;
+  }
+  footer {
+    margin-top: 50px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .marquee {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2563eb;
+    background: #eef2ff;
+    padding: 8px 12px;
+    border-radius: 10px;
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+  @keyframes marquee {
+    0%   { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>👤 My Professional Details</h1>
+  <p>This page provides my professional details as requested. All information is read-only and auto-updated from my JSON file.</p>
+  <div id="details"></div>
+</div>
+
+<footer>
+  <div class="marquee">
+    Monitored · Dashboarded · MLOpsed · Automated · Generative AI powered · Cloud Deployed · Data Visualized
+  </div>
+</footer>
+
+<script>
+(async function(){
+  const url = "https://naveenkumaritaimlds.github.io/my_details.json"; // 🔗 hosted JSON
+  const container = document.getElementById("details");
+
+  try {
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    Object.entries(data).forEach(([key, value]) => {
+      const div = document.createElement("div");
+      div.className = "field";
+      div.innerHTML = `
+        <span class="field-icon">📌</span>
+        <span class="field-label">${key}</span>
+        <span>${value}</span>
+      `;
+      container.appendChild(div);
+    });
+
+  } catch(err) {
+    container.innerHTML = "<p style='color:red;'>❌ Error loading details.json</p>";
+  }
+})();
+</script>
+</body>
+</html>
