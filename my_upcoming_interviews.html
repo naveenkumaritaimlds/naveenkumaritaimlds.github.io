@@ -13,18 +13,29 @@
     color: #222;
   }
   .container {
-    max-width: 700px;
-    margin: 50px auto;
+    max-width: 780px;
+    margin: 40px auto;
     background: #fff;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+  }
+  h1, h2 {
+    color: #1e3a8a;
   }
   h1 {
-    text-align: center;
-    font-size: 1.8rem;
-    margin-bottom: 25px;
-    color: #1e3a8a;
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  h2 {
+    font-size: 1.4rem;
+    margin-top: 35px;
+    margin-bottom: 15px;
+  }
+  p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 10px 0;
   }
   .slot {
     display: flex;
@@ -55,13 +66,63 @@
     font-size: 0.95rem;
     color: #065f46;
   }
+  a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>📅 My Upcoming Interviews</h1>
+
+  <!-- 1. Formal Introduction -->
+  <h1>Welcome Recruiters & Consultants 👋</h1>
+  <p>
+    Thank you for visiting my scheduling page. I created this space to make our interactions smoother and more productive.
+    Instead of spending time on repeated calls to confirm availability, you can directly view my interview commitments below.
+  </p>
+
+  <!-- 2. Upcoming Interview Slots -->
+  <h2>📅 My Upcoming Interviews</h2>
+  <p>
+    By automating my interview calendar, I’m not only saving everyone’s valuable time but also 
+    demonstrating my ability to design <strong>efficient, real-world automation solutions</strong>.
+  </p>
   <div id="slots"></div>
   <div class="diagnostics" id="diagnostics"></div>
+
+  <!-- 3. Data Science & Python Skills -->
+  <h2>⚡ My Data Science & Python Capabilities</h2>
+  <p>
+    I specialize in leveraging <strong>Python</strong> and modern <strong>Data Science</strong> tools to solve business challenges.  
+    My expertise covers:
+  </p>
+  <ul>
+    <li>Machine Learning & Predictive Analytics</li>
+    <li>Deep Learning & Neural Networks</li>
+    <li>Data Wrangling, Visualization, and Storytelling</li>
+    <li>Cloud-based deployment & MLOps pipelines</li>
+    <li>Automation of workflows using Python and APIs</li>
+  </ul>
+  <p>
+    This scheduling system itself is an example of how I translate everyday challenges into automated, 
+    intelligent solutions.
+  </p>
+
+  <!-- 4. Public Portfolio Link -->
+  <h2>🌐 Explore My Full Portfolio</h2>
+  <p>
+    For a deeper look at my professional journey, projects, and CV, 
+    I invite you to visit my public profile site:  
+    <a href="https://naveenkumaritaimlds.github.io/" target="_blank">
+      https://naveenkumaritaimlds.github.io/
+    </a>
+  </p>
+
 </div>
 
 <script>
