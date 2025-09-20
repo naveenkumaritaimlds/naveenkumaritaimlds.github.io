@@ -58,16 +58,17 @@
     font-size: 1.3rem;
     color: #2563eb;
   }
-  .diagnostics {
-    margin-top: 25px;
+  .info-box {
+    margin-top: 20px;
     padding: 14px 18px;
-    background: #ecfdf5;
+    background: #eef2ff;
     border-radius: 10px;
     font-size: 0.95rem;
-    color: #065f46;
+    color: #1e3a8a;
+    font-weight: 500;
   }
   .marquee {
-    margin: 25px 0;
+    margin: 35px 0 0 0;
     overflow: hidden;
     white-space: nowrap;
     box-sizing: border-box;
@@ -99,28 +100,23 @@
   <!-- 1. Formal Introduction -->
   <h1>Welcome Recruiters & Consultants 👋</h1>
   <p>
-    This scheduling page has been designed to streamline interactions and reduce repetitive coordination.
-    Instead of multiple phone calls to confirm availability, interview commitments are displayed here directly and transparently.
+    This page provides a clear overview of confirmed interview commitments.  
+    By keeping schedules transparent and accessible, the process reduces unnecessary coordination and ensures quick decisions on availability.
   </p>
-
-  <!-- Moving tools line -->
-  <div class="marquee">
-    Monitored · Dashboarded · MLOpsed · Automated · Generative AI powered · Cloud Deployed · Data Visualized · Pipeline Orchestrated
-  </div>
 
   <!-- 2. Upcoming Interview Slots -->
-  <h2>📅 Upcoming Interview Slots</h2>
+  <h2>🗓️ Confirmed Interview Schedule</h2>
   <p>
-    The timeline below reflects confirmed interview slots.  
-    By making this information public, the process saves time for everyone involved and demonstrates how everyday workflows can be automated for efficiency.
+    Below is the timeline of already-booked interviews.  
+    Sharing this view helps streamline communication and demonstrates how routine workflows can be simplified through automation.
   </p>
   <div id="slots"></div>
-  <div class="diagnostics" id="diagnostics"></div>
+  <div class="info-box" id="infoBox"></div>
 
   <!-- 3. Data Science & Python Skills -->
   <h2>⚡ Data Science & Python Capabilities</h2>
   <p>
-    Background and expertise cover the complete data lifecycle — from collection and cleaning to modeling and deployment.  
+    Experience involves the end-to-end data lifecycle — from raw collection to production deployment.  
     Areas of focus include:
   </p>
   <ul>
@@ -128,14 +124,14 @@
     <li>Data Wrangling, Visualization, and Storytelling</li>
     <li>Cloud Deployment, CI/CD & MLOps practices</li>
     <li>Workflow Automation with Python & APIs</li>
-    <li>Generative AI experiments and applied use cases</li>
+    <li>Generative AI research and applied solutions</li>
   </ul>
   <p>
-    This scheduling system itself is an example of how routine processes can be monitored, dashboarded, and automated.
+    The scheduling system shown here is one example of applying automation principles to make processes efficient and transparent.
   </p>
 
   <!-- 4. Public Portfolio Link -->
-  <h2>🌐 Explore Full Portfolio</h2>
+  <h2>🌐 Please Explore My Full Portfolio</h2>
   <p>
     A detailed professional profile, projects, and CV are available at:  
     <a href="https://naveenkumaritaimlds.github.io/" target="_blank">
@@ -143,13 +139,18 @@
     </a>
   </p>
 
+  <!-- 5. Moving Tools Line at Footer -->
+  <div class="marquee">
+    Monitored · Dashboarded · MLOpsed · Automated · Generative AI powered · Cloud Deployed · Data Visualized · Pipeline Orchestrated
+  </div>
+
 </div>
 
 <script>
 (async function(){
   const url = "https://naveenkumaritaimlds.github.io/slots.json";
   const slotsDiv = document.getElementById("slots");
-  let diagnostics = document.getElementById("diagnostics");
+  let infoBox = document.getElementById("infoBox");
 
   try {
     const resp = await fetch(url);
@@ -161,6 +162,7 @@
 
     if (dates.length === 0) {
       slotsDiv.innerHTML = "<p>No booked slots found.</p>";
+      infoBox.innerText = "The schedule is currently open for new interview opportunities.";
       return;
     }
 
@@ -176,16 +178,16 @@
       slotsDiv.appendChild(div);
     });
 
-    // Diagnostics
+    // Message for recruiters (instead of diagnostics)
     const now = new Date();
     const upcoming = dates.find(d => d > now);
-    diagnostics.innerHTML = `
-      ✅ Loaded ${dates.length} booked slots<br>
-      📌 Next Interview: ${upcoming ? upcoming.toString() : "None"}
+    infoBox.innerHTML = `
+      🔍 Schedule is up-to-date.  
+      ${upcoming ? "Next slot is already committed, please review open times around the listed schedule." : "Currently available for new interview bookings."}
     `;
   } catch(err) {
     slotsDiv.innerHTML = "<p style='color:red;'>❌ Error loading slots.json</p>";
-    diagnostics.innerText = "Error: " + err.message;
+    infoBox.innerText = "Error: " + err.message;
   }
 })();
 </script>
