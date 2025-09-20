@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📅 My Confirmed Interview Schedule</title>
+<title>📅 My Confirmed Interview Slots</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
   body {
@@ -23,8 +23,8 @@
   }
   h1, h2 {
     color: #1e3a8a;
-    font-size: 1.6rem; /* uniform size */
-    margin-bottom: 15px;
+    font-size: 1.5rem; /* uniform font size */
+    margin: 15px 0;
   }
   p {
     font-size: 1rem;
@@ -61,32 +61,20 @@
     color: #1e3a8a;
     font-weight: 500;
   }
-  .portfolio-footer {
+  .portfolio-marquee {
     display: flex;
-    flex-direction: column;
-    margin-top: 30px;
-  }
-  .portfolio-link {
+    align-items: center;
+    gap: 12px;
+    margin-top: 25px;
+    font-size: 0.95rem;
     font-weight: 600;
     color: #2563eb;
-    text-decoration: none;
-    margin-bottom: 10px;
-  }
-  .portfolio-link:hover {
-    text-decoration: underline;
+    flex-wrap: wrap;
   }
   .marquee {
     display: inline-block;
     white-space: nowrap;
-    animation: marquee 40s linear infinite; /* slower */
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #2563eb;
-    background: #eef2ff;
-    padding: 6px 10px;
-    border-radius: 10px;
-    min-width: 100%;
-    box-sizing: border-box;
+    animation: marquee 50s linear infinite; /* slower */
   }
   @keyframes marquee {
     0%   { transform: translateX(100%); }
@@ -105,22 +93,35 @@
 <body>
 <div class="container">
 
-  <!-- 1. Formal Introduction -->
-  <h1>Upcoming Interview Slots 👋</h1>
+  <!-- Header -->
+  <h1>Upcoming Interview Slots</h1>
   <p>
-    This schedule provides a transparent view of my confirmed interview commitments.  
-    It helps consultants and recruiters align availability efficiently while understanding my practical experience across projects and workflows.
+    The following timeline displays my confirmed interview slots.  
+    This dynamic view helps recruiters and consultants quickly understand availability, reducing coordination time and streamlining scheduling.
   </p>
 
-  <!-- 2. Upcoming Interview Slots -->
+  <!-- Slot container -->
   <div id="slots"></div>
   <div class="info-box" id="infoBox"></div>
 
-  <!-- 3. Portfolio Link + Marquee -->
-  <div class="portfolio-footer">
-    <a class="portfolio-link" href="https://naveenkumaritaimlds.github.io/" target="_blank">
-      🌐 Explore My Full Portfolio
-    </a>
+  <!-- Skills & Automation -->
+  <h2>⚡ Showcasing My Skills & Innovative Approach</h2>
+  <p>
+    This scheduling view is part of an automated system I’ve implemented to manage interview commitments efficiently.  
+    It reflects my focus on **workflow automation, data-driven decision making, and innovative solutions**.  
+    By presenting real-time slot availability, it saves time for all stakeholders without any manual follow-ups.
+  </p>
+  <ul>
+    <li>End-to-end automation of interview tracking and scheduling</li>
+    <li>Data-driven visualization and dynamic display of slots</li>
+    <li>Workflow orchestration using modern web and programming tools</li>
+    <li>Cloud-friendly approach for easy accessibility</li>
+    <li>Generative AI and analytics integration for enhanced insights</li>
+  </ul>
+
+  <!-- Portfolio link + moving marquee -->
+  <div class="portfolio-marquee">
+    <a href="https://naveenkumaritaimlds.github.io/" target="_blank">🌐 Explore My Full Portfolio</a>
     <div class="marquee">
       Monitored · Dashboarded · MLOpsed · Automated · Generative AI powered · Cloud Deployed · Data Visualized · Pipeline Orchestrated
     </div>
@@ -132,23 +133,25 @@
 (async function(){
   const url = "https://naveenkumaritaimlds.github.io/slots.json";
   const slotsDiv = document.getElementById("slots");
-  let infoBox = document.getElementById("infoBox");
+  const infoBox = document.getElementById("infoBox");
 
   try {
     const resp = await fetch(url);
     const slots = await resp.json();
 
+    // Parse and sort dates
     let dates = slots
       .map(s => new Date(s.datetime))
       .filter(d => !isNaN(d))
       .sort((a,b) => a - b);
 
-    if (dates.length === 0) {
+    if (!dates.length) {
       slotsDiv.innerHTML = "<p>No booked slots found.</p>";
       infoBox.innerText = "📢 Currently available for new interview bookings.";
       return;
     }
 
+    // Display slots in 12-hour IST format with calendar icon
     dates.forEach(d => {
       const dayStr = d.toLocaleString("en-IN", {
         weekday: "short",
@@ -157,7 +160,7 @@
         year: "numeric",
         hour: "2-digit",
         minute: "2-digit",
-        hour12: false,
+        hour12: true,
         timeZone: "Asia/Kolkata"
       }) + " IST";
 
@@ -167,11 +170,12 @@
       slotsDiv.appendChild(div);
     });
 
+    // Message for recruiters
     const now = new Date();
     const upcoming = dates.find(d => d > now);
     infoBox.innerHTML = `
       🔍 Schedule is up-to-date.  
-      ${upcoming ? "Next slot is already committed, please review open times around the listed schedule." : "📢 Currently available for new interview bookings."}
+      ${upcoming ? "Next slot is already committed. Please check availability around the listed times." : "📢 Currently available for new interview bookings."}
     `;
   } catch(err) {
     slotsDiv.innerHTML = "<p style='color:red;'>❌ Error loading slots.json</p>";
