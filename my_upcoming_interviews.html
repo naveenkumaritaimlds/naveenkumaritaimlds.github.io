@@ -1,109 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>My Upcoming Interviews</title>
-  <style>
-    :root { --accent:#3b82f6; --bg:#f8faff; --card:#fff; --maxw:1100px; --alert:#f97316; }
-    body { margin:0; background:var(--bg); font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif; color:#142028; line-height:1.45; }
-    .wrap { max-width:var(--maxw); margin:28px auto; padding:20px; }
-    header { background:linear-gradient(135deg,#3740b7,var(--accent)); color:#fff; padding:24px; border-radius:10px; text-align:center; }
-    header h1 { margin:0; font-weight:800; }
-    main { margin-top:18px; }
-    h2 { margin:10px 0; color:#0f1720; padding-left:10px; border-left:8px solid var(--accent); font-size:1.2rem; }
-    #slots-list { list-style:none; padding:0; display:grid; gap:12px; }
-    .slot { background:var(--card); padding:12px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; font-weight:700; }
-    .slot.alert { border-left:4px solid var(--alert); }
-    .debug { background:#fff; padding:12px; border-radius:8px; box-shadow:0 6px 18px rgba(16,30,50,0.06); font-family:monospace; white-space:pre-wrap; max-height:360px; overflow:auto; }
-    .btn { padding:8px 12px; border-radius:8px; background:var(--accent); color:#fff; font-weight:700; cursor:pointer; border:none; }
-    .row { display:flex; gap:12px; flex-wrap:wrap; margin-top:10px; }
-    .small { font-size:0.95rem; color:#425061; }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <h1>📌 My Upcoming Interviews</h1>
-      <div class="small">Live display from GitHub JSON.</div>
-    </header>
-    <main>
-      <section>
-        <h2>Scheduled Interview Slots</h2>
-        <ul id="slots-list">
-          <li class="slot">Loading slots...</li>
-        </ul>
-      </section>
-      <section>
-        <h2>Fetch & JSON Diagnostic</h2>
-        <div id="debug" class="debug">Starting diagnostics…</div>
-        <div class="row">
-          <button id="runAgain" class="btn">Run diagnostics again</button>
-        </div>
-      </section>
-    </main>
-  </div>
+<script>
+const debugEl = id => document.getElementById(id);
+const dbg = msg => {
+  const el = debugEl('debug');
+  el.textContent += msg + '\n';
+  el.scrollTop = el.scrollHeight;
+  console.log(msg);
+};
 
-  <script>
-    const debugEl = id => document.getElementById(id);
-    const dbg = msg => { const el=debugEl('debug'); el.textContent += msg+'\n'; el.scrollTop=el.scrollHeight; console.log(msg); }
+function renderSlots(data) {
+  const listEl = debugEl('slots-list');
+  listEl.innerHTML = '';
+  if (!Array.isArray(data) || data.length === 0) {
+    listEl.innerHTML = '<li class="slot">No interviews scheduled yet.</li>';
+    return;
+  }
+  data.sort((a,b)=> new Date(a.datetime.replace('+05:30','Z')) - new Date(b.datetime.replace('+05:30','Z')));
+  data.forEach((slot) => {
+    let dt = new Date(slot.datetime.replace('+05:30','Z'));
+    const li = document.createElement('li');
+    li.className = 'slot';
+    if (isNaN(dt)) {
+      li.innerHTML = '<span>⚠️ Invalid datetime: ' + (slot.datetime || JSON.stringify(slot)) + '</span>';
+    } else {
+      const text = dt.toLocaleString('en-US', {
+        weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
+        hour: 'numeric', minute: '2-digit', hour12: true
+      });
+      li.innerHTML = '<span>📅</span><span>' + text + '</span>';
+    }
+    listEl.appendChild(li);
+  });
+}
 
-    function parseDateTime(str){ return new Date(str); }
+async function runDiagnostics() {
+  debugEl('debug').textContent = '';
+  dbg('Diagnostic started at: ' + (new Date()).toString());
+  const basePath = window.location.pathname.replace(/[^\/]*$/, '');
+  const candidates = [
+    './slots.json',
+    'slots.json',
+    '/slots.json',
+    basePath + 'slots.json',
+    'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/main/slots.json'
+  ].map(u => u + '?cache=' + Date.now());
 
-    function renderSlots(slots){
-      const listEl = debugEl('slots-list');
-      listEl.innerHTML='';
-      if(!Array.isArray(slots) || slots.length===0){
-        listEl.innerHTML='<li class="slot">No interviews scheduled.</li>';
-        return;
-      }
-      slots.sort((a,b)=> parseDateTime(a.datetime)-parseDateTime(b.datetime));
-      slots.forEach(slot=>{
-        const dt=parseDateTime(slot.datetime);
-        const li=document.createElement('li');
-        li.className='slot';
-        if(isNaN(dt)){
-          li.textContent='⚠️ Invalid datetime: '+slot.datetime;
-        }else{
-          const text = dt.toLocaleString('en-IN', { weekday:'short', month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', hour12:true, timeZone:'Asia/Kolkata' });
-          li.innerHTML=`<span>📅 ${text}</span><span class="countdown"></span>`;
-          li.dataset.time=dt.getTime();
+  for (const url of candidates) {
+    dbg('\nTrying: ' + url);
+    try {
+      const resp = await fetch(url, { cache: 'no-store' });
+      dbg(' -> HTTP status: ' + resp.status + ' ' + resp.statusText);
+      const text = await resp.text();
+      const snippet = text.length > 1200 ? text.slice(0,1200) + '\n...[truncated]' : text;
+      dbg(' -> body (snippet):\n' + snippet);
+      try {
+        const parsed = JSON.parse(text);
+        if (!Array.isArray(parsed)) {
+          dbg(' -> parsed JSON, but it is not an array (type: ' + typeof parsed + ').');
+          continue;
         }
-        listEl.appendChild(li);
-      });
-      updateCountdowns();
-      setInterval(updateCountdowns,1000);
-    }
-
-    function updateCountdowns(){
-      const now = Date.now();
-      document.querySelectorAll('#slots-list .slot').forEach(li=>{
-        const t=li.dataset.time; if(!t) return;
-        const diff=t-now;
-        if(diff<=0){ li.querySelector('.countdown').textContent=' ⏰ Started'; li.classList.remove('alert'); return; }
-        const h=Math.floor(diff/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
-        li.querySelector('.countdown').textContent=` ⏱ ${h}h ${m}m ${s}s`;
-        li.classList.toggle('alert', diff<=86400000); // highlight if within 24h
-      });
-    }
-
-    async function runDiagnostics(){
-      debugEl('debug').textContent='';
-      dbg('Diagnostic started at: '+new Date());
-      const url='https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/main/slots.json?cache='+Date.now();
-      try{
-        const resp=await fetch(url,{cache:'no-store'});
-        dbg(' -> HTTP status: '+resp.status+' '+resp.statusText);
-        const text=await resp.text();
-        const parsed=JSON.parse(text);
-        if(!Array.isArray(parsed)){ dbg(' -> Not an array'); renderSlots([]); return; }
-        dbg(' -> Parsed JSON array, length: '+parsed.length);
+        dbg(' -> parsed JSON array, length: ' + parsed.length);
+        dbg(' -> Rendering slots from this source.');
         renderSlots(parsed);
-      }catch(e){ dbg(' -> Fetch/parse error: '+e.message); renderSlots([]); }
+        return;
+      } catch (pe) {
+        dbg(' -> JSON parse error: ' + pe.message);
+        continue;
+      }
+    } catch (fe) {
+      dbg(' -> fetch error: ' + fe.message);
+      continue;
     }
+  }
+  dbg('\nAll candidate fetch attempts failed or returned invalid JSON.');
+  debugEl('debug').textContent += '\nYou can paste JSON into the inline editor and click "Load inline JSON" to continue.';
+  renderSlots([]);
+}
 
-    document.getElementById('runAgain').addEventListener('click', runDiagnostics);
-    runDiagnostics();
-  </script>
-</body>
-</html>
+// Inline editor helpers
+document.getElementById('runAgain').addEventListener('click', runDiagnostics);
+document.getElementById('useInline').addEventListener('click', () => {
+  const txt = document.getElementById('inlineEditor').value;
+  try {
+    const parsed = JSON.parse(txt);
+    renderSlots(parsed);
+    dbg('Loaded slots from inline editor (temporary).');
+  } catch (e) {
+    dbg('Inline JSON parse error: ' + e.message);
+    alert('Invalid JSON in editor: ' + e.message);
+  }
+});
+document.getElementById('loadInline').addEventListener('click', () => {
+  document.getElementById('useInline').click();
+});
+document.getElementById('copySample').addEventListener('click', async () => {
+  const sample = document.getElementById('inlineEditor').value;
+  try { await navigator.clipboard.writeText(sample); dbg('Sample copied to clipboard.'); } catch(e){ dbg('Copy failed: ' + e.message); }
+});
+
+// initial run
+runDiagnostics();
+</script>
