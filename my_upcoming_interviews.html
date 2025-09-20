@@ -1,33 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Upcoming Interviews — Live</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>My Upcoming Interviews</title>
   <style>
-    :root{ --accent:#3b82f6; --bg:#f8faff; --card:#fff; --maxw:1100px; --alert:#f97316;}
-    body{margin:0;background:var(--bg);font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif;color:#142028;line-height:1.45}
-    .wrap{max-width:var(--maxw);margin:28px auto;padding:20px}
-    header{background:linear-gradient(135deg,#3740b7,var(--accent));color:#fff;padding:24px;border-radius:10px;text-align:center}
-    header h1{margin:0;font-weight:800}
-    main{margin-top:18px}
-    h2{margin:10px 0;color:#0f1720;padding-left:10px;border-left:8px solid var(--accent);font-size:1.2rem}
-    #slots-list{list-style:none;padding:0;display:grid;gap:12px}
-    .slot{background:var(--card);padding:12px;border-radius:10px;display:flex;align-items:center;gap:12px;font-weight:700;justify-content:space-between}
-    .slot.alert{border-left:4px solid var(--alert)}
-    .debug{background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 18px rgba(16,30,50,0.06);font-family:monospace;white-space:pre-wrap;max-height:360px;overflow:auto}
-    .small{font-size:0.95rem;color:#425061}
-    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;cursor:pointer;border:none}
-    .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+    :root { --accent:#3b82f6; --bg:#f8faff; --card:#fff; --maxw:1100px; --alert:#f97316; }
+    body { margin:0; background:var(--bg); font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif; color:#142028; line-height:1.45; }
+    .wrap { max-width:var(--maxw); margin:28px auto; padding:20px; }
+    header { background:linear-gradient(135deg,#3740b7,var(--accent)); color:#fff; padding:24px; border-radius:10px; text-align:center; }
+    header h1 { margin:0; font-weight:800; }
+    main { margin-top:18px; }
+    h2 { margin:10px 0; color:#0f1720; padding-left:10px; border-left:8px solid var(--accent); font-size:1.2rem; }
+    #slots-list { list-style:none; padding:0; display:grid; gap:12px; }
+    .slot { background:var(--card); padding:12px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; font-weight:700; }
+    .slot.alert { border-left:4px solid var(--alert); }
+    .debug { background:#fff; padding:12px; border-radius:8px; box-shadow:0 6px 18px rgba(16,30,50,0.06); font-family:monospace; white-space:pre-wrap; max-height:360px; overflow:auto; }
+    .btn { padding:8px 12px; border-radius:8px; background:var(--accent); color:#fff; font-weight:700; cursor:pointer; border:none; }
+    .row { display:flex; gap:12px; flex-wrap:wrap; margin-top:10px; }
+    .small { font-size:0.95rem; color:#425061; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <h1>📌 My Upcoming Interviews</h1>
-      <div class="small">Live countdowns and alert for interviews within 24 hours.</div>
+      <div class="small">Live display from GitHub JSON.</div>
     </header>
-
     <main>
       <section>
         <h2>Scheduled Interview Slots</h2>
@@ -35,11 +34,10 @@
           <li class="slot">Loading slots...</li>
         </ul>
       </section>
-
       <section>
         <h2>Fetch & JSON Diagnostic</h2>
         <div id="debug" class="debug">Starting diagnostics…</div>
-        <div class="row" style="margin-top:10px">
+        <div class="row">
           <button id="runAgain" class="btn">Run diagnostics again</button>
         </div>
       </section>
@@ -48,36 +46,28 @@
 
   <script>
     const debugEl = id => document.getElementById(id);
-    const dbg = msg => { const el = debugEl('debug'); el.textContent += msg+'\n'; el.scrollTop = el.scrollHeight; console.log(msg); }
+    const dbg = msg => { const el=debugEl('debug'); el.textContent += msg+'\n'; el.scrollTop=el.scrollHeight; console.log(msg); }
 
-    function parseDateTime(str){
-      if(!str) return new Date('');
-      if(!str.includes('.')) str = str.replace(/([+-]\d{2}:\d{2})$/,".000$1");
-      return new Date(str);
-    }
+    function parseDateTime(str){ return new Date(str); }
 
-    function renderSlots(data){
+    function renderSlots(slots){
       const listEl = debugEl('slots-list');
-      listEl.innerHTML = '';
-      if(!Array.isArray(data) || data.length===0){
-        listEl.innerHTML = '<li class="slot">No interviews scheduled yet.</li>';
+      listEl.innerHTML='';
+      if(!Array.isArray(slots) || slots.length===0){
+        listEl.innerHTML='<li class="slot">No interviews scheduled.</li>';
         return;
       }
-      data.sort((a,b)=> parseDateTime(a.datetime)-parseDateTime(b.datetime));
-
-      data.forEach(slot=>{
-        const dt = parseDateTime(slot.datetime);
-        const li = document.createElement('li');
-        li.className = 'slot';
-        if(isNaN(dt)){ 
-          li.innerHTML='⚠️ Invalid datetime: '+(slot.datetime||JSON.stringify(slot)); 
-        } else {
-          li.dataset.time = dt.getTime();
-          const text = dt.toLocaleString('en-IN',{
-            weekday:'short', month:'short', day:'numeric', year:'numeric',
-            hour:'numeric', minute:'2-digit', hour12:true, timeZone:'Asia/Kolkata'
-          });
+      slots.sort((a,b)=> parseDateTime(a.datetime)-parseDateTime(b.datetime));
+      slots.forEach(slot=>{
+        const dt=parseDateTime(slot.datetime);
+        const li=document.createElement('li');
+        li.className='slot';
+        if(isNaN(dt)){
+          li.textContent='⚠️ Invalid datetime: '+slot.datetime;
+        }else{
+          const text = dt.toLocaleString('en-IN', { weekday:'short', month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', hour12:true, timeZone:'Asia/Kolkata' });
           li.innerHTML=`<span>📅 ${text}</span><span class="countdown"></span>`;
+          li.dataset.time=dt.getTime();
         }
         listEl.appendChild(li);
       });
@@ -86,43 +76,30 @@
     }
 
     function updateCountdowns(){
-      const now = new Date().getTime();
+      const now = Date.now();
       document.querySelectorAll('#slots-list .slot').forEach(li=>{
-        const t = li.dataset.time;
-        if(!t) return;
-        const diff = t - now;
-        if(diff <= 0){ li.querySelector('.countdown').textContent=' ⏰ Started'; li.classList.remove('alert'); return; }
-        const h = Math.floor(diff/3600000);
-        const m = Math.floor((diff%3600000)/60000);
-        const s = Math.floor((diff%60000)/1000);
+        const t=li.dataset.time; if(!t) return;
+        const diff=t-now;
+        if(diff<=0){ li.querySelector('.countdown').textContent=' ⏰ Started'; li.classList.remove('alert'); return; }
+        const h=Math.floor(diff/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
         li.querySelector('.countdown').textContent=` ⏱ ${h}h ${m}m ${s}s`;
-        li.classList.toggle('alert', diff<=86400000); // highlight if within 24 hours
+        li.classList.toggle('alert', diff<=86400000); // highlight if within 24h
       });
     }
 
     async function runDiagnostics(){
       debugEl('debug').textContent='';
       dbg('Diagnostic started at: '+new Date());
-      const candidates=[
-        'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/main/slots.json'
-      ].map(u=>u+'?cache='+Date.now());
-
-      for(const url of candidates){
-        dbg('\nTrying: '+url);
-        try{
-          const resp = await fetch(url,{cache:'no-store'});
-          dbg(' -> HTTP status: '+resp.status+' '+resp.statusText);
-          const text = await resp.text();
-          try{
-            const parsed = JSON.parse(text);
-            if(!Array.isArray(parsed)){ dbg(' -> parsed JSON, but not array.'); continue; }
-            dbg(' -> parsed JSON array, length: '+parsed.length);
-            renderSlots(parsed); return;
-          }catch(pe){ dbg(' -> JSON parse error: '+pe.message); continue; }
-        }catch(fe){ dbg(' -> fetch error: '+fe.message); continue; }
-      }
-      dbg('\nAll fetch attempts failed or returned invalid JSON.');
-      renderSlots([]);
+      const url='https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/main/slots.json?cache='+Date.now();
+      try{
+        const resp=await fetch(url,{cache:'no-store'});
+        dbg(' -> HTTP status: '+resp.status+' '+resp.statusText);
+        const text=await resp.text();
+        const parsed=JSON.parse(text);
+        if(!Array.isArray(parsed)){ dbg(' -> Not an array'); renderSlots([]); return; }
+        dbg(' -> Parsed JSON array, length: '+parsed.length);
+        renderSlots(parsed);
+      }catch(e){ dbg(' -> Fetch/parse error: '+e.message); renderSlots([]); }
     }
 
     document.getElementById('runAgain').addEventListener('click', runDiagnostics);
