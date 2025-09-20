@@ -1,123 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
+<meta charset="UTF-8">
 <title>My Upcoming Interviews</title>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-body {
-  font-family: Inter, system-ui, sans-serif;
-  background: #f6f8fb;
-  color: #1f2d3d;
-  margin: 0;
-  padding: 20px;
-}
-h1 { text-align: center; font-size: 22px; margin-bottom: 16px; }
-ul#slotsList { list-style: none; padding: 0; max-width: 600px; margin: 0 auto; }
-ul#slotsList li {
-  background: #fff;
-  margin: 10px 0;
-  padding: 14px 18px;
-  border-radius: 10px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-  font-size: 15px;
-}
-#diagnostics {
-  margin-top: 30px;
-  font-size: 13px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  background: #fff8e1;
-  border: 1px solid #ffecb3;
-  padding: 12px;
-  border-radius: 8px;
-}
-#editor { display:none; max-width:700px; margin:20px auto; }
-#fallbackJson { width:100%; height:180px; font-family:monospace; font-size:13px; }
-button {
-  margin-top: 8px;
-  background: #4a90e2;
-  color: #fff;
-  border: 0;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-}
+body { font-family: Arial, sans-serif; margin: 20px; background: #f9fafc; color: #222; }
+.container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);}
+h1, h2 { text-align: center; }
+.slot { background: #f3f7fb; padding: 10px; margin: 8px 0; border-radius: 6px; font-size: 15px; }
+.chart-container { margin: 20px 0; }
+.diagnostics { background: #eef6ee; padding: 10px; border-radius: 8px; margin-top: 20px; font-size: 14px; }
 </style>
 </head>
 <body>
-<h1>📅 My Upcoming Interviews</h1>
+<div class="container">
+  <h1>📅 My Upcoming Interviews</h1>
 
-<ul id="slotsList"></ul>
+  <h2>Booked Slots</h2>
+  <div id="slots"></div>
 
-<div id="diagnostics"></div>
+  <h2>Analytics</h2>
+  <div class="chart-container"><canvas id="weeklyTrend"></canvas></div>
+  <div class="chart-container"><canvas id="dayOfWeek"></canvas></div>
+  <div class="chart-container"><canvas id="hourOfDay"></canvas></div>
 
-<div id="editor">
-  <h2 style="font-size:16px;">Inline JSON fallback / editor</h2>
-  <textarea id="fallbackJson"></textarea><br>
-  <button id="reloadBtn">Reload from Editor</button>
+  <div class="diagnostics" id="diagnostics"></div>
 </div>
 
 <script>
-const SLOTS_URL = "https://naveenkumaritaimlds.github.io/slots.json";
-const slotsList = document.getElementById("slotsList");
-const diagnostics = document.getElementById("diagnostics");
-const editor = document.getElementById("editor");
-const fallbackJson = document.getElementById("fallbackJson");
+(async function(){
+  const url = "https://naveenkumaritaimlds.github.io/slots.json";
+  const slotsDiv = document.getElementById("slots");
+  let diagnostics = document.getElementById("diagnostics");
 
-function log(msg) { diagnostics.innerHTML += msg + "<br>"; }
-
-function formatIST(isoString) {
-  const d = new Date(isoString);
-  if (isNaN(d)) return isoString;
-  const opts = { timeZone: "Asia/Kolkata", weekday:"short", year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"2-digit", hour12:true };
-  return d.toLocaleString("en-US", opts) + " IST";
-}
-
-function render(list) {
-  slotsList.innerHTML = "";
-  if (!list.length) {
-    slotsList.innerHTML = "<li>No upcoming interviews.</li>";
-    return;
-  }
-  list.forEach(e => {
-    const li = document.createElement("li");
-    li.textContent = formatIST(e.datetime);
-    slotsList.appendChild(li);
-  });
-}
-
-async function load() {
-  diagnostics.innerHTML = "";
   try {
-    const res = await fetch(SLOTS_URL, {cache:"no-store"});
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const data = await res.json();
-    log("Fetched raw entries: " + data.length);
-    const valid = data.filter(e => e.datetime);
-    log("Parsed valid entries: " + valid.length);
-    valid.sort((a,b)=> new Date(a.datetime)-new Date(b.datetime));
-    log("Displayed (after filter): " + valid.length);
-    if (valid[0]) log("Sample earliest valid: " + valid[0].datetime);
-    render(valid);
-    log("Fetch OK");
-  } catch (err) {
-    log("❌ Fetch failed: " + err.message);
-    editor.style.display = "block";
+    const resp = await fetch(url);
+    const slots = await resp.json();
+
+    // Parse datetimes
+    let dates = slots.map(s => new Date(s.datetime));
+    dates.sort((a,b) => a - b);
+
+    if (dates.length === 0) {
+      slotsDiv.innerHTML = "<p>No booked slots found.</p>";
+      return;
+    }
+
+    // Show booked slots
+    const weekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    dates.forEach(d => {
+      const dayStr = `${weekdays[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}, ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')} IST`;
+      const div = document.createElement("div");
+      div.className = "slot";
+      div.textContent = "📅 " + dayStr;
+      slotsDiv.appendChild(div);
+    });
+
+    // Analytics prep
+    const weeks = {}; 
+    const dayCounts = {};
+    const hourCounts = {};
+
+    dates.forEach(d => {
+      const yearWeek = d.getFullYear() + "-W" + String(Math.ceil((((d - new Date(d.getFullYear(),0,1)) / 86400000) + new Date(d.getFullYear(),0,1).getDay()+1)/7));
+      weeks[yearWeek] = (weeks[yearWeek]||0)+1;
+
+      const dow = weekdays[d.getDay()];
+      dayCounts[dow] = (dayCounts[dow]||0)+1;
+
+      const hour = d.getHours();
+      hourCounts[hour] = (hourCounts[hour]||0)+1;
+    });
+
+    // Weekly trend
+    new Chart(document.getElementById('weeklyTrend'), {
+      type: 'line',
+      data: {
+        labels: Object.keys(weeks),
+        datasets: [{
+          label: 'Interviews per Week',
+          data: Object.values(weeks),
+          borderColor: '#4a90e2',
+          fill: false,
+          tension: 0.2
+        }]
+      }
+    });
+
+    // Day of week
+    new Chart(document.getElementById('dayOfWeek'), {
+      type: 'bar',
+      data: {
+        labels: weekdays,
+        datasets: [{
+          label: 'Interviews by Day',
+          data: weekdays.map(d => dayCounts[d]||0),
+          backgroundColor: '#34c38f'
+        }]
+      }
+    });
+
+    // Hour of day
+    new Chart(document.getElementById('hourOfDay'), {
+      type: 'bar',
+      data: {
+        labels: [...Array(24).keys()],
+        datasets: [{
+          label: 'Interviews by Hour (IST)',
+          data: [...Array(24).keys()].map(h => hourCounts[h]||0),
+          backgroundColor: '#f39c12'
+        }]
+      }
+    });
+
+    // Diagnostics
+    const now = new Date();
+    const upcoming = dates.find(d => d > now);
+    const gaps = [];
+    for (let i=1;i<dates.length;i++) { gaps.push(dates[i] - dates[i-1]); }
+    const maxGap = gaps.length ? Math.max(...gaps) : 0;
+
+    diagnostics.innerHTML = `
+      ✅ Loaded ${dates.length} booked slots<br>
+      📅 Next Interview: ${upcoming ? upcoming.toString() : "None"}<br>
+      ⏳ Longest gap: ${maxGap ? (maxGap/86400000).toFixed(1)+" days" : "N/A"}
+    `;
+
+  } catch(err) {
+    slotsDiv.innerHTML = "<p style='color:red;'>❌ Error loading slots.json</p>";
+    diagnostics.innerText = "Error: " + err.message;
   }
-}
-
-document.getElementById("reloadBtn").onclick = () => {
-  try {
-    const json = JSON.parse(fallbackJson.value);
-    render(json);
-    log("Loaded from inline editor: " + json.length + " entries");
-  } catch(e) { alert("Invalid JSON: " + e.message); }
-};
-
-load();
+})();
 </script>
 </body>
 </html>
