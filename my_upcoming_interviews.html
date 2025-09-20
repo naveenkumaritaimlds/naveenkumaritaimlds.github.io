@@ -1,103 +1,321 @@
-<script>
-const debugEl = id => document.getElementById(id);
-const dbg = msg => {
-  const el = debugEl('debug');
-  el.textContent += msg + '\n';
-  el.scrollTop = el.scrollHeight;
-  console.log(msg);
-};
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Upcoming Interviews — IST (+05:30)</title>
+  <style>
+    :root{
+      --bg:#071026; --card:#0b1624; --muted:#9fb0c8; --accent:#6ee7b7; --glass:rgba(255,255,255,0.02);
+      --radius:12px; --maxw:980px;
+    }
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial;background:linear-gradient(180deg,#051023 0%,#071026 100%);color:#e6f3ff;}
+    .wrap{max-width:var(--maxw);margin:28px auto;padding:20px;}
+    header{display:flex;align-items:center;gap:12px;justify-content:space-between;}
+    h1{margin:0;font-size:1.25rem}
+    .sub{color:var(--muted);font-size:0.9rem}
+    .card{background:var(--card);padding:14px;border-radius:var(--radius);box-shadow:0 8px 30px rgba(2,6,23,0.6);margin-top:16px}
+    #status{color:var(--muted);font-size:0.95rem;margin-bottom:10px}
+    ul#slotsList{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+    li.slot{background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:6px}
+    .datetime{font-weight:700}
+    .iso{font-size:12px;color:var(--muted);word-break:break-all}
+    .diagnostics{margin-top:14px;background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+    .muted{color:var(--muted)}
+    textarea#fallback{width:100%;height:160px;background:#061428;border-radius:8px;border:1px solid rgba(255,255,255,0.03);color:#d6eefc;padding:8px;font-family:monospace}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    button{padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;cursor:pointer}
+    .accent{background:linear-gradient(90deg,#0ea5a4,#60f0c7);color:#042026;border:0}
+    .danger{background:#ff7a6d;color:#1a0f0d;border:0}
+    footer{margin-top:20px;color:var(--muted);font-size:0.9rem}
+    @media(max-width:720px){ ul#slotsList{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>📅 My Upcoming Interviews</h1>
+        <div class="sub">Displayed in IST (+05:30) — browser timezone ignored.</div>
+      </div>
+      <div class="sub">Source: <code>./slots.json</code> (GitHub Pages root)</div>
+    </header>
 
-function renderSlots(slots) {
-  const listEl = debugEl('slots-list');
-  listEl.innerHTML = '';
-  if (!Array.isArray(slots) || slots.length === 0) {
-    listEl.innerHTML = '<li class="slot">No interviews scheduled yet.</li>';
-    return;
+    <section class="card" id="viewer">
+      <div id="status">Loading slots…</div>
+      <ul id="slotsList" aria-live="polite" aria-label="Upcoming interviews list"></ul>
+
+      <div class="diagnostics" id="diagnostics" hidden>
+        <strong>Diagnostics</strong>
+        <div id="diagContent" class="muted" style="white-space:pre-wrap;margin-top:8px"></div>
+
+        <h4 style="margin-top:12px;margin-bottom:6px">Inline JSON fallback / editor</h4>
+        <div class="muted" style="margin-bottom:8px">If fetch fails, paste or edit `slots.json` content here (array of objects each with <code>datetime</code> ISO including <code>+05:30</code>).</div>
+        <textarea id="fallback" aria-label="slots json editor">[]</textarea>
+
+        <div class="controls">
+          <button id="loadFallback" class="accent">Load into viewer</button>
+          <button id="saveLocal">Save to localStorage</button>
+          <button id="clearLocal" class="danger">Clear saved</button>
+          <button id="downloadJSON">Download JSON</button>
+          <button id="togglePast">Show past slots</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="card">
+      <div class="muted">Test locally first: open <code>my_upcoming_interviews.html</code> in a browser. When deployed to GitHub Pages, place <code>slots.json</code> in repository root. Example slot: <code>2025-09-26T21:30:00+05:30</code></div>
+    </footer>
+  </div>
+
+<script>
+(() => {
+  // Config
+  const SLOTS_URL = './slots.json';
+  const FETCH_TIMEOUT_MS = 9000;
+  const IST_OFFSET_MINUTES = 5 * 60 + 30;
+  const IST_OFFSET_MS = IST_OFFSET_MINUTES * 60 * 1000;
+
+  // Elements
+  const statusEl = document.getElementById('status');
+  const slotsList = document.getElementById('slotsList');
+  const diagnostics = document.getElementById('diagnostics');
+  const diagContent = document.getElementById('diagContent');
+  const fallback = document.getElementById('fallback');
+  const loadFallbackBtn = document.getElementById('loadFallback');
+  const saveLocalBtn = document.getElementById('saveLocal');
+  const clearLocalBtn = document.getElementById('clearLocal');
+  const downloadJSONBtn = document.getElementById('downloadJSON');
+  const togglePastBtn = document.getElementById('togglePast');
+
+  const LOCAL_KEY = 'my_upcoming_interviews_fallback';
+  let showPast = false;
+
+  // Helpers
+  function updateStatus(txt){ statusEl.textContent = txt; }
+  function showDiagnostics(show = true){ diagnostics.hidden = !show; }
+  function nowMs(){ return Date.now(); }
+
+  // Parse ISO -> Date object (JS Date uses the explicit offset)
+  // Return null if invalid
+  function parseISOToDate(iso){
+    if(typeof iso !== 'string') return null;
+    const d = new Date(iso);
+    return isNaN(d.getTime()) ? null : d;
   }
 
-  slots.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+  // Convert an absolute Date -> IST wall-clock string (ignoring browser timezone)
+  function formatToIST(date){
+    const utcMs = date.getTime();
+    const istMs = utcMs + IST_OFFSET_MS;
+    const istDate = new Date(istMs);
+    // Use UTC getters on istDate to read IST fields
+    const dow = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][istDate.getUTCDay()];
+    const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][istDate.getUTCMonth()];
+    const day = String(istDate.getUTCDate()).padStart(2,'0');
+    const year = istDate.getUTCFullYear();
+    let h = istDate.getUTCHours();
+    const min = String(istDate.getUTCMinutes()).padStart(2,'0');
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    return `📅 ${dow}, ${mon} ${day}, ${year}, ${h}:${min} ${ampm} IST`;
+  }
 
-  slots.forEach(slot => {
-    const li = document.createElement('li');
-    li.className = 'slot';
-    try {
-      let dt = new Date(slot.datetime);
-      if (isNaN(dt)) throw new Error('Invalid date');
-      // Force IST formatting
-      const options = { 
-        timeZone: 'Asia/Kolkata', weekday:'short', month:'short', day:'numeric', 
-        year:'numeric', hour:'numeric', minute:'2-digit', hour12:true 
-      };
-      const text = dt.toLocaleString('en-US', options) + ' IST';
-      li.innerHTML = '<span>📅</span><span>' + text + '</span>';
-    } catch(e) {
-      li.innerHTML = '<span>⚠️ Invalid datetime: ' + (slot.datetime || JSON.stringify(slot)) + '</span>';
+  // Render list: accepts array of { datetime: "...ISO..." }
+  function renderSlots(rawArr){
+    slotsList.innerHTML = '';
+    if(!Array.isArray(rawArr) || rawArr.length === 0){
+      updateStatus('No booked slots (empty array).');
+      diagContent.textContent = 'No entries in provided JSON.';
+      showDiagnostics(true);
+      return;
     }
-    listEl.appendChild(li);
+
+    const parsed = [];
+    for(let i = 0; i < rawArr.length; i++){
+      const it = rawArr[i];
+      if(!it || !it.datetime) continue;
+      const d = parseISOToDate(it.datetime);
+      if(!d) continue;
+      parsed.push({ iso: it.datetime, date: d, epoch: d.getTime() });
+    }
+
+    if(parsed.length === 0){
+      updateStatus('No valid datetimes found.');
+      diagContent.textContent = 'No valid ISO datetime entries parsed. Ensure each datetime includes offset like +05:30.';
+      showDiagnostics(true);
+      return;
+    }
+
+    // Sort ascending by epoch
+    parsed.sort((a,b) => a.epoch - b.epoch);
+
+    // Optionally filter upcoming only
+    const now = nowMs();
+    const filtered = showPast ? parsed.slice() : parsed.filter(p => p.epoch >= now);
+
+    // Update status
+    updateStatus(`Showing ${filtered.length} upcoming slot(s) — total valid: ${parsed.length} (fetched ${rawArr.length})`);
+
+    // Efficient DOM insertion
+    const frag = document.createDocumentFragment();
+    // Batch DOM creation (avoid innerHTML in loop)
+    for(let i = 0; i < filtered.length; i++){
+      const p = filtered[i];
+      const li = document.createElement('li');
+      li.className = 'slot';
+      const title = document.createElement('div');
+      title.className = 'datetime';
+      title.textContent = formatToIST(p.date);
+      const isoEl = document.createElement('div');
+      isoEl.className = 'iso';
+      isoEl.textContent = p.iso;
+      li.appendChild(title);
+      li.appendChild(isoEl);
+      frag.appendChild(li);
+    }
+    slotsList.appendChild(frag);
+
+    // Diagnostics summary
+    diagContent.textContent = [
+      `Fetched raw entries: ${rawArr.length}`,
+      `Parsed valid entries: ${parsed.length}`,
+      `Displayed (after filter): ${filtered.length}`,
+      `Sample earliest valid: ${parsed[0] ? parsed[0].iso : 'n/a'}`
+    ].join('\n');
+    showDiagnostics(true);
+  }
+
+  // Fetch with timeout helper
+  async function fetchWithTimeout(url, timeout = FETCH_TIMEOUT_MS){
+    const controller = new AbortController();
+    const id = setTimeout(()=> controller.abort(), timeout);
+    try{
+      const res = await fetch(url, { cache: 'no-store', signal: controller.signal });
+      clearTimeout(id);
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      return { ok:true, json, status: res.status };
+    }catch(err){
+      clearTimeout(id);
+      return { ok:false, error: err.message || String(err) };
+    }
+  }
+
+  // Init flow
+  async function init(){
+    updateStatus('Fetching slots.json...');
+    const start = performance.now();
+    const res = await fetchWithTimeout(SLOTS_URL);
+    const tookMs = Math.round(performance.now() - start);
+
+    if(res.ok){
+      try{
+        renderSlots(res.json);
+        diagContent.textContent += `\nFetch OK (${tookMs}ms)`;
+      }catch(e){
+        updateStatus('Error rendering fetched slots.');
+        diagContent.textContent = `Render error: ${e && e.message ? e.message : String(e)}`;
+        showDiagnostics(true);
+      }
+    } else {
+      updateStatus('Fetch failed — using fallback editor or saved local fallback.');
+      diagContent.textContent = `Fetch error: ${res.error}\nAttempted URL: ${SLOTS_URL}\nTime: ${new Date().toISOString()}`;
+      // Try local saved fallback
+      const saved = tryLoadSavedFallback();
+      if(saved){
+        diagContent.textContent += `\nLoaded saved fallback from localStorage (${saved.length} chars).`;
+        try { const parsed = JSON.parse(saved); renderSlots(parsed); }
+        catch(e){ diagContent.textContent += `\nSaved fallback parse error: ${e.message}`; showDiagnostics(true); }
+      } else {
+        // Show empty fallback editor for user to paste JSON
+        fallback.value = '[]';
+        showDiagnostics(true);
+      }
+    }
+  }
+
+  // Fallback local storage helpers
+  function tryLoadSavedFallback(){
+    try{
+      const v = localStorage.getItem(LOCAL_KEY);
+      if(!v) return null;
+      fallback.value = v;
+      return v;
+    }catch(e){ return null; }
+  }
+
+  // Buttons
+  loadFallbackBtn.addEventListener('click', () => {
+    const txt = fallback.value.trim();
+    if(!txt){ alert('Fallback editor is empty.'); return; }
+    try{
+      const json = JSON.parse(txt);
+      renderSlots(json);
+      diagContent.textContent = 'Loaded from fallback editor (manual).';
+      showDiagnostics(true);
+    }catch(e){ alert('Invalid JSON: ' + e.message); }
   });
-}
 
-async function runDiagnostics() {
-  debugEl('debug').textContent = '';
-  dbg('Diagnostic started at: ' + new Date());
+  saveLocalBtn.addEventListener('click', () => {
+    try{
+      const txt = fallback.value;
+      JSON.parse(txt); // validate
+      localStorage.setItem(LOCAL_KEY, txt);
+      diagContent.textContent = 'Saved fallback JSON to localStorage.';
+      showDiagnostics(true);
+    }catch(e){ alert('Invalid JSON — cannot save. ' + e.message); }
+  });
 
-  const basePath = window.location.pathname.replace(/[^\/]*$/, '');
-  const candidates = [
-    './slots.json',
-    'slots.json',
-    '/slots.json',
-    basePath + 'slots.json',
-    'https://raw.githubusercontent.com/naveenkumaritaimlds/naveenkumaritaimlds.github.io/main/slots.json'
-  ].map(u => u + '?cache=' + Date.now());
+  clearLocalBtn.addEventListener('click', () => {
+    if(!confirm('Clear saved fallback from localStorage?')) return;
+    localStorage.removeItem(LOCAL_KEY);
+    diagContent.textContent = 'Cleared saved fallback.';
+    fallback.value = '[]';
+    showDiagnostics(true);
+  });
 
-  for (const url of candidates) {
-    dbg('\nTrying: ' + url);
-    try {
-      const resp = await fetch(url, { cache:'no-store' });
-      dbg(' -> HTTP status: ' + resp.status + ' ' + resp.statusText);
-      const text = await resp.text();
-      try {
-        const parsed = JSON.parse(text);
-        if (!Array.isArray(parsed)) {
-          dbg(' -> Not an array, skipping.');
-          continue;
-        }
-        dbg(' -> Parsed JSON array, length: ' + parsed.length);
-        dbg(' -> Rendering slots from this source.');
+  downloadJSONBtn.addEventListener('click', () => {
+    const txt = fallback.value;
+    try{
+      JSON.parse(txt);
+    }catch(e){ if(!confirm('JSON seems invalid, download anyway?')) return; }
+    const blob = new Blob([txt], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'slots.json'; document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  togglePastBtn.addEventListener('click', () => {
+    showPast = !showPast;
+    togglePastBtn.textContent = showPast ? 'Hide past slots' : 'Show past slots';
+    // If there is currently visible rendered data, re-render using fallback or try fetch again
+    // We'll attempt to use the fallback textarea JSON or the last displayed entries in diagnostics (if any)
+    try{
+      // Prefer fallback area if non-empty valid JSON
+      const txt = fallback.value.trim();
+      if(txt && txt !== '[]'){
+        const parsed = JSON.parse(txt);
         renderSlots(parsed);
         return;
-      } catch(e) {
-        dbg(' -> JSON parse error: ' + e.message);
-        continue;
       }
-    } catch(e) {
-      dbg(' -> fetch error: ' + e.message);
-      continue;
-    }
-  }
+    }catch(e){}
+    // else re-init fetch to display with new filter
+    init();
+  });
 
-  dbg('\nAll fetch attempts failed or returned invalid JSON.');
-  renderSlots([]);
-}
+  // Attempt to load saved fallback into textarea immediately
+  tryLoadSavedFallback();
 
-document.getElementById('runAgain').addEventListener('click', runDiagnostics);
-document.getElementById('useInline').addEventListener('click', () => {
-  const txt = document.getElementById('inlineEditor').value;
-  try {
-    const parsed = JSON.parse(txt);
-    renderSlots(parsed);
-    dbg('Loaded slots from inline editor.');
-  } catch(e) {
-    dbg('Inline JSON parse error: ' + e.message);
-    alert('Invalid JSON in editor: ' + e.message);
-  }
-});
-document.getElementById('loadInline').addEventListener('click', () => document.getElementById('useInline').click());
-document.getElementById('copySample').addEventListener('click', async () => {
-  const sample = document.getElementById('inlineEditor').value;
-  try { await navigator.clipboard.writeText(sample); dbg('Sample copied.'); } catch(e){ dbg('Copy failed: ' + e.message); }
-});
+  // Initialize
+  init();
 
-// Initial run
-runDiagnostics();
+  // Expose small debug functions for console (optional)
+  window.__myUpInterviews = {
+    formatToIST, parseISOToDate, renderSlots, init
+  };
+})();
 </script>
+</body>
+</html>
