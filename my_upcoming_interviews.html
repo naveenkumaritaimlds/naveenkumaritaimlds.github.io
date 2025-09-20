@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Upcoming Interviews — Diagnostic</title>
+  <title>My Upcoming Interviews — Live</title>
   <style>
-    :root{ --accent:#3b82f6; --bg:#f8faff; --card:#fff; --maxw:1100px;}
+    :root{ --accent:#3b82f6; --bg:#f8faff; --card:#fff; --maxw:1100px; --alert:#f97316;}
     body{margin:0;background:var(--bg);font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif;color:#142028;line-height:1.45}
     .wrap{max-width:var(--maxw);margin:28px auto;padding:20px}
     header{background:linear-gradient(135deg,#3740b7,var(--accent));color:#fff;padding:24px;border-radius:10px;text-align:center}
@@ -13,10 +13,10 @@
     main{margin-top:18px}
     h2{margin:10px 0;color:#0f1720;padding-left:10px;border-left:8px solid var(--accent);font-size:1.2rem}
     #slots-list{list-style:none;padding:0;display:grid;gap:12px}
-    .slot{background:var(--card);padding:12px;border-radius:10px;display:flex;align-items:center;gap:12px;font-weight:700}
+    .slot{background:var(--card);padding:12px;border-radius:10px;display:flex;align-items:center;gap:12px;font-weight:700;justify-content:space-between}
+    .slot.alert{border-left:4px solid var(--alert)}
     .debug{background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 18px rgba(16,30,50,0.06);font-family:monospace;white-space:pre-wrap;max-height:360px;overflow:auto}
     .small{font-size:0.95rem;color:#425061}
-    .hint{margin-top:8px;font-size:0.95rem;color:#6b7280}
     .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;cursor:pointer;border:none}
     .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
   </style>
@@ -25,7 +25,7 @@
   <div class="wrap">
     <header>
       <h1>📌 My Upcoming Interviews</h1>
-      <div class="small">Diagnostic mode — shows fetch + parse details to help debug why slots.json isn't loading.</div>
+      <div class="small">Live countdowns and alert for interviews within 24 hours.</div>
     </header>
 
     <main>
@@ -34,7 +34,6 @@
         <ul id="slots-list">
           <li class="slot">Loading slots...</li>
         </ul>
-        <div class="hint">If nothing appears, see the diagnostic panel below for details.</div>
       </section>
 
       <section>
@@ -65,19 +64,39 @@
         return;
       }
       data.sort((a,b)=> parseDateTime(a.datetime)-parseDateTime(b.datetime));
+
       data.forEach(slot=>{
         const dt = parseDateTime(slot.datetime);
         const li = document.createElement('li');
         li.className = 'slot';
-        if(isNaN(dt)){ li.innerHTML='⚠️ Invalid datetime: '+(slot.datetime||JSON.stringify(slot)); }
-        else{
+        if(isNaN(dt)){ 
+          li.innerHTML='⚠️ Invalid datetime: '+(slot.datetime||JSON.stringify(slot)); 
+        } else {
+          li.dataset.time = dt.getTime();
           const text = dt.toLocaleString('en-IN',{
             weekday:'short', month:'short', day:'numeric', year:'numeric',
             hour:'numeric', minute:'2-digit', hour12:true, timeZone:'Asia/Kolkata'
           });
-          li.innerHTML='📅 '+text;
+          li.innerHTML=`<span>📅 ${text}</span><span class="countdown"></span>`;
         }
         listEl.appendChild(li);
+      });
+      updateCountdowns();
+      setInterval(updateCountdowns,1000);
+    }
+
+    function updateCountdowns(){
+      const now = new Date().getTime();
+      document.querySelectorAll('#slots-list .slot').forEach(li=>{
+        const t = li.dataset.time;
+        if(!t) return;
+        const diff = t - now;
+        if(diff <= 0){ li.querySelector('.countdown').textContent=' ⏰ Started'; li.classList.remove('alert'); return; }
+        const h = Math.floor(diff/3600000);
+        const m = Math.floor((diff%3600000)/60000);
+        const s = Math.floor((diff%60000)/1000);
+        li.querySelector('.countdown').textContent=` ⏱ ${h}h ${m}m ${s}s`;
+        li.classList.toggle('alert', diff<=86400000); // highlight if within 24 hours
       });
     }
 
