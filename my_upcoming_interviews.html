@@ -66,6 +66,23 @@
     font-size: 0.95rem;
     color: #065f46;
   }
+  .marquee {
+    margin: 25px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    animation: marquee 18s linear infinite;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2563eb;
+    background: #eef2ff;
+    padding: 10px 15px;
+    border-radius: 10px;
+  }
+  @keyframes marquee {
+    0%   { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
   a {
     color: #2563eb;
     font-weight: 600;
@@ -82,42 +99,45 @@
   <!-- 1. Formal Introduction -->
   <h1>Welcome Recruiters & Consultants 👋</h1>
   <p>
-    Thank you for visiting my scheduling page. I created this space to make our interactions smoother and more productive.
-    Instead of spending time on repeated calls to confirm availability, you can directly view my interview commitments below.
+    This scheduling page has been designed to streamline interactions and reduce repetitive coordination.
+    Instead of multiple phone calls to confirm availability, interview commitments are displayed here directly and transparently.
   </p>
 
+  <!-- Moving tools line -->
+  <div class="marquee">
+    Monitored · Dashboarded · MLOpsed · Automated · Generative AI powered · Cloud Deployed · Data Visualized · Pipeline Orchestrated
+  </div>
+
   <!-- 2. Upcoming Interview Slots -->
-  <h2>📅 My Upcoming Interviews</h2>
+  <h2>📅 Upcoming Interview Slots</h2>
   <p>
-    By automating my interview calendar, I’m not only saving everyone’s valuable time but also 
-    demonstrating my ability to design <strong>efficient, real-world automation solutions</strong>.
+    The timeline below reflects confirmed interview slots.  
+    By making this information public, the process saves time for everyone involved and demonstrates how everyday workflows can be automated for efficiency.
   </p>
   <div id="slots"></div>
   <div class="diagnostics" id="diagnostics"></div>
 
   <!-- 3. Data Science & Python Skills -->
-  <h2>⚡ My Data Science & Python Capabilities</h2>
+  <h2>⚡ Data Science & Python Capabilities</h2>
   <p>
-    I specialize in leveraging <strong>Python</strong> and modern <strong>Data Science</strong> tools to solve business challenges.  
-    My expertise covers:
+    Background and expertise cover the complete data lifecycle — from collection and cleaning to modeling and deployment.  
+    Areas of focus include:
   </p>
   <ul>
-    <li>Machine Learning & Predictive Analytics</li>
-    <li>Deep Learning & Neural Networks</li>
+    <li>Machine Learning, Predictive Analytics & Deep Learning</li>
     <li>Data Wrangling, Visualization, and Storytelling</li>
-    <li>Cloud-based deployment & MLOps pipelines</li>
-    <li>Automation of workflows using Python and APIs</li>
+    <li>Cloud Deployment, CI/CD & MLOps practices</li>
+    <li>Workflow Automation with Python & APIs</li>
+    <li>Generative AI experiments and applied use cases</li>
   </ul>
   <p>
-    This scheduling system itself is an example of how I translate everyday challenges into automated, 
-    intelligent solutions.
+    This scheduling system itself is an example of how routine processes can be monitored, dashboarded, and automated.
   </p>
 
   <!-- 4. Public Portfolio Link -->
-  <h2>🌐 Explore My Full Portfolio</h2>
+  <h2>🌐 Explore Full Portfolio</h2>
   <p>
-    For a deeper look at my professional journey, projects, and CV, 
-    I invite you to visit my public profile site:  
+    A detailed professional profile, projects, and CV are available at:  
     <a href="https://naveenkumaritaimlds.github.io/" target="_blank">
       https://naveenkumaritaimlds.github.io/
     </a>
