@@ -24,15 +24,10 @@ body {
 h1, h2 {
   color: #1e3a8a;
   font-weight: 600;
-  font-size: 1.6rem; /* uniform heading size */
+  font-size: 1.6rem;
 }
-h1 {
-  margin-bottom: 15px;
-}
-h2 {
-  margin-top: 35px;
-  margin-bottom: 15px;
-}
+h1 { margin-bottom: 15px; }
+h2 { margin-top: 35px; margin-bottom: 15px; }
 p {
   font-size: 1rem;
   line-height: 1.6;
@@ -75,15 +70,23 @@ footer {
 .marquee {
   display: inline-block;
   white-space: nowrap;
-  animation: marquee 40s linear infinite; /* slower speed */
-  font-size: 0.9rem;
+  animation: marquee 12s linear infinite;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #2563eb;
   background: #eef2ff;
   padding: 8px 12px;
   border-radius: 10px;
-  margin-top: 15px;
   box-sizing: border-box;
+}
+.static-footer-text {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #1e3a8a;
+  font-weight: 500;
+  background: #eef2ff;
+  padding: 8px 12px;
+  border-radius: 10px;
 }
 @keyframes marquee {
   0% { transform: translateX(100%); }
@@ -116,11 +119,8 @@ If my profile matches a role and you notice an immediate slot for tomorrow, plea
 As this schedule updates regularly, there may be rare cases where two invitations overlap before I can refresh availability. If that occurs, I will promptly coordinate and confirm the earliest suitable alternative. Thank you for your understanding and support in ensuring smooth discussions. 
 </p>
 
-
 <div id="slots"></div>
-
 <div class="info-box" id="infoBox"></div>
-  
 
 <h2>My Technical Profile & Capabilities</h2>
 <ul class="skills-list">
@@ -143,9 +143,10 @@ For a complete overview of my projects, detailed CV, and professional portfolio,
 
 <footer>
   <div class="marquee">
- <span>
-    This page has been designed with a blend of modern practices and tools — Generative AI · MLOps · Cloud Deployment · Data Engineering · Pipeline Orchestration · Automation · Monitoring · Observability
-  </span>
+    <span>This page has been designed with a blend of modern practices and tools</span>
+  </div>
+  <div class="static-footer-text">
+    Generative AI · MLOps · Cloud Deployment · Data Engineering · Pipeline Orchestration · Automation · Monitoring · Observability
   </div>
 </footer>
 
@@ -192,7 +193,7 @@ For a complete overview of my projects, detailed CV, and professional portfolio,
     const upcoming = dates.find(d => d > now);
     infoBox.innerHTML = `
       🔍 Schedule is up-to-date.  
-      ${upcoming ? "Next slot is already committed. I'm haping this live view ensures you can identify my open windows efficiently, helping you plan interviews without delay." : "📢 Currently available for new interview bookings."}
+      ${upcoming ? "Next slot is already committed. I'm hoping this live view ensures you can identify my open windows efficiently, helping you plan interviews without delay." : "📢 Currently available for new interview bookings."}
     `;
   } catch(err){
     slotsDiv.innerHTML = "<p style='color:red;'>❌ Error loading slots.json</p>";
