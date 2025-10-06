@@ -93,7 +93,6 @@
       <p>Senior Manager & Automation Delivery Leader — 18+ years delivering large-scale RPA, Intelligent Automation, AI/GenAI solutions for global enterprises across banking, healthcare, retail, and manufacturing.</p>
       <div class="hero-actions">
         <a class="btn primary" href="#projects">View Projects</a>
-        <a class="btn" href="Naveenkumar_IT_Automation_Delivery_Lead_18Yrs.pdf" download>Download CV</a>
       </div>
     </div>
   </header>
@@ -291,9 +290,8 @@
     <section id="contact" aria-labelledby="contact-title">
       <h2 id="contact-title">Contact</h2>
       <div class="contact-grid">
-        <div class="contact-card">📧 <a href="mailto:naveenkumaritaimlds@gmail.com">naveenkumaritaimlds@gmail.com</a></div>
+        <div class="contact-card">📧 <a href="mailto:naveenkumarit@gmail.com">naveenkumarit@gmail.com</a></div>
         <div class="contact-card">📞 +91 96864 49386</div>
-        <div class="contact-card">🔗 <a href="https://naveenkumaritaimlds.github.io" target="_blank">Portfolio</a></div>
         <div class="contact-card">📍 Bangalore, India</div>
       </div>
     </section>
@@ -367,7 +365,7 @@
       const opts = { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 };
       const obs = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
-          if(e.isIntersecting){
+          if(e.isintersecting){
             const id = e.target.id;
             navLinks.forEach(a=> a.classList.toggle('active', a.getAttribute('href') === '#'+id));
           }
