@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow">
+  <title>Naveenkumar I T — Senior Manager Automation & AI Delivery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--accent:#0073e6;--maxw:1100px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:'Poppins',sans-serif;background:#fafafa;color:#222;-webkit-font-smoothing:antialiased;}
+
+    /* NAV */
+    .topnav{position:sticky;top:0;background:rgba(250,250,250,0.94);backdrop-filter:blur(6px);border-bottom:1px solid rgba(0,0,0,0.04);z-index:1200}
+    .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:flex-end;padding:12px 28px;gap:18px}
+    .nav-links{display:flex;gap:18px}
+    .nav-links a{color:var(--accent);text-decoration:none;font-weight:600}
+    .nav-toggle{display:none;border:0;background:transparent;font-size:1.1rem;cursor:pointer}
+
+    /* HERO */
+    header{height:100vh;background:linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)),url('https://picsum.photos/1600/900?blur=3') center/cover no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:28px}
+    header h1{font-size:3.5rem;margin:0}
+    header p{font-size:1.05rem;max-width:700px;margin:18px auto 0;color:rgba(255,255,255,0.92)}
+    .hero-actions{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);font-weight:700;text-decoration:none;color:white}
+    .btn.primary{background:var(--accent);color:#fff}
+
+    /* LAYOUT */
+    .container{max-width:var(--maxw);margin:0 auto;padding:40px 28px}
+    section{padding:18px 0}
+    h2{font-size:1.25rem;margin:0 0 18px;color:#333}
+
+    /* SKILLS */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;margin-top:18px}
+    @media(min-width:1200px){.skills-grid{grid-template-columns:repeat(6,1fr);}}
+    .skill-card{background:#fff;padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.04);text-align:center;font-weight:600;font-size:0.86rem}
+
+    /* PROJECTS */
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px;margin-top:18px}
+    .project-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.06);display:flex;flex-direction:column;transition:transform .22s ease}
+    .project-card:hover{transform:translateY(-8px)}
+    .project-card img{width:100%;height:180px;object-fit:cover}
+    .project-card .content{padding:16px;flex:1}
+    .project-card h3{margin:0 0 8px;display:flex;align-items:center;gap:8px}
+    .project-meta{font-size:0.86rem;color:#666;margin-bottom:8px}
+
+    /* CLIENTS STRIP */
+    .clients-strip{overflow:hidden;white-space:nowrap;margin-top:28px;border-top:1px solid #eee;padding-top:16px;color:#444;font-weight:600}
+    .clients-strip-inner{display:inline-block;padding-left:100%;animation:scroll 60s linear infinite}
+    .clients-item{display:inline-block;padding-right:40px}
+    @keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
+
+    /* TIMELINE */
+    .timeline{display:flex;flex-direction:column;gap:16px;margin-top:14px}
+    .job{background:#fff;padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
+    .job h3{margin:0;font-size:1rem;display:flex;align-items:center;gap:8px}
+    .job .meta{color:#666;font-size:0.9rem;margin:6px 0}
+
+    /* CONTACT */
+    .contact-grid{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .contact-card{padding:12px 14px;border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.04);font-weight:600}
+
+    footer{padding:36px 20px;text-align:center;color:#666}
+    .to-top{position:fixed;right:20px;bottom:20px;padding:10px 12px;border-radius:10px;background:var(--accent);color:#fff;border:0;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,0.12);display:none}
+
+    @media(max-width:900px){header h1{font-size:2.4rem}.nav-links{display:none}.nav-toggle{display:block}.container{padding:28px 18px}}
+    @media(max-width:640px){header{padding-top:72px;height:auto;padding-bottom:56px}}
+    body.nav-open .nav-links{display:flex;position:absolute;top:60px;right:18px;background:#fff;padding:12px;border-radius:10px;flex-direction:column;box-shadow:0 10px 30px rgba(0,0,0,0.08)}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav" role="navigation" aria-label="Primary Navigation">
+  <div class="nav-inner">
+    <div class="nav-links" role="menubar">
+      <a class="nav-link" href="#skills" role="menuitem">Skills</a>
+      <a class="nav-link" href="#projects" role="menuitem">Projects</a>
+      <a class="nav-link" href="#about" role="menuitem">Experience</a>
+      <a class="nav-link" href="#awards" role="menuitem">Awards</a>
+      <a class="nav-link" href="#contact" role="menuitem">Contact</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+  </div>
+</nav>
+
+  <!-- HERO -->
+  <header id="top">
+    <div class="hero-inner">
+      <h1>Naveenkumar I T</h1>
+      <p>Senior Manager & Automation Delivery Leader — 18+ years delivering large-scale RPA, Intelligent Automation, AI/GenAI solutions for global enterprises across banking, healthcare, retail, and manufacturing.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#projects">View Projects</a>
+        <a class="btn" href="Naveenkumar_IT_Automation_Delivery_Lead_18Yrs.pdf" download>Download CV</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- SKILLS -->
+    <section id="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title">Core Competencies</h2>
+      <div class="skills-grid">
+        <div class="skill-card">UiPath · Automation Anywhere · Blue Prism</div>
+        <div class="skill-card">Python · Java · Spring Boot · FastAPI</div>
+        <div class="skill-card">LLMs · RAG · LangChain · Fine-tuning</div>
+        <div class="skill-card">AWS · Azure · GCP · Databricks</div>
+        <div class="skill-card">MLOps · Docker · Kubernetes · CI/CD</div>
+        <div class="skill-card">SAP ERP · ServiceNow · Observability</div>
+        <div class="skill-card">Team Leadership · Talent Acquisition</div>
+        <div class="skill-card">P&L Management · Client Engagement</div>
+        <div class="skill-card">Agile/Scrum · Project Management</div>
+        <div class="skill-card">Center of Excellence · Governance</div>
+        <div class="skill-card">Spark · Kafka · Hadoop · SQL</div>
+        <div class="skill-card">Splunk · Prometheus · Grafana · ELK</div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Key Projects & Deliveries</h2>
+
+      <div id="projectsGrid" class="projects-grid">
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?1" alt="Lloyds Banking Financial Crime Analytics">
+          <div class="content">
+            <div class="project-meta">Client: Lloyds Banking Group</div>
+            <h3>🏦 AI/ML in Financial Crime & Fraud Detection</h3>
+            <p>Led intelligent automation combining AI/ML with RPA workflows for AML and fraud detection. Reduced false positives by 40% and manual data entry by 70% using UiPath and Automation Anywhere integration.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?2" alt="Novartis AI Support">
+          <div class="content">
+            <div class="project-meta">Client: Novartis Pharma & Healthcare</div>
+            <h3>🧪 RPA + NLP + Generative AI Customer Support</h3>
+            <p>Designed GenAI-driven customer support assistant with RPA integration. Reduced manual follow-up tasks by 65% and average handling time by 45% while maintaining healthcare compliance.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?3" alt="Travelodge Pricing">
+          <div class="content">
+            <div class="project-meta">Client: Travelodge Hotels UK</div>
+            <h3>🏨 AI-Driven Demand Forecasting & Dynamic Pricing</h3>
+            <p>Implemented real-time AI pricing system with RPA automation for 580+ hotels. Increased ADR by 11%, occupancy by 9%, and reduced manual overrides by 95%.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?4" alt="Fresenius Healthcare">
+          <div class="content">
+            <div class="project-meta">Client: Fresenius Medical Care</div>
+            <h3>🏥 Real-Time Prediction of Intradialytic Hypotension</h3>
+            <p>Developed ML models for real-time patient risk prediction during dialysis. Achieved AUC 0.89 and reduced manual monitoring workload by 50% for nursing staff.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?5" alt="Deloitte RPA">
+          <div class="content">
+            <div class="project-meta">Client: Deloitte</div>
+            <h3>🏢 RPA for KYC Process Automation</h3>
+            <p>Implemented Automation Anywhere for KYC functions, reducing processing time by 70% and improving accuracy in compliance processes.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?6" alt="QNB Digital Transformation">
+          <div class="content">
+            <div class="project-meta">Client: Qatar National Bank</div>
+            <h3>🏦 Data Modernization for Automation Enablement</h3>
+            <p>Modernized data infrastructure to lay foundation for RPA initiatives, reducing manual data processing by 40% through streamlined pipelines.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?7" alt="Merck Predictive Maintenance">
+          <div class="content">
+            <div class="project-meta">Client: Merck Group</div>
+            <h3>🏭 Intelligent Process Automation & Predictive Maintenance</h3>
+            <p>Combined RPA with AI models to predict equipment failures, reducing unplanned downtime by 30% and saving $1.2M annually.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?8" alt="Baxter Healthcare">
+          <div class="content">
+            <div class="project-meta">Client: Baxter</div>
+            <h3>🏥 AI-Driven Personalized Patient Care</h3>
+            <p>Developed automated care pathway recommendations and clinical decision support systems integrated with hospital workflows.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?9" alt="Target Amazon">
+          <div class="content">
+            <div class="project-meta">Client: Target & Amazon</div>
+            <h3>🛒 AI-Powered Personalized Recommendation System</h3>
+            <p>Enhanced shopping experience with hyper-personalized recommendations, improving conversion rates by 18% and AOV by 12%.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?10" alt="Johnson Johnson">
+          <div class="content">
+            <div class="project-meta">Client: Johnson & Johnson</div>
+            <h3>🧪 AI for Drug Supply Chain Optimization</h3>
+            <p>Developed predictive analytics for pharmaceutical demand, achieving 30% reduction in stockouts and 20% cost reduction in cold chain logistics.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://picsum.photos/600/400?11" alt="US Bank">
+          <div class="content">
+            <div class="project-meta">Client: US Bank</div>
+            <h3>🏦 AI-Enhanced Credit Risk Scoring</h3>
+            <p>Implemented predictive analytics pipeline reducing loan default rate by 22% and improving approval rate by 15% without increasing risk.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- pagination controls -->
+      <div id="pagination" class="pagination" aria-label="Project pages"></div>
+
+    </section>
+
+    <!-- ABOUT / EXPERIENCE -->
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">Professional Experience</h2>
+      <div class="timeline">
+        <div class="job">
+          <h3>🏢 Senior Tech Lead – Delivery Management (Automation & RPA Practice Lead) — HCLTech (Apr 2022 – Present)</h3>
+          <div class="meta">Clients: Lloyds Banking Group, Novartis Pharma, Travelodge Hotels</div>
+          <p>Lead delivery of AI, automation, RPA, and data science solutions for global clients. Manage distributed teams and drive end-to-end project execution. Collaborate with C-level stakeholders to deliver enterprise-scale automation and observability frameworks.</p>
+          <p><strong>Leadership:</strong> Manage 25+ FTE team, oversee capacity planning, performance reviews, and recruitment. Establish Agile/Scrum methodologies and own delivery metrics.</p>
+          <p><strong>Technologies:</strong> UiPath, Automation Anywhere, Python, AWS, Azure, GCP, Databricks, Docker, Kubernetes, MLflow, Prometheus, Grafana</p>
+        </div>
+
+        <div class="job">
+          <h3>🏢 Senior Software Engineer, RPA and Data Science — Cignex Datamatix (May 2020 – Jan 2022)</h3>
+          <div class="meta">Clients: Fresenius Medical Care, HSBC Bank, Deloitte</div>
+          <p>Delivered RPA and AI solutions including clinical predictive models and KYC process automation. Led Automation Anywhere implementations and developed real-time monitoring systems.</p>
+          <p><strong>Technologies:</strong> Automation Anywhere, Python, TensorFlow, Keras, MLflow, Docker</p>
+        </div>
+
+        <div class="job">
+          <h3>🏢 AI and MLOps Engineer — Yash Technologies (Feb 2019 – Nov 2019)</h3>
+          <div class="meta">Clients: Qatar National Bank, Merck Group</div>
+          <p>Led data modernization and intelligent process automation projects. Combined RPA with AI models for predictive maintenance and automated workflows.</p>
+          <p><strong>Technologies:</strong> UiPath, Blue Prism, Python, Azure Data Factory, Random Forest, Gradient Boosting</p>
+        </div>
+
+        <div class="job">
+          <h3>🏥 Senior Software Engineer, RPA and Machine Learning — Baxter (Jul 2014 – Oct 2018)</h3>
+          <div class="meta">Projects: AI-Driven Personalized Patient Care, Clinical Decision Support, Remote Monitoring</div>
+          <p>Developed AI-powered healthcare solutions including personalized treatment plans, automated clinical decision support, and remote patient monitoring systems.</p>
+          <p><strong>Technologies:</strong> Python, TensorFlow, EHR Integration, IoT, AWS IoT, Real-time Data Processing</p>
+        </div>
+
+        <div class="job">
+          <h3>🏢 Machine Learning Developer — Tata Consultancy Services (Nov 2010 – Mar 2014)</h3>
+          <div class="meta">Clients: Target/Amazon, Johnson & Johnson, US Bank, General Motors</div>
+          <p>Developed AI solutions including recommendation systems, supply chain optimization, and credit risk scoring across retail, pharmaceutical, and banking domains.</p>
+          <p><strong>Technologies:</strong> Python, LSTM, Facebook Prophet, Bayesian Optimization, SHAP</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AWARDS -->
+    <section id="awards" aria-labelledby="awards-title">
+      <h2 id="awards-title">Awards & Recognition</h2>
+      <ul style="color:#666;line-height:1.6;margin-top:12px">
+        <li>Promising New Talent Award — HCLTech (2024)</li>
+        <li>Star Performer Award — Cignex Datamatics (2020)</li>
+        <li>Extramiles Achievement Awards — Yash Technologies (2019)</li>
+        <li>"Collaborate and Play to Win" — Baxter (2017, 2018)</li>
+        <li>"Driving Results with Urgency and Accountability" — Baxter (2016)</li>
+        <li>"Relentlessly Driving Results" — Baxter (2015)</li>
+        <li>Star Team & Service and Commitment Awards (2013)</li>
+        <li>Client Appreciation Awards (2010)</li>
+      </ul>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <div class="contact-grid">
+        <div class="contact-card">📧 <a href="mailto:naveenkumaritaimlds@gmail.com">naveenkumaritaimlds@gmail.com</a></div>
+        <div class="contact-card">📞 +91 96864 49386</div>
+        <div class="contact-card">🔗 <a href="https://naveenkumaritaimlds.github.io" target="_blank">Portfolio</a></div>
+        <div class="contact-card">📍 Bangalore, India</div>
+      </div>
+    </section>
+
+    <!-- CLIENTS STRIP -->
+    <section id="clients" aria-labelledby="clients-title">
+      <h2 id="clients-title">🌍 Global Client Portfolio</h2>
+      <div class="clients-strip" aria-hidden="true">
+        <div class="clients-strip-inner">
+          <div class="clients-item">🏦 Lloyds Banking Group</div>
+          <div class="clients-item">🧪 Novartis Pharma</div>
+          <div class="clients-item">🏨 Travelodge Hotels</div>
+          <div class="clients-item">🏥 Fresenius Medical</div>
+          <div class="clients-item">🏢 Deloitte</div>
+          <div class="clients-item">🏦 Qatar National Bank</div>
+          <div class="clients-item">🧪 Merck Group</div>
+          <div class="clients-item">🏥 Baxter</div>
+          <div class="clients-item">🛒 Target & Amazon</div>
+          <div class="clients-item">🧪 Johnson & Johnson</div>
+          <div class="clients-item">🏦 US Bank</div>
+          <div class="clients-item">🏢 HSBC Bank</div>
+          <div class="clients-item">🚗 General Motors</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>❤️ Built with passion & love by Naveenkumar I T </footer>
+  <button class="to-top" aria-label="Back to top">↑</button>
+
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    if(navToggle){navToggle.addEventListener('click', ()=> document.body.classList.toggle('nav-open'))}
+
+    // Projects pagination
+    (function(){
+      const grid = document.getElementById('projectsGrid');
+      if(!grid) return;
+      const items = Array.from(grid.children);
+      const perPage = 6;
+      const total = items.length;
+      const totalPages = Math.max(1, Math.ceil(total / perPage));
+      const pager = document.getElementById('pagination');
+
+      function renderPage(page){
+        const start = (page-1)*perPage;
+        const end = start + perPage;
+        items.forEach((it, idx)=>{ it.style.display = (idx>=start && idx<end) ? '' : 'none'; });
+        pager.innerHTML = '';
+        const prev = document.createElement('button'); prev.className='page-btn'; prev.textContent='← Prev'; prev.disabled = page===1;
+        prev.addEventListener('click', ()=> { renderPage(page-1); document.getElementById('projects').scrollIntoView({behavior:'smooth'}); });
+        pager.appendChild(prev);
+        for(let p=1;p<=totalPages;p++){
+          const b = document.createElement('button'); b.className='page-btn'; b.textContent = p; if(p===page) b.classList.add('active');
+          b.addEventListener('click', ()=> { renderPage(p); document.getElementById('projects').scrollIntoView({behavior:'smooth'}); });
+          pager.appendChild(b);
+        }
+        const next = document.createElement('button'); next.className='page-btn'; next.textContent='Next →'; next.disabled = page===totalPages;
+        next.addEventListener('click', ()=> { renderPage(page+1); document.getElementById('projects').scrollIntoView({behavior:'smooth'}); });
+        pager.appendChild(next);
+      }
+      renderPage(1);
+    })();
+
+    // Highlight active nav link
+    (function(){
+      const navLinks = document.querySelectorAll('.nav-links a');
+      const sections = document.querySelectorAll('main section, header');
+      const opts = { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 };
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            const id = e.target.id;
+            navLinks.forEach(a=> a.classList.toggle('active', a.getAttribute('href') === '#'+id));
+          }
+        });
+      }, opts);
+      sections.forEach(s=> obs.observe(s));
+    })();
+
+    // Back to top button
+    (function(){
+      const btn = document.querySelector('.to-top');
+      window.addEventListener('scroll', ()=>{ btn.style.display = window.scrollY > 360 ? 'block' : 'none'; });
+      btn.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+    })();
+
+    // close mobile nav on link click
+    document.querySelectorAll('.nav-links a').forEach(a=> a.addEventListener('click', ()=>{ document.body.classList.remove('nav-open'); }));
+  </script>
+
+</body>
+</html>
