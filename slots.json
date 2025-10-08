@@ -1,27 +1,22 @@
 [
   {
-    "company": "Codecraft - Practice Head – AI/ML",
-    "consultant": "Abu",
-    "datetime": "2025-10-08T14:00"
-  },
-  {
-    "company": "Innova",
-    "consultant": "Innova",
-    "datetime": "2025-10-08T18:00"
-  },
-  {
-    "company": "Capg",
-    "consultant": "Akshata",
-    "datetime": "2025-10-08T16:00"
-  },
-  {
     "company": "Fresenius",
     "consultant": "Abhishek",
     "datetime": "2025-10-09T12:00"
   },
   {
-    "company": "Standard chrtered",
-    "consultant": "Swetha singh",
-    "datetime": "2025-10-10T16:00"
+    "company": "Zensor-farooq",
+    "consultant": "Farooq",
+    "datetime": "2025-10-09T13:00"
+  },
+  {
+    "company": "LTI-Manjula",
+    "consultant": "Manjula",
+    "datetime": "2025-10-10T17:30"
+  },
+  {
+    "company": "Innova",
+    "consultant": "Innova",
+    "datetime": "2025-10-10T22:00"
   }
 ]
