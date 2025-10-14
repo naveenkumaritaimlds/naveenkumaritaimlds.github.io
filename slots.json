@@ -1,22 +1,7 @@
 [
   {
-    "company": "Sr manager",
-    "consultant": "Abhirami",
-    "datetime": "2025-10-14T16:30"
-  },
-  {
-    "company": "Capg",
-    "consultant": "elangoven",
-    "datetime": "2025-10-14T17:30"
-  },
-  {
     "company": "Turing",
     "consultant": "Python developer",
     "datetime": "2025-10-16T18:30"
-  },
-  {
-    "company": "Innova",
-    "consultant": "inoova",
-    "datetime": "2025-10-13T20:30"
   }
 ]
