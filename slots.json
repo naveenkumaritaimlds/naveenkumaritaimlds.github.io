@@ -1,7 +1,26 @@
 [
   {
-    "company": "Infosis",
-    "consultant": "Monisha",
-    "datetime": "2025-10-31T15:00"
+    "company": "Tiger: ANalytics",
+    "consultant": "Shailaja",
+    "datetime": "2025-11-24T12:00",
+    "status": "scheduled"
+  },
+  {
+    "company": "Firstsource",
+    "consultant": "Khan Sahab",
+    "datetime": "2025-11-21T12:00",
+    "status": "scheduled"
+  },
+  {
+    "company": "Geektrust: FoldHealth",
+    "consultant": "Sai Lakshmi Foldhealth",
+    "datetime": "2025-11-24T10:00",
+    "status": "scheduled"
+  },
+  {
+    "company": "CBA",
+    "consultant": "Suraj Sinha",
+    "datetime": "2025-11-21T14:00",
+    "status": "scheduled"
   }
 ]
