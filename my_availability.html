@@ -369,36 +369,38 @@
                 <div class="badge">
                     <i class="fas fa-circle pulse"></i> 24/7 Availability
                 </div>
-                <h1>My Availability</h1>
-                <p class="tagline">Always Open for Technical Conversations & Collaborative Opportunities</p>
+                <h1>Let's Connect & Innovate</h1>
+                <p class="tagline">AI & Data Science Specialist | Turning Data into Intelligent Solutions</p>
             </header>
 
             <section class="intro">
                 <p class="intro-text">
-                    I maintain flexible availability for meaningful discussions about AI, data science, and innovative technology solutions. 
-                    While I occasionally have focused work sessions, I'm generally available around the clock to connect with forward-thinking teams and explore potential collaborations.
+                    Welcome to my interactive availability dashboard! I'm passionate about building intelligent systems 
+                    and solving complex problems with data. Below you can see when I'm available for technical discussions, 
+                    interviews, or collaborative sessions.
                 </p>
                 
                 <div class="availability-note">
-                    <strong>Flexible 24/7 Scheduling Available</strong> - I accommodate different timezones and urgent requirements
+                    <strong>🚀 Pro Tip:</strong> I'm generally available for exciting opportunities and technical conversations. 
+                    Feel free to schedule a session during any available slot for a chat about AI, ML, or data engineering!
                 </div>
 
                 <div class="stats-container">
                     <div class="stat-card">
-                        <div class="stat-value">24/7</div>
-                        <div class="stat-label">Available Hours</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">92%</div>
+                        <div class="stat-value">87%</div>
                         <div class="stat-label">Available This Week</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">< 2h</div>
-                        <div class="stat-label">Response Time</div>
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">Flexible Scheduling</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">Flexible</div>
-                        <div class="stat-label">Scheduling</div>
+                        <div class="stat-value">< 2h</div>
+                        <div class="stat-label">Avg. Response Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Commitment to Excellence</div>
                     </div>
                 </div>
 
@@ -406,15 +408,9 @@
                     <button class="action-btn">
                         <i class="fas fa-calendar-plus"></i> Schedule a Session
                     </button>
-                </div>
-
-                <div class="full-availability">
-                    <i class="fas fa-clock"></i>
-                    <div class="availability-highlight">Available Around the Clock</div>
-                    <p class="availability-desc">
-                        I maintain flexibility to accommodate different timezones and scheduling needs. 
-                        While I occasionally have pre-planned work sessions, I'm generally available for technical discussions anytime.
-                    </p>
+                    <button class="action-btn" style="background: white; color: var(--primary); border: 2px solid var(--primary);">
+                        <i class="fas fa-file-download"></i> Download Resume
+                    </button>
                 </div>
             </section>
         </div>
@@ -627,6 +623,11 @@
             // Add event listener for schedule button
             document.querySelector('.action-btn').addEventListener('click', function() {
                 alert("In a real implementation, this would open your scheduling system or calendar.");
+            });
+            
+            // Add event listener for download resume button
+            document.querySelectorAll('.action-btn')[1].addEventListener('click', function() {
+                alert("In a real implementation, this would download your resume.");
             });
         });
     </script>
