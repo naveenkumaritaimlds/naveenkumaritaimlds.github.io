@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect With Me - Naveen Kumar | AI & Data Science Specialist</title>
+    <title>My Availability - Naveen Kumar | AI & Data Science Specialist</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -34,12 +34,12 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
@@ -67,9 +67,6 @@
             color: var(--secondary);
             font-size: 2.8em;
             margin-bottom: 10px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .tagline {
@@ -84,7 +81,7 @@
             color: #555;
             margin-bottom: 25px;
             text-align: center;
-            max-width: 800px;
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -96,18 +93,6 @@
             margin: 20px 0;
             border-radius: 10px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .availability-note::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--success), var(--primary));
         }
 
         .stats-container {
@@ -178,90 +163,96 @@
             transform: scale(1.05);
         }
 
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: 80px repeat(7, 1fr);
-            gap: 8px;
+        .day-view {
             background: white;
             border-radius: 15px;
             padding: 20px;
+            margin-bottom: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        .time-header {
-            background: var(--primary);
-            color: white;
-            padding: 15px 10px;
-            text-align: center;
-            font-weight: bold;
-            border-radius: 10px;
-        }
-
         .day-header {
-            background: var(--secondary);
-            color: white;
-            padding: 15px 10px;
-            text-align: center;
-            font-weight: bold;
-            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
         }
 
-        .time-slot {
-            background: #f8f9fa;
-            padding: 12px 8px;
-            text-align: center;
+        .day-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .availability-status {
+            background: var(--available);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
             font-size: 0.9em;
-            border-radius: 8px;
-            min-height: 70px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .timeline {
             position: relative;
+            height: 40px;
+            background: linear-gradient(90deg, var(--available) 0%, var(--available) 100%);
+            border-radius: 20px;
+            margin: 10px 0;
             overflow: hidden;
         }
 
-        .time-slot:hover {
-            transform: scale(1.03);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .busy-block {
+            position: absolute;
+            height: 100%;
+            background: var(--busy);
+            border-radius: 10px;
+            top: 0;
         }
 
-        .time-label {
-            background: white;
-            padding: 12px 8px;
-            text-align: center;
-            font-weight: bold;
-            border-radius: 8px;
+        .time-labels {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            justify-content: space-between;
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
         }
 
-        .available {
-            background: rgba(6, 214, 160, 0.2);
+        .availability-summary {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .full-availability {
+            text-align: center;
+            background: rgba(6, 214, 160, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
             border: 2px dashed var(--available);
         }
 
-        .busy {
-            background: rgba(255, 209, 102, 0.3);
-            border: 2px solid var(--busy);
-        }
-
-        .slot-indicator {
-            font-size: 0.8em;
-            margin-top: 5px;
-            font-weight: bold;
-        }
-
-        .available .slot-indicator {
+        .full-availability i {
+            font-size: 3em;
             color: var(--available);
+            margin-bottom: 15px;
         }
 
-        .busy .slot-indicator {
-            color: var(--busy);
+        .availability-highlight {
+            font-size: 1.4em;
+            color: var(--secondary);
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .availability-desc {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .legend {
@@ -296,40 +287,6 @@
             background: var(--busy);
         }
 
-        .tech-stack {
-            margin: 40px 0;
-        }
-
-        .tech-title {
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--secondary);
-            font-size: 1.8em;
-        }
-
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .tech-tag {
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary);
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(67, 97, 238, 0.2);
-        }
-
-        .tech-tag:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-        }
-
         .footer {
             text-align: center;
             margin-top: 40px;
@@ -346,12 +303,6 @@
             background: var(--available);
             margin-right: 8px;
             animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 214, 160, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(6, 214, 160, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 214, 160, 0); }
         }
 
         .action-buttons {
@@ -381,41 +332,32 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        .action-btn.secondary {
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .action-btn.secondary:hover {
-            background: var(--primary);
-            color: white;
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 214, 160, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(6, 214, 160, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 214, 160, 0); }
         }
 
         @media (max-width: 768px) {
-            .calendar-grid {
-                grid-template-columns: 60px repeat(7, 1fr);
-                font-size: 0.8em;
-                gap: 5px;
-                padding: 10px;
+            .day-view {
+                padding: 15px;
             }
             
-            .time-slot {
-                padding: 8px 5px;
-                min-height: 60px;
+            .day-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
             }
-
-            .stats-container {
-                grid-template-columns: 1fr 1fr;
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
             }
-
-            .tech-tags {
-                gap: 8px;
-            }
-
-            .tech-tag {
-                padding: 8px 15px;
-                font-size: 0.8em;
+            
+            .action-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
             }
         }
     </style>
@@ -425,40 +367,38 @@
         <div class="glass-card">
             <header>
                 <div class="badge">
-                    <i class="fas fa-circle pulse"></i> Live Availability
+                    <i class="fas fa-circle pulse"></i> 24/7 Availability
                 </div>
-                <h1>Let's Connect & Innovate</h1>
-                <p class="tagline">AI & Data Science Specialist | Turning Data into Intelligent Solutions</p>
+                <h1>My Availability</h1>
+                <p class="tagline">Always Open for Technical Conversations & Collaborative Opportunities</p>
             </header>
 
             <section class="intro">
                 <p class="intro-text">
-                    Welcome to my interactive availability dashboard! I'm passionate about building intelligent systems 
-                    and solving complex problems with data. Below you can see when I'm available for technical discussions, 
-                    interviews, or collaborative sessions.
+                    I maintain flexible availability for meaningful discussions about AI, data science, and innovative technology solutions. 
+                    While I occasionally have focused work sessions, I'm generally available around the clock to connect with forward-thinking teams and explore potential collaborations.
                 </p>
                 
                 <div class="availability-note">
-                    <strong>🚀 Pro Tip:</strong> I'm generally available for exciting opportunities and technical conversations. 
-                    Feel free to schedule a session during any available slot for a chat about AI, ML, or data engineering!
+                    <strong>Flexible 24/7 Scheduling Available</strong> - I accommodate different timezones and urgent requirements
                 </div>
 
                 <div class="stats-container">
                     <div class="stat-card">
-                        <div class="stat-value">87%</div>
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">Available Hours</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">92%</div>
                         <div class="stat-label">Available This Week</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">24/7</div>
-                        <div class="stat-label">Flexible Scheduling</div>
-                    </div>
-                    <div class="stat-card">
                         <div class="stat-value">< 2h</div>
-                        <div class="stat-label">Avg. Response Time</div>
+                        <div class="stat-label">Response Time</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">100%</div>
-                        <div class="stat-label">Commitment to Excellence</div>
+                        <div class="stat-value">Flexible</div>
+                        <div class="stat-label">Scheduling</div>
                     </div>
                 </div>
 
@@ -466,9 +406,15 @@
                     <button class="action-btn">
                         <i class="fas fa-calendar-plus"></i> Schedule a Session
                     </button>
-                    <button class="action-btn secondary">
-                        <i class="fas fa-file-download"></i> Download Resume
-                    </button>
+                </div>
+
+                <div class="full-availability">
+                    <i class="fas fa-clock"></i>
+                    <div class="availability-highlight">Available Around the Clock</div>
+                    <p class="availability-desc">
+                        I maintain flexibility to accommodate different timezones and scheduling needs. 
+                        While I occasionally have pre-planned work sessions, I'm generally available for technical discussions anytime.
+                    </p>
                 </div>
             </section>
         </div>
@@ -477,61 +423,38 @@
             <section class="calendar-container">
                 <div class="week-nav">
                     <button class="nav-btn" id="prev-week">
-                        <i class="fas fa-chevron-left"></i> Previous
+                        <i class="fas fa-chevron-left"></i> Previous Week
                     </button>
                     <div class="week-dates" id="week-dates">Loading dates...</div>
                     <button class="nav-btn" id="next-week">
-                        Next <i class="fas fa-chevron-right"></i>
+                        Next Week <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
 
-                <div class="calendar-grid" id="calendar-grid">
-                    <!-- Calendar will be generated by JavaScript -->
+                <div id="days-container">
+                    <!-- Days will be generated by JavaScript -->
                 </div>
 
                 <div class="legend">
                     <div class="legend-item">
                         <div class="legend-color available-color"></div>
-                        <span>Available for Tech Talks & Interviews</span>
+                        <span>Available for Discussions</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-color busy-color"></div>
-                        <span>Focused Work / Pre-scheduled</span>
+                        <span>Pre-scheduled / Focused Work</span>
                     </div>
-                </div>
-            </section>
-        </div>
-
-        <div class="glass-card">
-            <section class="tech-stack">
-                <h2 class="tech-title">My Tech Arsenal</h2>
-                <div class="tech-tags">
-                    <span class="tech-tag">Generative AI</span>
-                    <span class="tech-tag">LLMs & Transformers</span>
-                    <span class="tech-tag">Computer Vision</span>
-                    <span class="tech-tag">Deep Learning</span>
-                    <span class="tech-tag">MLOps</span>
-                    <span class="tech-tag">Cloud AI</span>
-                    <span class="tech-tag">Data Engineering</span>
-                    <span class="tech-tag">NLP</span>
-                    <span class="tech-tag">Agentic AI</span>
-                    <span class="tech-tag">RAG Pipelines</span>
-                    <span class="tech-tag">TensorFlow/PyTorch</span>
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">AWS/Azure/GCP</span>
-                    <span class="tech-tag">Docker & Kubernetes</span>
-                    <span class="tech-tag">Big Data</span>
                 </div>
             </section>
         </div>
 
         <footer class="footer">
-            <p>🔮 Built with passion for AI innovation | Last updated: <span id="current-date"></span></p>
+            <p>🔄 Real-time Availability | Updated: <span id="current-date"></span></p>
         </footer>
     </div>
 
     <script>
-        // Sample busy slots data
+        // Sample busy slots data (would come from slots.json)
         const busySlots = [
             {
                 "company": "Tiger Analytics",
@@ -572,19 +495,9 @@
             return days;
         }
 
-        // Generate time slots from 9 AM to 6 PM
-        function getTimeSlots() {
-            const slots = [];
-            for (let hour = 9; hour <= 18; hour++) {
-                const timeString = `${hour}:00`;
-                slots.push(timeString);
-            }
-            return slots;
-        }
-
-        // Format date to display as "Mon, 21 Nov"
+        // Format date to display as "Monday, Nov 21"
         function formatDate(date) {
-            const options = { weekday: 'short', day: 'numeric', month: 'short' };
+            const options = { weekday: 'long', month: 'short', day: 'numeric' };
             return date.toLocaleDateString('en-US', options);
         }
 
@@ -593,70 +506,84 @@
             return date.toISOString().split('T')[0];
         }
 
-        // Check if a time slot is busy
-        function isTimeSlotBusy(day, timeSlot) {
+        // Get busy blocks for a specific day
+        function getBusyBlocksForDay(day) {
             const dayFormatted = formatDateForComparison(day);
-            const hour = parseInt(timeSlot.split(':')[0]);
-            
-            return busySlots.some(slot => {
+            const dayBusySlots = busySlots.filter(slot => {
                 const slotDate = new Date(slot.datetime);
-                const slotDateFormatted = formatDateForComparison(slotDate);
-                const slotHour = slotDate.getHours();
+                return formatDateForComparison(slotDate) === dayFormatted;
+            });
+
+            // Convert to timeline blocks (0-100% of day)
+            return dayBusySlots.map(slot => {
+                const slotDate = new Date(slot.datetime);
+                const hour = slotDate.getHours();
+                const duration = 2; // Assume 2-hour meetings
                 
-                return dayFormatted === slotDateFormatted && hour === slotHour;
+                // Convert to percentage of day (0-24 hours)
+                const startPercent = (hour / 24) * 100;
+                const widthPercent = (duration / 24) * 100;
+                
+                return {
+                    start: startPercent,
+                    width: widthPercent
+                };
             });
         }
 
-        // Generate the calendar
-        function generateCalendar(offset = 0) {
-            const days = getNextSevenDays(offset);
-            const timeSlots = getTimeSlots();
-            const calendarGrid = document.getElementById('calendar-grid');
+        // Calculate availability percentage for a day
+        function calculateAvailability(day) {
+            const busyBlocks = getBusyBlocksForDay(day);
+            let busyPercentage = 0;
             
-            // Clear existing content
-            calendarGrid.innerHTML = '';
-            
-            // Add empty cell in top-left corner
-            calendarGrid.appendChild(document.createElement('div'));
-            
-            // Add day headers
-            days.forEach(day => {
-                const dayHeader = document.createElement('div');
-                dayHeader.className = 'day-header';
-                dayHeader.textContent = formatDate(day);
-                calendarGrid.appendChild(dayHeader);
+            busyBlocks.forEach(block => {
+                busyPercentage += block.width;
             });
             
-            // Add time slots and availability
-            timeSlots.forEach(timeSlot => {
-                // Add time label
-                const timeLabel = document.createElement('div');
-                timeLabel.className = 'time-label';
-                timeLabel.textContent = timeSlot;
-                calendarGrid.appendChild(timeLabel);
+            return Math.max(0, 100 - busyPercentage);
+        }
+
+        // Generate the day views
+        function generateDayViews(offset = 0) {
+            const days = getNextSevenDays(offset);
+            const container = document.getElementById('days-container');
+            
+            // Clear existing content
+            container.innerHTML = '';
+            
+            // Add each day view
+            days.forEach(day => {
+                const availability = calculateAvailability(day);
+                const busyBlocks = getBusyBlocksForDay(day);
                 
-                // Add availability for each day at this time
-                days.forEach(day => {
-                    const timeSlotElement = document.createElement('div');
-                    const isBusy = isTimeSlotBusy(day, timeSlot);
-                    timeSlotElement.className = 'time-slot ' + (isBusy ? 'busy' : 'available');
-                    
-                    // Add appropriate content based on availability
-                    if (isBusy) {
-                        timeSlotElement.innerHTML = `<i class="fas fa-lock"></i><div class="slot-indicator">Focused Work</div>`;
-                    } else {
-                        timeSlotElement.innerHTML = `<i class="fas fa-calendar-check"></i><div class="slot-indicator">Available</div>`;
-                    }
-                    
-                    // Add click event for available slots
-                    if (!isBusy) {
-                        timeSlotElement.addEventListener('click', function() {
-                            alert(`Great choice! ${formatDate(day)} at ${timeSlot} is available for a technical discussion.`);
-                        });
-                    }
-                    
-                    calendarGrid.appendChild(timeSlotElement);
-                });
+                const dayElement = document.createElement('div');
+                dayElement.className = 'day-view';
+                
+                dayElement.innerHTML = `
+                    <div class="day-header">
+                        <div class="day-name">${formatDate(day)}</div>
+                        <div class="availability-status">${Math.round(availability)}% Available</div>
+                    </div>
+                    <div class="timeline">
+                        ${busyBlocks.map(block => 
+                            `<div class="busy-block" style="left: ${block.start}%; width: ${block.width}%;"></div>`
+                        ).join('')}
+                    </div>
+                    <div class="time-labels">
+                        <span>12 AM</span>
+                        <span>6 AM</span>
+                        <span>12 PM</span>
+                        <span>6 PM</span>
+                        <span>12 AM</span>
+                    </div>
+                    <div class="availability-summary">
+                        ${availability > 90 ? 'Wide availability throughout the day' : 
+                          availability > 70 ? 'Mostly available with a few commitments' : 
+                          'Several focused work sessions scheduled'}
+                    </div>
+                `;
+                
+                container.appendChild(dayElement);
             });
             
             // Update week dates display
@@ -683,29 +610,23 @@
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
-            generateCalendar();
+            generateDayViews();
             updateCurrentDate();
             
             // Add event listeners for week navigation
             document.getElementById('prev-week').addEventListener('click', function() {
                 currentWeekOffset--;
-                generateCalendar(currentWeekOffset);
+                generateDayViews(currentWeekOffset);
             });
             
             document.getElementById('next-week').addEventListener('click', function() {
                 currentWeekOffset++;
-                generateCalendar(currentWeekOffset);
+                generateDayViews(currentWeekOffset);
             });
             
-            // Add event listeners for action buttons
-            document.querySelectorAll('.action-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    if (this.textContent.includes('Schedule')) {
-                        alert("Redirecting to scheduling system... (This would open your calendar in a real implementation)");
-                    } else if (this.textContent.includes('Resume')) {
-                        alert("Initiating resume download... (This would download your resume in a real implementation)");
-                    }
-                });
+            // Add event listener for schedule button
+            document.querySelector('.action-btn').addEventListener('click', function() {
+                alert("In a real implementation, this would open your scheduling system or calendar.");
             });
         });
     </script>
