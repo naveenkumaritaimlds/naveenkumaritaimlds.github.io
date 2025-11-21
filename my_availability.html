@@ -1,199 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Upcoming Interviews</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f8faff;
-      color: #111;
-      line-height: 1.8;
-    }
-    header {
-      background: linear-gradient(135deg, #4338ca, #2563eb);
-      color: white;
-      text-align: center;
-      padding: 5rem 2rem;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 6rem;
-      font-weight: 800;
-    }
-    header p {
-      margin-top: 2rem;
-      font-size: 2.2rem;
-      font-style: italic;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    main {
-      max-width: 1200px;
-      margin: 5rem auto;
-      padding: 0 3rem;
-      font-size: 2rem;
-    }
-    section {
-      margin-bottom: 5rem;
-    }
-    h2 {
-      font-size: 3.5rem;
-      color: #1f2937;
-      margin-bottom: 2rem;
-      border-left: 12px solid #2563eb;
-      padding-left: 1.5rem;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      background: white;
-      margin: 1.5rem 0;
-      padding: 2.5rem;
-      border-radius: 20px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-      font-size: 2.2rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-    }
-    li::before {
-      content: "📅";
-      margin-right: 1.5rem;
-      font-size: 3rem;
-    }
-    .capabilities {
-      background: #eef2ff;
-      padding: 3rem;
-      border-radius: 20px;
-      font-size: 2.2rem;
-      font-weight: 500;
-      box-shadow: inset 0 0 16px rgba(59,130,246,0.25);
-      line-height: 2;
-    }
-    .portfolio-link {
-      display: inline-block;
-      margin-top: 2.5rem;
-      background: #2563eb;
-      color: white;
-      padding: 1.5rem 3rem;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 2rem;
-      transition: background 0.3s;
-    }
-    .portfolio-link:hover {
-      background: #1d4ed8;
-    }
-    footer {
-      background: #111827;
-      color: #e5e7eb;
-      text-align: center;
-      padding: 3rem;
-      font-size: 2rem;
-      margin-top: 4rem;
-      line-height: 2.2;
-    }
-    footer span {
-      color: #60a5fa;
-      font-weight: 700;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Availability - Naveen Kumar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .intro-text {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 25px;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .availability-note {
+            background: #e8f5e8;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .calendar-container {
+            margin: 40px 0;
+        }
+
+        .week-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .week-dates {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 100px repeat(7, 1fr);
+            gap: 1px;
+            background: #e0e0e0;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .time-header {
+            background: #34495e;
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .day-header {
+            background: #34495e;
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .time-slot {
+            background: #f8f9fa;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9em;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .time-label {
+            background: #f8f9fa;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .available {
+            background: white;
+        }
+
+        .busy {
+            background: #fff8e1;
+            border-left: 3px solid #ffd54f;
+        }
+
+        .busy::after {
+            content: "Busy";
+            font-size: 0.8em;
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        .available-color {
+            background: white;
+            border: 1px solid #e0e0e0;
+        }
+
+        .busy-color {
+            background: #fff8e1;
+            border: 1px solid #ffd54f;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                grid-template-columns: 60px repeat(7, 1fr);
+                font-size: 0.8em;
+            }
+            
+            .time-slot {
+                padding: 5px;
+                min-height: 40px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>📌 My Upcoming Interviews</h1>
-    <p>
-      Dear Recruiter, thank you for visiting this page.  
-      The interview slots listed below are <strong>already booked and confirmed</strong>.  
-      By publishing this schedule openly, I want to save your valuable time, avoid scheduling conflicts,  
-      and ensure our discussions always happen at the right time.  
-    </p>
-  </header>
+    <div class="container">
+        <header>
+            <h1>My Availability</h1>
+            <p class="subtitle">Next 7-Day Schedule</p>
+        </header>
 
-  <main>
-    <!-- Scheduled Slots -->
-    <section>
-      <h2>⏰ Scheduled Interview Slots</h2>
-      <p>
-        Here is a transparent view of my calendar.  
-        Each entry shows the exact date and time of my upcoming interviews.  
-        This way, you can instantly see my availability without the usual back-and-forth emails.  
-      </p>
-      <ul id="slots-list">
-        <li>Loading slots...</li>
-      </ul>
-    </section>
+        <section class="intro">
+            <p class="intro-text">
+                Welcome! This calendar shows my availability for the upcoming week. 
+                I'm generally available for meetings and discussions throughout the day, 
+                with some pre-planned commitments as shown below.
+            </p>
+            
+            <div class="availability-note">
+                <strong>Note:</strong> I'm available for interviews and meetings most of the time. 
+                Feel free to schedule a session during any available slot.
+            </div>
+        </section>
 
-    <!-- Capability Pitch -->
-    <section>
-      <h2>💡 My Technical Expertise & Strengths</h2>
-      <div class="capabilities">
-        I am a highly motivated AI/ML professional with hands-on experience in  
-        <strong>Data Science, Generative AI, LLMs (Large Language Models), Vector Databases, MLOps, NLP, and Cloud platforms</strong>.  
-        My core skills include building intelligent systems that combine <strong>data engineering, predictive modeling, and scalable AI pipelines</strong>.  
-        <br><br>
-        I have worked with tools and frameworks such as <strong>PyTorch, TensorFlow, Hugging Face Transformers, LangChain, LangGraph, FAISS, Pinecone, ChromaDB</strong>,  
-        as well as <strong>AWS, Azure, GCP, Docker, and Kubernetes</strong> for production deployment.  
-        <br><br>
-        My focus is always on delivering <strong>real business impact</strong>:  
-        from anomaly detection in financial transactions, to generative AI assistants in pharma and healthcare,  
-        to large-scale demand forecasting for global enterprises.  
-        <br><br>
-        <a class="portfolio-link" href="https://naveenkumaritaimlds.github.io/" target="_blank">
-          🌐 Explore My Full Professional Portfolio
-        </a>
-      </div>
-    </section>
-  </main>
+        <section class="calendar-container">
+            <div class="week-nav">
+                <div class="week-dates" id="week-dates">Loading dates...</div>
+            </div>
 
-  <footer>
-    ⚡ This page is <span>auto-maintained</span> using a wide range of modern technologies —  
-    including <span>Python, Machine Learning, Deep Learning, Large Language Models, Hugging Face, LangChain, Vector Databases (FAISS, Pinecone, Weaviate, ChromaDB), MLOps frameworks (MLflow, Kubeflow, Vertex AI, DVC), Cloud Platforms (AWS, Azure, GCP)</span>,  
-    and automated CI/CD pipelines.  
-    <br><br>
-    This ensures you always see my <strong>latest and most accurate interview schedule</strong>, powered end-to-end by intelligent AI systems.
-  </footer>
+            <div class="calendar-grid" id="calendar-grid">
+                <!-- Calendar will be generated by JavaScript -->
+            </div>
 
-  <script>
-    async function loadSlots() {
-      try {
-        const response = await fetch("slots.json?cache=" + new Date().getTime());
-        const slots = await response.json();
-        const list = document.getElementById("slots-list");
-        list.innerHTML = "";
-        if (slots.length === 0) {
-          list.innerHTML = "<li>No interviews scheduled yet.</li>";
-          return;
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color available-color"></div>
+                    <span>Available for meetings</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color busy-color"></div>
+                    <span>Pre-committed / Busy</span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Last updated: <span id="current-date"></span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Sample busy slots data (in a real scenario, this would come from slots.json)
+        const busySlots = [
+            {
+                "company": "Tiger Analytics",
+                "consultant": "Shailaja",
+                "datetime": "2025-11-24T12:00",
+                "status": "scheduled"
+            },
+            {
+                "company": "Firstsource",
+                "consultant": "Khan Sahab",
+                "datetime": "2025-11-21T12:00",
+                "status": "scheduled"
+            },
+            {
+                "company": "Geektrust: FoldHealth",
+                "consultant": "Sai Lakshmi Foldhealth",
+                "datetime": "2025-11-24T10:00",
+                "status": "scheduled"
+            },
+            {
+                "company": "CBA",
+                "consultant": "Suraj Sinha",
+                "datetime": "2025-11-21T14:00",
+                "status": "scheduled"
+            }
+        ];
+
+        // Generate the next 7 days from today
+        function getNextSevenDays() {
+            const days = [];
+            for (let i = 0; i < 7; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() + i);
+                days.push(date);
+            }
+            return days;
         }
-        slots.forEach(slot => {
-          const li = document.createElement("li");
-          const date = new Date(slot.datetime);
-          li.textContent = date.toLocaleString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true
-          });
-          list.appendChild(li);
+
+        // Generate time slots from 9 AM to 6 PM
+        function getTimeSlots() {
+            const slots = [];
+            for (let hour = 9; hour <= 18; hour++) {
+                const timeString = `${hour.toString().padStart(2, '0')}:00`;
+                slots.push(timeString);
+            }
+            return slots;
+        }
+
+        // Format date to display as "Mon, 21 Nov"
+        function formatDate(date) {
+            const options = { weekday: 'short', day: 'numeric', month: 'short' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        // Format date for comparison (YYYY-MM-DD)
+        function formatDateForComparison(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        // Check if a time slot is busy
+        function isTimeSlotBusy(day, timeSlot) {
+            const dayFormatted = formatDateForComparison(day);
+            const hour = parseInt(timeSlot.split(':')[0]);
+            
+            return busySlots.some(slot => {
+                const slotDate = new Date(slot.datetime);
+                const slotDateFormatted = formatDateForComparison(slotDate);
+                const slotHour = slotDate.getHours();
+                
+                return dayFormatted === slotDateFormatted && hour === slotHour;
+            });
+        }
+
+        // Generate the calendar
+        function generateCalendar() {
+            const days = getNextSevenDays();
+            const timeSlots = getTimeSlots();
+            const calendarGrid = document.getElementById('calendar-grid');
+            
+            // Clear existing content
+            calendarGrid.innerHTML = '';
+            
+            // Add empty cell in top-left corner
+            calendarGrid.appendChild(document.createElement('div'));
+            
+            // Add day headers
+            days.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                dayHeader.textContent = formatDate(day);
+                calendarGrid.appendChild(dayHeader);
+            });
+            
+            // Add time slots and availability
+            timeSlots.forEach(timeSlot => {
+                // Add time label
+                const timeLabel = document.createElement('div');
+                timeLabel.className = 'time-label';
+                timeLabel.textContent = timeSlot;
+                calendarGrid.appendChild(timeLabel);
+                
+                // Add availability for each day at this time
+                days.forEach(day => {
+                    const timeSlotElement = document.createElement('div');
+                    timeSlotElement.className = 'time-slot ' + 
+                        (isTimeSlotBusy(day, timeSlot) ? 'busy' : 'available');
+                    calendarGrid.appendChild(timeSlotElement);
+                });
+            });
+            
+            // Update week dates display
+            const weekDatesElement = document.getElementById('week-dates');
+            const startDate = formatDate(days[0]);
+            const endDate = formatDate(days[days.length - 1]);
+            weekDatesElement.textContent = `${startDate} - ${endDate}`;
+        }
+
+        // Update current date in footer
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('current-date').textContent = 
+                now.toLocaleDateString('en-US', options);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            generateCalendar();
+            updateCurrentDate();
+            
+            // In a real implementation, you would fetch data from slots.json here
+            // fetch('slots.json')
+            //   .then(response => response.json())
+            //   .then(data => {
+            //       busySlots = data;
+            //       generateCalendar();
+            //   });
         });
-      } catch (error) {
-        console.error("Error loading slots:", error);
-        document.getElementById("slots-list").innerHTML =
-          "<li>Could not load interview slots. Please try again later.</li>";
-      }
-    }
-    loadSlots();
-  </script>
+    </script>
 </body>
 </html>
